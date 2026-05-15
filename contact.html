@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Aaradhya Sales Force Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#0d1b2e;--navy2:#142236;--navy3:#1c3150;--amber:#e8a020;--amber2:#f5b840;--white:#ffffff;--text:#e2e8f0;--muted:#94a3b8;--border:rgba(255,255,255,0.08);--card-bg:rgba(255,255,255,0.04);--ff-head:'Playfair Display',Georgia,serif;--ff-body:'DM Sans',system-ui,sans-serif;--ff-mono:'DM Mono',monospace;--r:10px;--r-lg:18px;--trans:0.25s ease;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--ff-body);background:var(--navy);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  a{color:inherit;text-decoration:none;}
+  body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:0.5;}
+
+  .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:68px;background:rgba(13,27,46,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);transition:box-shadow var(--trans);}
+  .nav.scrolled{box-shadow:0 4px 40px rgba(0,0,0,0.4);}
+  .nav-logo{font-family:var(--ff-head);font-size:1.2rem;font-weight:700;color:var(--white);}
+  .nav-logo span{color:var(--amber);}
+  .nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+  .nav-links a{font-size:0.875rem;font-weight:500;color:var(--muted);transition:color var(--trans);letter-spacing:0.02em;}
+  .nav-links a:hover,.nav-links a.active{color:var(--white);}
+  .nav-links a.active{color:var(--amber);}
+  .nav-cta{padding:8px 20px;background:var(--amber);color:var(--navy)!important;font-weight:600!important;border-radius:6px;font-size:0.85rem!important;transition:background var(--trans),transform var(--trans)!important;}
+  .nav-cta:hover{background:var(--amber2)!important;transform:translateY(-1px);}
+  .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+  .hamburger span{display:block;width:24px;height:2px;background:var(--text);border-radius:2px;transition:transform 0.3s,opacity 0.3s;}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  .mobile-menu{display:none;position:fixed;top:68px;left:0;right:0;background:var(--navy2);border-bottom:1px solid var(--border);z-index:99;padding:1.5rem 5vw 2rem;flex-direction:column;gap:0;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{display:block;padding:0.85rem 0;font-size:1rem;font-weight:500;color:var(--text);border-bottom:1px solid var(--border);transition:color var(--trans);}
+  .mobile-menu a:last-child{border-bottom:none;}
+  .mobile-menu a:hover{color:var(--amber);}
+  .mobile-menu .mob-cta{margin-top:1.2rem;display:inline-block;padding:12px 28px;background:var(--amber);color:var(--navy);font-weight:700;border-radius:8px;text-align:center;}
+
+  main{padding-top:68px;position:relative;z-index:1;}
+  .section{padding:6rem 5vw;}
+  .container{max-width:1160px;margin:0 auto;}
+  .eyebrow{display:inline-block;font-family:var(--ff-mono);font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;color:var(--amber);margin-bottom:1rem;}
+  .section-title{font-family:var(--ff-head);font-size:clamp(2rem,4vw,3rem);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:1.2rem;}
+  .section-title em{font-style:italic;color:var(--amber);display:block;}
+  .section-lead{font-size:1.05rem;color:var(--muted);max-width:620px;line-height:1.7;}
+  .divider{width:48px;height:3px;background:var(--amber);margin:1.5rem 0;border-radius:2px;}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;font-family:var(--ff-body);font-size:0.9rem;font-weight:600;border-radius:8px;cursor:pointer;border:none;transition:all var(--trans);text-decoration:none;white-space:nowrap;}
+  .btn-primary{background:var(--amber);color:var(--navy);}
+  .btn-primary:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,160,32,0.3);}
+  .btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border);}
+  .btn-ghost:hover{background:var(--card-bg);border-color:rgba(255,255,255,0.2);}
+  .btn-wa{background:#25D366;color:var(--white);}
+  .btn-wa:hover{background:#1fb858;transform:translateY(-2px);}
+
+  .page-hero{padding:5rem 5vw 4rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+  .page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 100% at 20% 50%,rgba(28,49,80,0.5) 0%,transparent 70%);pointer-events:none;}
+  .page-hero-inner{max-width:1160px;margin:0 auto;position:relative;}
+  .breadcrumb{display:flex;align-items:center;gap:8px;font-size:0.8rem;color:var(--muted);margin-bottom:1.5rem;font-family:var(--ff-mono);letter-spacing:0.05em;}
+  .breadcrumb a:hover{color:var(--amber);}
+
+  /* CONTACT LAYOUT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:4rem;align-items:start;}
+
+  /* PROMISE CARDS */
+  .promise-item{display:flex;align-items:flex-start;gap:16px;padding:1.2rem 0;border-bottom:1px solid var(--border);}
+  .promise-item:last-child{border-bottom:none;}
+  .promise-icon{width:42px;height:42px;background:rgba(232,160,32,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+  .promise-title{font-weight:600;font-size:0.9rem;color:var(--white);margin-bottom:3px;}
+  .promise-desc{font-size:0.82rem;color:var(--muted);line-height:1.5;}
+
+  /* CONTACT CARD */
+  .contact-method{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r);margin-bottom:0.8rem;transition:border-color var(--trans);}
+  .contact-method:hover{border-color:rgba(232,160,32,0.3);}
+  .cm-icon{font-size:1.2rem;}
+  .cm-label{font-family:var(--ff-mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:2px;}
+  .cm-value{font-size:0.9rem;color:var(--text);font-weight:500;}
+
+  /* FORM */
+  .form-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--r-lg);padding:2.5rem;}
+  .form-title{font-family:var(--ff-head);font-size:1.4rem;font-weight:700;color:var(--white);margin-bottom:0.4rem;}
+  .form-subtitle{font-size:0.85rem;color:var(--muted);margin-bottom:2rem;}
+  .form-section-label{font-family:var(--ff-mono);font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin:1.8rem 0 1rem;padding-bottom:6px;border-bottom:1px solid var(--border);}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+  .form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem;}
+  .form-group label{font-size:0.82rem;font-weight:500;color:var(--muted);}
+  .form-group label .req{color:var(--amber);}
+  .form-control{padding:10px 14px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;font-family:var(--ff-body);font-size:0.9rem;color:var(--text);transition:border-color var(--trans),background var(--trans);outline:none;width:100%;}
+  .form-control:focus{border-color:rgba(232,160,32,0.5);background:rgba(232,160,32,0.04);}
+  .form-control::placeholder{color:rgba(148,163,184,0.5);}
+  select.form-control{cursor:pointer;}
+  select.form-control option{background:var(--navy2);color:var(--text);}
+  textarea.form-control{resize:vertical;min-height:90px;}
+  .checkbox-group{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.4rem;}
+  .checkbox-label{display:flex;align-items:center;gap:8px;padding:8px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:6px;font-size:0.82rem;color:var(--muted);cursor:pointer;transition:all var(--trans);}
+  .checkbox-label:has(input:checked){border-color:rgba(232,160,32,0.4);background:rgba(232,160,32,0.06);color:var(--text);}
+  .checkbox-label input{accent-color:var(--amber);}
+  .submit-btn{width:100%;padding:14px;background:var(--amber);color:var(--navy);font-family:var(--ff-body);font-size:1rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all var(--trans);margin-top:0.5rem;}
+  .submit-btn:hover{background:var(--amber2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,160,32,0.35);}
+  .wa-alt{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px;background:rgba(37,211,102,0.1);border:1px solid rgba(37,211,102,0.2);border-radius:8px;font-size:0.85rem;font-weight:500;color:#4ade80;margin-top:0.8rem;transition:background var(--trans);}
+  .wa-alt:hover{background:rgba(37,211,102,0.15);}
+  .success-msg{display:none;padding:16px;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;font-size:0.9rem;color:#4ade80;margin-top:1rem;text-align:center;}
+  .success-msg.show{display:block;}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--border);}
+  .faq-question{display:flex;justify-content:space-between;align-items:center;padding:1.4rem 0;cursor:pointer;font-size:0.95rem;font-weight:500;color:var(--text);gap:1rem;transition:color var(--trans);}
+  .faq-question:hover{color:var(--amber);}
+  .faq-icon{font-size:1.2rem;color:var(--amber);flex-shrink:0;transition:transform 0.3s;}
+  .faq-item.open .faq-icon{transform:rotate(45deg);}
+  .faq-answer{display:none;padding:0 0 1.4rem;font-size:0.88rem;color:var(--muted);line-height:1.75;}
+  .faq-item.open .faq-answer{display:block;}
+
+  footer{background:var(--navy2);border-top:1px solid var(--border);padding:4rem 5vw 2rem;}
+  .footer-grid{max-width:1160px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid var(--border);}
+  .footer-brand{font-family:var(--ff-head);font-size:1.15rem;font-weight:700;color:var(--white);}
+  .footer-brand span{color:var(--amber);}
+  .footer-tagline{font-size:0.85rem;color:var(--muted);margin-top:0.8rem;line-height:1.6;max-width:260px;}
+  .footer-col-title{font-family:var(--ff-mono);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-bottom:1.2rem;}
+  .footer-col a{display:block;font-size:0.875rem;color:var(--muted);margin-bottom:0.6rem;transition:color var(--trans);}
+  .footer-col a:hover{color:var(--white);}
+  .footer-contact-item{display:flex;align-items:flex-start;gap:8px;font-size:0.85rem;color:var(--muted);margin-bottom:0.7rem;}
+  .footer-bottom{max-width:1160px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding-top:1.5rem;font-size:0.8rem;color:var(--muted);flex-wrap:wrap;gap:0.5rem;}
+  .footer-badge{padding:4px 10px;background:rgba(232,160,32,0.1);border-radius:100px;font-size:0.72rem;color:var(--amber);font-family:var(--ff-mono);letter-spacing:0.05em;}
+  .wa-float{position:fixed;bottom:24px;right:24px;z-index:200;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.4);transition:transform var(--trans),box-shadow var(--trans);font-size:1.4rem;}
+  .wa-float:hover{transform:scale(1.1);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+  .animate{opacity:0;}
+  .animate.in{animation:fadeUp 0.6s ease forwards;}
+  .delay-1{animation-delay:0.1s!important;}
+  .delay-2{animation-delay:0.2s!important;}
+
+  @media(max-width:1000px){
+    .contact-grid{grid-template-columns:1fr;gap:3rem;}
+  }
+  @media(max-width:900px){
+    .nav-links{display:none;}
+    .hamburger{display:flex;}
+    .footer-grid{grid-template-columns:1fr 1fr;gap:2rem;}
+    .form-row{grid-template-columns:1fr;}
+  }
+  @media(max-width:600px){
+    .section{padding:4rem 5vw;}
+    .footer-grid{grid-template-columns:1fr;}
+    .footer-bottom{flex-direction:column;align-items:flex-start;}
+    .form-card{padding:1.5rem;}
+    .checkbox-group{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo">Aaradhya <span>SFS</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="our-work.html">Our Work</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+    <li><a href="contact.html" class="nav-cta">Get MRs</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="our-work.html">Our Work</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="mob-cta">Get MRs Now →</a>
+</div>
+
+<main>
+
+  <section class="page-hero">
+    <div class="page-hero-inner">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <span style="color:var(--amber)">Contact</span>
+      </div>
+      <span class="eyebrow animate">Let's Talk</span>
+      <h1 class="section-title animate delay-1">Share Your<em>Requirement</em></h1>
+      <p class="section-lead animate delay-2">Tell us your territory, product division and MR headcount. We'll respond within hours — and have a shortlist ready in 48.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="contact-grid">
+
+        <!-- LEFT: PROMISE + CHANNELS -->
+        <div class="animate">
+          <span class="eyebrow">Our Promise</span>
+          <h2 style="font-family:var(--ff-head);font-size:1.6rem;font-weight:700;color:var(--white);margin-bottom:2rem;line-height:1.2;">Fast, Honest,<br>Pharma-Specific</h2>
+
+          <div class="promise-item">
+            <div class="promise-icon">⚡</div>
+            <div>
+              <div class="promise-title">48-Hour Shortlist</div>
+              <div class="promise-desc">Screened MR profiles delivered within 48 hours of receiving your full requirement.</div>
+            </div>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">💊</div>
+            <div>
+              <div class="promise-title">Pharma Specialists Only</div>
+              <div class="promise-desc">We work exclusively in pharma field force — no generic staffing, no guesswork.</div>
+            </div>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">🔄</div>
+            <div>
+              <div class="promise-title">Replacement Guarantee</div>
+              <div class="promise-desc">If an MR exits within SLA, we replace at no additional charge.</div>
+            </div>
+          </div>
+          <div class="promise-item">
+            <div class="promise-icon">🤝</div>
+            <div>
+              <div class="promise-title">No Upfront Fee</div>
+              <div class="promise-desc">We discuss pricing only after understanding your requirement — no pressure, no surprises.</div>
+            </div>
+          </div>
+
+          <div style="margin-top:2.5rem;">
+            <a href="https://wa.me/91XXXXXXXXXX" class="btn btn-wa" style="width:100%;justify-content:center;margin-bottom:0.8rem;">💬 WhatsApp (Fastest) — +91 XXXXX XXXXX</a>
+          </div>
+
+          <div class="contact-method">
+            <div class="cm-icon">📞</div>
+            <div>
+              <div class="cm-label">Phone</div>
+              <div class="cm-value">+91 XXXXX XXXXX</div>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="cm-icon">✉️</div>
+            <div>
+              <div class="cm-label">Email</div>
+              <div class="cm-value">aaradhyasfs@gmail.com</div>
+            </div>
+          </div>
+          <div class="contact-method">
+            <div class="cm-icon">📍</div>
+            <div>
+              <div class="cm-label">Location</div>
+              <div class="cm-value">Odisha, Eastern India</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: FORM -->
+        <div class="form-card animate delay-2">
+          <div class="form-title">Send Your Requirement</div>
+          <div class="form-subtitle">Fill this in and we'll respond with an initial plan within a few hours.</div>
+
+          <form id="contactForm" novalidate>
+
+            <div class="form-section-label">Company Details</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Company Name <span class="req">*</span></label>
+                <input class="form-control" type="text" placeholder="Your company name" required>
+              </div>
+              <div class="form-group">
+                <label>Company Type</label>
+                <select class="form-control">
+                  <option value="">Select type</option>
+                  <option>Generic Pharma</option>
+                  <option>Ethical / Branded</option>
+                  <option>Ayurvedic / Herbal</option>
+                  <option>OTC / Consumer Health</option>
+                  <option>PCD / Franchise</option>
+                  <option>Nutraceutical</option>
+                  <option>Oncology Specialist</option>
+                  <option>Multinational (MNC)</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Your Name <span class="req">*</span></label>
+                <input class="form-control" type="text" placeholder="Full name" required>
+              </div>
+              <div class="form-group">
+                <label>Your Designation</label>
+                <select class="form-control">
+                  <option value="">Select</option>
+                  <option>HR Manager</option>
+                  <option>National Sales Manager (NSM)</option>
+                  <option>Regional Sales Manager (RSM)</option>
+                  <option>Area Sales Manager (ASM)</option>
+                  <option>Director / Owner</option>
+                  <option>MD / CEO</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Mobile <span class="req">*</span></label>
+                <input class="form-control" type="tel" placeholder="+91 XXXXX XXXXX" required>
+              </div>
+              <div class="form-group">
+                <label>Email</label>
+                <input class="form-control" type="email" placeholder="you@company.com">
+              </div>
+            </div>
+
+            <div class="form-section-label">Field Force Requirement</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Number of MRs Needed</label>
+                <input class="form-control" type="number" min="1" placeholder="e.g. 5">
+              </div>
+              <div class="form-group">
+                <label>CTC Band Offered</label>
+                <select class="form-control">
+                  <option value="">Select range</option>
+                  <option>₹12,000 – ₹15,000 / month</option>
+                  <option>₹15,000 – ₹18,000 / month</option>
+                  <option>₹18,000 – ₹22,000 / month</option>
+                  <option>₹22,000 – ₹28,000 / month</option>
+                  <option>₹28,000 – ₹35,000 / month</option>
+                  <option>₹35,000+ / month</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Role(s) Needed</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox"> Medical Representatives (MR)</label>
+                <label class="checkbox-label"><input type="checkbox"> Senior MRs</label>
+                <label class="checkbox-label"><input type="checkbox"> Area Business Managers (ABM)</label>
+                <label class="checkbox-label"><input type="checkbox"> PSR / DSR</label>
+                <label class="checkbox-label"><input type="checkbox"> Not sure yet</label>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Target Territory / HQ <span class="req">*</span></label>
+                <select class="form-control" required>
+                  <option value="">Select primary territory</option>
+                  <optgroup label="Major HQs">
+                    <option>Bhubaneswar</option>
+                    <option>Cuttack</option>
+                    <option>Sambalpur</option>
+                    <option>Rourkela</option>
+                    <option>Berhampur</option>
+                    <option>Balasore</option>
+                  </optgroup>
+                  <optgroup label="Tier-2 / Tier-3">
+                    <option>Kalahandi</option>
+                    <option>Nuapada</option>
+                    <option>Bargarh</option>
+                    <option>Koraput</option>
+                    <option>Jharsuguda</option>
+                    <option>Balangir</option>
+                  </optgroup>
+                  <option>Multiple territories</option>
+                  <option>Pan-Odisha</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Product Division <span class="req">*</span></label>
+                <select class="form-control" required>
+                  <option value="">Select division</option>
+                  <option>Allopathy / Ethical</option>
+                  <option>Generic Pharma</option>
+                  <option>Ayurvedic / Herbal</option>
+                  <option>OTC / Consumer Health</option>
+                  <option>Oncology</option>
+                  <option>Cardiology</option>
+                  <option>Diabetology</option>
+                  <option>Dermatology</option>
+                  <option>Gynaecology</option>
+                  <option>Paediatrics</option>
+                  <option>Orthopaedics</option>
+                  <option>Neurology</option>
+                  <option>Gastroenterology</option>
+                  <option>PCD / Franchise</option>
+                  <option>Multiple / Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Doctor Segment</label>
+                <select class="form-control">
+                  <option value="">Select</option>
+                  <option>General Physicians (GPs)</option>
+                  <option>Specialists Only</option>
+                  <option>Mixed (GPs + Specialists)</option>
+                  <option>Hospital / Institution</option>
+                  <option>Chemist-focused</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Joining Timeline</label>
+                <select class="form-control">
+                  <option value="">Select</option>
+                  <option>Immediate — within 1 week</option>
+                  <option>Within 15 days</option>
+                  <option>Within 1 month</option>
+                  <option>Flexible</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Service Required</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox"> MR Recruitment</label>
+                <label class="checkbox-label"><input type="checkbox"> Payroll Outsourcing</label>
+                <label class="checkbox-label"><input type="checkbox"> Full Service</label>
+                <label class="checkbox-label"><input type="checkbox"> Compliance Support</label>
+                <label class="checkbox-label"><input type="checkbox"> Replacement Only</label>
+                <label class="checkbox-label"><input type="checkbox"> Need Advice</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Additional Details</label>
+              <textarea class="form-control" placeholder="Tell us more (optional) — specific HQs, product details, timeline urgency..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Send Requirement →</button>
+            <a href="https://wa.me/91XXXXXXXXXX" class="wa-alt">💬 WhatsApp Instead</a>
+            <div class="success-msg" id="successMsg">✅ Your requirement has been sent! We'll get back to you within a few hours.</div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section" style="background:rgba(255,255,255,0.02);border-top:1px solid var(--border);">
+    <div class="container" style="max-width:780px;">
+      <div class="animate">
+        <span class="eyebrow">Common Questions</span>
+        <h2 class="section-title">Frequently Asked<em>Questions</em></h2>
+        <div class="divider"></div>
+      </div>
+      <div id="faqList" style="margin-top:1rem;">
+
+        <div class="faq-item animate">
+          <div class="faq-question">How quickly can you provide a shortlist? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">Our standard SLA is 48 hours from when we receive your full requirement — territory, CTC band, division and joining timeline. For urgent requirements with immediate joining, we can often deliver a shortlist within 24 hours depending on the HQ and division.</div>
+        </div>
+        <div class="faq-item animate">
+          <div class="faq-question">What is your replacement guarantee? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">If an MR we place exits within the replacement SLA period (typically 60–90 days, agreed upfront), we source a replacement at no additional recruitment fee. The replacement shortlist is delivered within 5–7 working days of the exit being confirmed.</div>
+        </div>
+        <div class="faq-item animate">
+          <div class="faq-question">Do you cover Tier-2 and Tier-3 markets? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">Yes — and this is one of our strongest capabilities. We have active candidate pipelines in Kalahandi, Nuapada, Bargarh, Koraput, Jharsuguda and Balangir. Most national staffing agencies won't deploy here profitably. We specialize in exactly these markets.</div>
+        </div>
+        <div class="faq-item animate">
+          <div class="faq-question">What product divisions do you recruit for? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">We recruit for all major divisions: Allopathy/Ethical, Generic, Ayurvedic/Herbal, OTC, Cardiology, Diabetology, Dermatology, Gynaecology, Paediatrics, Orthopaedics, Neurology, Oncology, Gastroenterology and PCD/Franchise. Our candidate database is tagged by division for accurate matching.</div>
+        </div>
+        <div class="faq-item animate">
+          <div class="faq-question">How does the payroll outsourcing work? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">You pay us one consolidated invoice monthly — covering MR salary, TA/DA and our management fee. We disburse salary directly to MR bank accounts, generate payslips, and handle all related paperwork. GST applies only on our management fee, not the full billing amount.</div>
+        </div>
+        <div class="faq-item animate">
+          <div class="faq-question">Is there an upfront fee to get started? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">No upfront fee. We discuss our pricing structure only after understanding your requirement. For recruitment, our fee is typically charged upon successful joining of the candidate. For payroll outsourcing, billing begins from the first month of deployment.</div>
+        </div>
+        <div class="faq-item animate">
+          <div class="faq-question">Can you handle compliance (PF, ESIC, offer letters)? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">Yes. We provide offer letters and appointment documents from day one. PF and ESIC compliance is added as your MR headcount scales — typically from 20+ employees. We work with CA support for statutory filings.</div>
+        </div>
+        <div class="faq-item animate">
+          <div class="faq-question">Do you only work in Odisha? <span class="faq-icon">+</span></div>
+          <div class="faq-answer">Our primary focus and deepest knowledge is Odisha. However, we can support deployments in neighbouring states — Jharkhand, Chhattisgarh and West Bengal — for clients with multi-state requirements. Contact us and we'll be honest about our coverage in your target area.</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Aaradhya <span>SFS</span></div>
+      <div class="footer-tagline">Pharma field force specialists — MR recruitment, payroll, deployment across Odisha.</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Company</div>
+      <a href="about.html">About Us</a>
+      <a href="our-work.html">Our Work</a>
+      <a href="services.html">Services</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Support</div>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Connect</div>
+      <div class="footer-contact-item">📞 +91 XXXXX XXXXX</div>
+      <div class="footer-contact-item">✉️ aaradhyasfs@gmail.com</div>
+      <div class="footer-contact-item">📍 Odisha, India</div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Aaradhya Sales Force Solutions</span>
+    <span class="footer-badge">Odisha's Trusted Pharma Partner</span>
+  </div>
+</footer>
+
+<a href="https://wa.me/91XXXXXXXXXX" class="wa-float">💬</a>
+
+<script>
+  const nav=document.getElementById('nav');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>40));
+  const hamburger=document.getElementById('hamburger');
+  const mobileMenu=document.getElementById('mobileMenu');
+  hamburger.addEventListener('click',()=>{hamburger.classList.toggle('open');mobileMenu.classList.toggle('open');});
+  const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:0.1});
+  document.querySelectorAll('.animate').forEach(el=>observer.observe(el));
+
+  // FAQ accordion
+  document.querySelectorAll('.faq-question').forEach(q=>{
+    q.addEventListener('click',()=>{
+      const item=q.parentElement;
+      const wasOpen=item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+      if(!wasOpen) item.classList.add('open');
+    });
+  });
+
+  // Form submit
+  document.getElementById('contactForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    document.getElementById('successMsg').classList.add('show');
+    this.querySelectorAll('input,select,textarea').forEach(el=>el.disabled=true);
+    this.querySelector('.submit-btn').textContent='Sent ✓';
+    this.querySelector('.submit-btn').style.background='#4ade80';
+    this.querySelector('.submit-btn').style.color='#0d1b2e';
+  });
+</script>
+</body>
+</html>
