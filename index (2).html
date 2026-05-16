@@ -1,1 +1,1650 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel — Aaradhya SFS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════ */
+:root {
+  --navy:    #0d1b2e;
+  --navy2:   #142236;
+  --navy3:   #1c3150;
+  --navy4:   #0a1524;
+  --amber:   #e8a020;
+  --amber2:  #f5b840;
+  --green:   #22c55e;
+  --red:     #ef4444;
+  --white:   #ffffff;
+  --text:    #e2e8f0;
+  --muted:   #94a3b8;
+  --border:  rgba(255,255,255,0.08);
+  --card-bg: rgba(255,255,255,0.04);
+  --ff-head: 'Playfair Display', Georgia, serif;
+  --ff-body: 'DM Sans', system-ui, sans-serif;
+  --ff-mono: 'DM Mono', monospace;
+  --r:       10px;
+  --r-lg:    16px;
+  --trans:   0.2s ease;
+  --sidebar: 260px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--ff-body);
+  background: var(--navy4);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+a { color: inherit; text-decoration: none; }
+input, select, textarea, button { font-family: var(--ff-body); }
+
+/* ══════════════════════════════════════
+   LOGIN SCREEN
+══════════════════════════════════════ */
+#loginScreen {
+  position: fixed; inset: 0; z-index: 999;
+  background: var(--navy4);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+#loginScreen::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 30% 40%, rgba(28,49,80,0.6) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 70% 70%, rgba(232,160,32,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.login-card {
+  width: 100%; max-width: 420px;
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+}
+.login-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  border-radius: 20px 20px 0 0;
+}
+.login-logo {
+  font-family: var(--ff-head);
+  font-size: 1.5rem; font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+.login-logo span { color: var(--amber); }
+.login-tag {
+  font-family: var(--ff-mono);
+  font-size: 0.68rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--amber);
+  margin-bottom: 2rem;
+  display: block;
+}
+.login-title {
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--white); margin-bottom: 1.5rem;
+}
+.l-group { margin-bottom: 1.2rem; }
+.l-label {
+  display: block;
+  font-size: 0.8rem; font-weight: 500;
+  color: var(--muted); margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+.l-input {
+  width: 100%;
+  padding: 11px 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: var(--text);
+  transition: border-color var(--trans), background var(--trans);
+  outline: none;
+}
+.l-input:focus {
+  border-color: rgba(232,160,32,0.5);
+  background: rgba(232,160,32,0.04);
+}
+.l-input::placeholder { color: rgba(148,163,184,0.4); }
+.l-btn {
+  width: 100%; padding: 13px;
+  background: var(--amber); color: var(--navy);
+  font-size: 0.95rem; font-weight: 700;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: all var(--trans);
+  margin-top: 0.5rem;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.l-btn:hover { background: var(--amber2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,160,32,0.3); }
+.l-error {
+  display: none;
+  padding: 10px 14px;
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 8px;
+  font-size: 0.85rem; color: #fca5a5;
+  margin-top: 1rem; text-align: center;
+}
+.l-error.show { display: block; }
+.l-hint {
+  font-size: 0.75rem; color: var(--muted);
+  text-align: center; margin-top: 1.2rem;
+  line-height: 1.6;
+}
+.l-hint span { color: var(--amber); font-family: var(--ff-mono); }
+
+/* ══════════════════════════════════════
+   ADMIN SHELL (hidden until login)
+══════════════════════════════════════ */
+#adminShell { display: none; }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  position: fixed; top: 0; left: 0; bottom: 0;
+  width: var(--sidebar);
+  background: var(--navy2);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  z-index: 50;
+  transition: transform 0.3s ease;
+}
+.sb-logo {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.sb-logo-text {
+  font-family: var(--ff-head);
+  font-size: 1.1rem; font-weight: 700;
+  color: var(--white);
+}
+.sb-logo-text span { color: var(--amber); }
+.sb-logo-sub {
+  font-family: var(--ff-mono);
+  font-size: 0.62rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--amber);
+  margin-top: 3px; display: block;
+}
+.sb-nav { flex: 1; padding: 1rem 0; overflow-y: auto; }
+.sb-section {
+  font-family: var(--ff-mono);
+  font-size: 0.62rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--muted);
+  padding: 0.8rem 1.2rem 0.4rem;
+}
+.sb-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 1.2rem;
+  font-size: 0.875rem; font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all var(--trans);
+  border-left: 2px solid transparent;
+  margin: 1px 0;
+}
+.sb-item:hover { color: var(--text); background: var(--card-bg); }
+.sb-item.active {
+  color: var(--amber);
+  background: rgba(232,160,32,0.07);
+  border-left-color: var(--amber);
+}
+.sb-icon { font-size: 1rem; width: 20px; text-align: center; }
+.sb-badge {
+  margin-left: auto;
+  padding: 2px 7px;
+  background: rgba(232,160,32,0.15);
+  border-radius: 100px;
+  font-size: 0.68rem;
+  font-family: var(--ff-mono);
+  color: var(--amber);
+}
+.sb-footer {
+  padding: 1rem 1.2rem;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.sb-user-avatar {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--amber), var(--amber2));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 700;
+  color: var(--navy);
+}
+.sb-user-name { font-size: 0.82rem; font-weight: 600; color: var(--text); }
+.sb-user-role { font-size: 0.72rem; color: var(--muted); }
+.sb-logout {
+  margin-left: auto;
+  padding: 5px 10px;
+  background: none; border: 1px solid var(--border);
+  border-radius: 6px; color: var(--muted);
+  font-size: 0.75rem; cursor: pointer;
+  transition: all var(--trans);
+}
+.sb-logout:hover { border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+
+/* ── MOBILE HEADER ── */
+.mob-header {
+  display: none;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 60;
+  height: 60px; padding: 0 1rem;
+  background: var(--navy2);
+  border-bottom: 1px solid var(--border);
+  align-items: center; justify-content: space-between;
+}
+.mob-logo { font-family: var(--ff-head); font-size: 1rem; font-weight: 700; color: var(--white); }
+.mob-logo span { color: var(--amber); }
+.mob-toggle { background: none; border: none; cursor: pointer; color: var(--text); font-size: 1.3rem; }
+
+/* ── MAIN CONTENT ── */
+.main {
+  margin-left: var(--sidebar);
+  min-height: 100vh;
+  background: var(--navy4);
+}
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  height: 60px; padding: 0 2rem;
+  background: rgba(10,21,36,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-title {
+  font-family: var(--ff-head);
+  font-size: 1.1rem; font-weight: 700; color: var(--white);
+}
+.topbar-right { display: flex; align-items: center; gap: 1rem; }
+.topbar-time {
+  font-family: var(--ff-mono);
+  font-size: 0.75rem; color: var(--muted);
+}
+.sheets-status {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 12px;
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: 100px;
+  font-size: 0.75rem; color: #4ade80;
+  font-family: var(--ff-mono);
+}
+.sheets-dot {
+  width: 6px; height: 6px;
+  background: #4ade80;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.content { padding: 2rem; }
+
+/* ══════════════════════════════════════
+   VIEWS (show/hide)
+══════════════════════════════════════ */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ══════════════════════════════════════
+   DASHBOARD VIEW
+══════════════════════════════════════ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+.stat-card {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.4rem 1.6rem;
+  position: relative; overflow: hidden;
+  transition: border-color var(--trans), transform var(--trans);
+}
+.stat-card:hover { border-color: rgba(232,160,32,0.25); transform: translateY(-2px); }
+.stat-card::after {
+  content: attr(data-icon);
+  position: absolute; right: 1rem; top: 1rem;
+  font-size: 2.2rem; opacity: 0.12;
+}
+.stat-label { font-family: var(--ff-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.stat-val { font-family: var(--ff-head); font-size: 2.2rem; font-weight: 700; color: var(--amber); line-height: 1; }
+.stat-sub { font-size: 0.78rem; color: var(--muted); margin-top: 5px; }
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 1.5rem;
+}
+
+/* ══════════════════════════════════════
+   PANEL CARD
+══════════════════════════════════════ */
+.panel {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.panel-header {
+  padding: 1.2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-title {
+  font-family: var(--ff-head);
+  font-size: 1rem; font-weight: 700; color: var(--white);
+}
+.panel-sub { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+.panel-body { padding: 1.5rem; }
+.panel-action {
+  padding: 6px 14px;
+  background: rgba(232,160,32,0.1);
+  border: 1px solid rgba(232,160,32,0.2);
+  border-radius: 6px;
+  font-size: 0.78rem; color: var(--amber);
+  cursor: pointer;
+  transition: all var(--trans);
+  font-family: var(--ff-body);
+}
+.panel-action:hover { background: rgba(232,160,32,0.18); }
+
+/* ══════════════════════════════════════
+   ADD CANDIDATE FORM
+══════════════════════════════════════ */
+.form-section-label {
+  font-family: var(--ff-mono);
+  font-size: 0.68rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--amber);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  margin: 1.5rem 0 1rem;
+}
+.form-section-label:first-of-type { margin-top: 0; }
+.form-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 1rem; }
+.f-label { font-size: 0.8rem; font-weight: 500; color: var(--muted); }
+.f-label .req { color: var(--amber); }
+.f-input {
+  padding: 9px 13px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: var(--text);
+  transition: border-color var(--trans), background var(--trans);
+  outline: none;
+  width: 100%;
+}
+.f-input:focus { border-color: rgba(232,160,32,0.5); background: rgba(232,160,32,0.03); }
+.f-input::placeholder { color: rgba(148,163,184,0.35); }
+select.f-input { cursor: pointer; }
+select.f-input option { background: var(--navy2); }
+textarea.f-input { resize: vertical; min-height: 80px; }
+.tag-select {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 4px;
+}
+.tag-opt {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 0.78rem; color: var(--muted);
+  cursor: pointer; transition: all var(--trans);
+  user-select: none;
+}
+.tag-opt.selected {
+  border-color: var(--amber);
+  background: rgba(232,160,32,0.1);
+  color: var(--amber);
+}
+.form-actions {
+  display: flex; gap: 1rem; margin-top: 1.5rem;
+  padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+.btn-save {
+  flex: 1; padding: 12px;
+  background: var(--amber); color: var(--navy);
+  font-size: 0.9rem; font-weight: 700;
+  border: none; border-radius: 8px; cursor: pointer;
+  transition: all var(--trans);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-save:hover { background: var(--amber2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,160,32,0.3); }
+.btn-save:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-reset {
+  padding: 12px 20px;
+  background: transparent; color: var(--muted);
+  font-size: 0.9rem;
+  border: 1px solid var(--border); border-radius: 8px; cursor: pointer;
+  transition: all var(--trans);
+}
+.btn-reset:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 0.875rem; font-weight: 500;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transform: translateY(80px); opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  max-width: 360px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3); color: #4ade80; }
+.toast.error   { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; }
+.toast.info    { background: rgba(232,160,32,0.12); border: 1px solid rgba(232,160,32,0.25); color: var(--amber); }
+
+/* ══════════════════════════════════════
+   CANDIDATES TABLE VIEW
+══════════════════════════════════════ */
+.tbl-controls {
+  display: flex; gap: 1rem; align-items: center;
+  margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+.tbl-search {
+  flex: 1; min-width: 200px;
+  padding: 9px 13px 9px 38px;
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.875rem; color: var(--text);
+  outline: none; transition: border-color var(--trans);
+  position: relative;
+}
+.tbl-search:focus { border-color: rgba(232,160,32,0.4); }
+.tbl-search::placeholder { color: rgba(148,163,184,0.4); }
+.search-wrap { position: relative; flex: 1; min-width: 200px; }
+.search-wrap::before { content: '🔍'; position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: 0.85rem; pointer-events: none; }
+.tbl-filter {
+  padding: 9px 13px;
+  background: var(--navy2); border: 1px solid var(--border);
+  border-radius: 8px; font-size: 0.875rem; color: var(--text);
+  outline: none; cursor: pointer;
+}
+.tbl-filter option { background: var(--navy2); }
+.tbl-wrap {
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+.tbl-loading {
+  text-align: center; padding: 3rem;
+  color: var(--muted); font-size: 0.9rem;
+}
+.loader-spin {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto 1rem;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.tbl-scroll { overflow-x: auto; }
+table {
+  width: 100%; border-collapse: collapse;
+  font-size: 0.85rem;
+}
+thead th {
+  padding: 11px 14px;
+  text-align: left;
+  font-family: var(--ff-mono);
+  font-size: 0.68rem; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background var(--trans);
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: rgba(255,255,255,0.03); }
+tbody td {
+  padding: 12px 14px;
+  color: var(--text);
+  vertical-align: middle;
+}
+.td-name { font-weight: 600; color: var(--white); }
+.td-id { font-family: var(--ff-mono); font-size: 0.72rem; color: var(--muted); }
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 100px;
+  font-size: 0.72rem; font-weight: 500;
+}
+.badge-available { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25); color: #4ade80; }
+.badge-placed    { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #93c5fd; }
+.badge-inactive  { background: rgba(148,163,184,0.1); border: 1px solid rgba(148,163,184,0.2); color: var(--muted); }
+.badge-interview { background: rgba(232,160,32,0.1); border: 1px solid rgba(232,160,32,0.2); color: var(--amber); }
+.tbl-action {
+  padding: 4px 10px;
+  background: none; border: 1px solid var(--border);
+  border-radius: 5px; color: var(--muted);
+  font-size: 0.75rem; cursor: pointer;
+  transition: all var(--trans);
+}
+.tbl-action:hover { border-color: rgba(232,160,32,0.4); color: var(--amber); }
+.tbl-action.del:hover { border-color: rgba(239,68,68,0.4); color: #fca5a5; }
+.tbl-empty { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.9rem; }
+.tbl-footer {
+  padding: 12px 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem; color: var(--muted);
+  flex-wrap: wrap; gap: 0.5rem;
+}
+.btn-refresh {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: rgba(232,160,32,0.1);
+  border: 1px solid rgba(232,160,32,0.2);
+  border-radius: 8px;
+  font-size: 0.82rem; color: var(--amber);
+  cursor: pointer; transition: all var(--trans);
+}
+.btn-refresh:hover { background: rgba(232,160,32,0.18); }
+.btn-sheets {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25);
+  border-radius: 8px;
+  font-size: 0.82rem; color: #4ade80;
+  cursor: pointer; transition: all var(--trans);
+  text-decoration: none;
+}
+.btn-sheets:hover { background: rgba(34,197,94,0.18); }
+
+/* ══════════════════════════════════════
+   SETTINGS VIEW
+══════════════════════════════════════ */
+.settings-section { margin-bottom: 2rem; }
+.settings-section h3 {
+  font-family: var(--ff-head);
+  font-size: 1rem; font-weight: 700; color: var(--white);
+  margin-bottom: 1rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+.setting-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 0; border-bottom: 1px solid var(--border);
+  gap: 1rem; flex-wrap: wrap;
+}
+.setting-row:last-child { border-bottom: none; }
+.setting-label { font-size: 0.9rem; font-weight: 500; color: var(--text); }
+.setting-desc { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+.setting-val {
+  font-family: var(--ff-mono);
+  font-size: 0.82rem; color: var(--amber);
+  background: rgba(232,160,32,0.08);
+  border: 1px solid rgba(232,160,32,0.15);
+  border-radius: 6px; padding: 6px 12px;
+  word-break: break-all; max-width: 300px;
+}
+
+/* ══════════════════════════════════════
+   SIDEBAR OVERLAY (mobile)
+══════════════════════════════════════ */
+.sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 45;
+  background: rgba(0,0,0,0.5);
+}
+.sidebar-overlay.show { display: block; }
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 1100px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 900px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; }
+  .mob-header { display: flex; }
+  .topbar { display: none; }
+  .content { padding: 1rem; padding-top: 70px; }
+  .form-row-3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .form-row-2, .form-row-3 { grid-template-columns: 1fr; }
+  .form-actions { flex-direction: column; }
+  .tbl-controls { flex-direction: column; align-items: stretch; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ LOGIN ═══════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">Aaradhya <span>SFS</span></div>
+    <span class="login-tag">Admin Portal</span>
+    <div class="login-title">Sign in to continue</div>
+    <div class="l-group">
+      <label class="l-label">Username</label>
+      <input class="l-input" type="text" id="loginUser" placeholder="Enter username" autocomplete="username">
+    </div>
+    <div class="l-group">
+      <label class="l-label">Password</label>
+      <input class="l-input" type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password">
+    </div>
+    <button class="l-btn" id="loginBtn" onclick="doLogin()">
+      <span>Sign In</span> <span>→</span>
+    </button>
+    <div class="l-error" id="loginError">Incorrect username or password.</div>
+    <div class="l-hint">
+      Default: <span>admin</span> / <span>aaradhya@2025</span><br>
+      Change credentials in Settings after first login.
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ ADMIN SHELL ═══════════════════════════ -->
+<div id="adminShell">
+
+  <!-- Mobile Header -->
+  <div class="mob-header">
+    <div class="mob-logo">Aaradhya <span>SFS</span></div>
+    <button class="mob-toggle" onclick="toggleSidebar()">☰</button>
+  </div>
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-text">Aaradhya <span>SFS</span></div>
+      <span class="sb-logo-sub">Admin Panel</span>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-section">Overview</div>
+      <div class="sb-item active" onclick="showView('dashboard',this)">
+        <span class="sb-icon">📊</span> Dashboard
+      </div>
+      <div class="sb-section">Candidates</div>
+      <div class="sb-item" onclick="showView('addCandidate',this)">
+        <span class="sb-icon">➕</span> Add Candidate
+      </div>
+      <div class="sb-item" onclick="showView('viewCandidates',this); loadCandidates()">
+        <span class="sb-icon">👥</span> All Candidates
+        <span class="sb-badge" id="sbCount">—</span>
+      </div>
+      <div class="sb-section">System</div>
+      <div class="sb-item" onclick="showView('settings',this)">
+        <span class="sb-icon">⚙️</span> Settings
+      </div>
+      <div class="sb-item" onclick="openSheets()">
+        <span class="sb-icon">📊</span> Open Google Sheet
+      </div>
+      <div class="sb-item" onclick="window.open('index.html','_blank')">
+        <span class="sb-icon">🌐</span> View Website
+      </div>
+    </nav>
+    <div class="sb-footer">
+      <div class="sb-user-avatar" id="userAvatar">A</div>
+      <div>
+        <div class="sb-user-name" id="userDisplay">Admin</div>
+        <div class="sb-user-role">Administrator</div>
+      </div>
+      <button class="sb-logout" onclick="doLogout()">Logout</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+      <div class="topbar-right">
+        <div class="topbar-time" id="topbarTime"></div>
+        <div class="sheets-status">
+          <div class="sheets-dot"></div>
+          <span>Sheets Connected</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ─── DASHBOARD VIEW ─── -->
+      <div class="view active" id="view-dashboard">
+        <div class="stats-row">
+          <div class="stat-card" data-icon="👥">
+            <div class="stat-label">Total Candidates</div>
+            <div class="stat-val" id="statTotal">—</div>
+            <div class="stat-sub">in database</div>
+          </div>
+          <div class="stat-card" data-icon="✅">
+            <div class="stat-label">Available</div>
+            <div class="stat-val" id="statAvail">—</div>
+            <div class="stat-sub">ready to deploy</div>
+          </div>
+          <div class="stat-card" data-icon="📋">
+            <div class="stat-label">Placed</div>
+            <div class="stat-val" id="statPlaced">—</div>
+            <div class="stat-sub">currently deployed</div>
+          </div>
+          <div class="stat-card" data-icon="🗺️">
+            <div class="stat-label">Districts Covered</div>
+            <div class="stat-val" id="statDistricts">—</div>
+            <div class="stat-sub">HQs in database</div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <!-- Quick Add -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Quick Actions</div>
+                <div class="panel-sub">Shortcuts</div>
+              </div>
+            </div>
+            <div class="panel-body" style="display:flex;flex-direction:column;gap:0.8rem;">
+              <button class="btn-save" style="justify-content:center;" onclick="showView('addCandidate',null)">➕ Add New Candidate</button>
+              <button class="btn-refresh" onclick="showView('viewCandidates',null);loadCandidates()" style="justify-content:center;">🔄 Refresh Candidate List</button>
+              <a href="https://docs.google.com/spreadsheets/d/10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg/edit" target="_blank" class="btn-sheets" style="justify-content:center;">📊 Open Google Sheet</a>
+            </div>
+          </div>
+
+          <!-- Recent log -->
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <div class="panel-title">Recent Activity</div>
+                <div class="panel-sub">Last 5 entries added</div>
+              </div>
+              <button class="panel-action" onclick="showView('viewCandidates',null);loadCandidates()">View All</button>
+            </div>
+            <div class="panel-body" id="recentList">
+              <div class="tbl-loading" style="padding:2rem 0;">
+                <div class="loader-spin"></div>
+                Loading recent entries…
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── ADD CANDIDATE VIEW ─── -->
+      <div class="view" id="view-addCandidate">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <div class="panel-title">Add New Candidate</div>
+              <div class="panel-sub">Data saved directly to Google Sheets</div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <form id="candidateForm" onsubmit="return false;">
+
+              <div class="form-section-label">Personal Information</div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="f-label">Full Name <span class="req">*</span></label>
+                  <input class="f-input" id="f_name" type="text" placeholder="Candidate full name" required>
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Mobile <span class="req">*</span></label>
+                  <input class="f-input" id="f_mobile" type="tel" placeholder="+91 XXXXX XXXXX" required>
+                </div>
+              </div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="f-label">Email</label>
+                  <input class="f-input" id="f_email" type="email" placeholder="candidate@email.com">
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Date of Birth</label>
+                  <input class="f-input" id="f_dob" type="date">
+                </div>
+              </div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="f-label">Gender</label>
+                  <select class="f-input" id="f_gender">
+                    <option value="">Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Qualification</label>
+                  <select class="f-input" id="f_qual">
+                    <option value="">Select</option>
+                    <option>B.Sc (Biology / Biotech / Microbiology)</option>
+                    <option>B.Pharm</option>
+                    <option>D.Pharm</option>
+                    <option>B.A / B.Com</option>
+                    <option>MBA</option>
+                    <option>Other Graduate</option>
+                    <option>12th Pass (Science)</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="f-label">Home Address / City</label>
+                <input class="f-input" id="f_address" type="text" placeholder="City / Town">
+              </div>
+
+              <div class="form-section-label">Field Experience</div>
+              <div class="form-row-3">
+                <div class="form-group">
+                  <label class="f-label">Total Experience <span class="req">*</span></label>
+                  <select class="f-input" id="f_exp" required>
+                    <option value="">Select</option>
+                    <option>Fresher (0 yr)</option>
+                    <option>Less than 1 year</option>
+                    <option>1 – 2 years</option>
+                    <option>2 – 3 years</option>
+                    <option>3 – 5 years</option>
+                    <option>5 – 8 years</option>
+                    <option>8+ years</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Current / Last Role</label>
+                  <select class="f-input" id="f_role">
+                    <option value="">Select</option>
+                    <option>Medical Representative (MR)</option>
+                    <option>Senior MR</option>
+                    <option>Area Business Manager (ABM)</option>
+                    <option>Zonal Business Manager (ZBM)</option>
+                    <option>PSR / DSR</option>
+                    <option>Fresher / No prior role</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Current / Last CTC (₹/month)</label>
+                  <input class="f-input" id="f_ctc" type="number" placeholder="e.g. 18000">
+                </div>
+              </div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="f-label">Current / Last Company</label>
+                  <input class="f-input" id="f_company" type="text" placeholder="Company name">
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Expected CTC (₹/month)</label>
+                  <input class="f-input" id="f_expected_ctc" type="number" placeholder="e.g. 22000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="f-label">Product Divisions Worked In</label>
+                <div class="tag-select" id="tagDivision">
+                  <span class="tag-opt" onclick="toggleTag(this)">Allopathy / Ethical</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Generic</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Ayurvedic / Herbal</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">OTC / Consumer</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Oncology</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Cardiology</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Diabetology</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Dermatology</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Gynaecology</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Paediatrics</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Neurology</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">PCD / Franchise</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="f-label">Doctor Segment</label>
+                <div class="tag-select" id="tagDoctors">
+                  <span class="tag-opt" onclick="toggleTag(this)">GPs / General Physicians</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Specialists</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Hospital / Institutional</span>
+                  <span class="tag-opt" onclick="toggleTag(this)">Chemist-focused</span>
+                </div>
+              </div>
+
+              <div class="form-section-label">Territory Details</div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="f-label">Primary HQ / Territory <span class="req">*</span></label>
+                  <select class="f-input" id="f_hq" required>
+                    <option value="">Select HQ</option>
+                    <optgroup label="Major HQs">
+                      <option>Bhubaneswar</option>
+                      <option>Cuttack</option>
+                      <option>Sambalpur</option>
+                      <option>Rourkela</option>
+                      <option>Berhampur</option>
+                      <option>Balasore</option>
+                      <option>Puri</option>
+                      <option>Brahmapur</option>
+                    </optgroup>
+                    <optgroup label="Tier-2 / Tier-3">
+                      <option>Kalahandi</option>
+                      <option>Nuapada</option>
+                      <option>Bargarh</option>
+                      <option>Koraput</option>
+                      <option>Jharsuguda</option>
+                      <option>Balangir</option>
+                      <option>Sundargarh</option>
+                      <option>Keonjhar</option>
+                      <option>Mayurbhanj</option>
+                      <option>Dhenkanal</option>
+                      <option>Angul</option>
+                      <option>Rayagada</option>
+                    </optgroup>
+                    <option>Multiple / Pan-Odisha</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Willing to Relocate</label>
+                  <select class="f-input" id="f_relocate">
+                    <option value="">Select</option>
+                    <option>Yes — anywhere in Odisha</option>
+                    <option>Yes — nearby districts only</option>
+                    <option>No — current HQ only</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="f-label">Other Territories Known</label>
+                <input class="f-input" id="f_other_territory" type="text" placeholder="e.g. Bargarh, Jharsuguda, Kalahandi">
+              </div>
+
+              <div class="form-section-label">Status & Notes</div>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="f-label">Availability Status <span class="req">*</span></label>
+                  <select class="f-input" id="f_status" required>
+                    <option value="Available">✅ Available</option>
+                    <option value="Interview Scheduled">📋 Interview Scheduled</option>
+                    <option value="Placed">🔵 Placed</option>
+                    <option value="Inactive">⚫ Inactive</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="f-label">Joining Availability</label>
+                  <select class="f-input" id="f_joining">
+                    <option value="">Select</option>
+                    <option>Immediate (within 1 week)</option>
+                    <option>Within 15 days</option>
+                    <option>Within 1 month</option>
+                    <option>Flexible</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="f-label">Communication Rating</label>
+                <select class="f-input" id="f_comm">
+                  <option value="">Select</option>
+                  <option>⭐⭐⭐⭐⭐ Excellent</option>
+                  <option>⭐⭐⭐⭐ Good</option>
+                  <option>⭐⭐⭐ Average</option>
+                  <option>⭐⭐ Below Average</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="f-label">Internal Notes</label>
+                <textarea class="f-input" id="f_notes" placeholder="Any notes about this candidate (for internal use only)…"></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button class="btn-save" id="saveBtn" onclick="saveCandidate()">
+                  💾 Save to Google Sheets
+                </button>
+                <button class="btn-reset" type="button" onclick="resetForm()">Reset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── VIEW CANDIDATES ─── -->
+      <div class="view" id="view-viewCandidates">
+        <div class="tbl-controls">
+          <div class="search-wrap">
+            <input class="tbl-search" id="searchInput" type="text" placeholder="Search by name, HQ, division…" oninput="filterTable()">
+          </div>
+          <select class="tbl-filter" id="filterStatus" onchange="filterTable()">
+            <option value="">All Status</option>
+            <option>Available</option>
+            <option>Interview Scheduled</option>
+            <option>Placed</option>
+            <option>Inactive</option>
+          </select>
+          <select class="tbl-filter" id="filterHQ" onchange="filterTable()">
+            <option value="">All HQs</option>
+          </select>
+          <button class="btn-refresh" onclick="loadCandidates()">🔄 Refresh</button>
+          <a href="https://docs.google.com/spreadsheets/d/10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg/edit" target="_blank" class="btn-sheets">📊 Open Sheet</a>
+        </div>
+        <div class="tbl-wrap">
+          <div class="tbl-scroll">
+            <div id="tableContainer">
+              <div class="tbl-loading">
+                <div class="loader-spin"></div>
+                Loading candidates from Google Sheets…
+              </div>
+            </div>
+          </div>
+          <div class="tbl-footer">
+            <span id="tblCount">—</span>
+            <span style="font-size:0.75rem;color:var(--muted);">Data synced from Google Sheets</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SETTINGS VIEW ─── -->
+      <div class="view" id="view-settings">
+        <div class="panel" style="max-width:700px;">
+          <div class="panel-header">
+            <div class="panel-title">Admin Settings</div>
+          </div>
+          <div class="panel-body">
+
+            <div class="settings-section">
+              <h3>Google Sheets Integration</h3>
+              <div class="setting-row">
+                <div>
+                  <div class="setting-label">Sheet ID</div>
+                  <div class="setting-desc">The connected Google Spreadsheet</div>
+                </div>
+                <div class="setting-val">10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg</div>
+              </div>
+              <div class="setting-row">
+                <div>
+                  <div class="setting-label">Apps Script URL</div>
+                  <div class="setting-desc">Deployed Web App endpoint for read/write</div>
+                </div>
+                <div>
+                  <input class="f-input" id="scriptUrlInput" type="text" placeholder="Paste your Apps Script Web App URL here" style="width:300px;" value="">
+                  <button class="panel-action" style="margin-top:8px;display:block;" onclick="saveScriptUrl()">Save URL</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>Change Admin Credentials</h3>
+              <div class="form-row-2">
+                <div class="form-group">
+                  <label class="f-label">New Username</label>
+                  <input class="f-input" id="newUser" type="text" placeholder="Enter new username">
+                </div>
+                <div class="form-group">
+                  <label class="f-label">New Password</label>
+                  <input class="f-input" id="newPass" type="password" placeholder="Enter new password">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="f-label">Confirm New Password</label>
+                <input class="f-input" id="confirmPass" type="password" placeholder="Confirm new password">
+              </div>
+              <button class="btn-save" style="max-width:220px;" onclick="changeCredentials()">Update Credentials</button>
+            </div>
+
+            <div class="settings-section">
+              <h3>Setup Guide</h3>
+              <div style="background:rgba(232,160,32,0.06);border:1px solid rgba(232,160,32,0.15);border-radius:var(--r);padding:1.2rem 1.5rem;">
+                <p style="font-size:0.85rem;color:var(--text);line-height:1.8;">
+                  <strong style="color:var(--amber);">Step 1</strong> — Open your Google Sheet:<br>
+                  <a href="https://docs.google.com/spreadsheets/d/10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg/edit" target="_blank" style="color:var(--amber);text-decoration:underline;">Click here to open the sheet</a><br><br>
+                  <strong style="color:var(--amber);">Step 2</strong> — Go to <strong>Extensions → Apps Script</strong> and paste the script below.<br><br>
+                  <strong style="color:var(--amber);">Step 3</strong> — Click <strong>Deploy → New Deployment → Web App</strong>, set access to <em>"Anyone"</em>, copy the URL.<br><br>
+                  <strong style="color:var(--amber);">Step 4</strong> — Paste the URL above in "Apps Script URL" and save.
+                </p>
+              </div>
+              <div style="margin-top:1rem;">
+                <div style="font-family:var(--ff-mono);font-size:0.68rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--amber);margin-bottom:0.6rem;">Apps Script Code — Copy & Paste into Google Apps Script</div>
+                <textarea class="f-input" readonly rows="22" style="font-family:var(--ff-mono);font-size:0.75rem;line-height:1.6;background:rgba(0,0,0,0.3);" onclick="this.select()" id="scriptCode"></textarea>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /adminShell -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════
+   CONFIG & STATE
+════════════════════════════════════════ */
+const SHEET_ID = '10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+
+// Default credentials (stored in localStorage after first change)
+const DEFAULT_USER = 'admin';
+const DEFAULT_PASS = 'aaradhya@2025';
+
+function getCreds() {
+  return {
+    user: localStorage.getItem('asfs_user') || DEFAULT_USER,
+    pass: localStorage.getItem('asfs_pass') || DEFAULT_PASS
+  };
+}
+
+function getScriptUrl() {
+  return localStorage.getItem('asfs_script_url') || '';
+}
+
+let allCandidates = [];
+
+/* ════════════════════════════════════════
+   AUTH
+════════════════════════════════════════ */
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value;
+  const creds = getCreds();
+  if (u === creds.user && p === creds.pass) {
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminShell').style.display = 'block';
+    const av = u.charAt(0).toUpperCase();
+    document.getElementById('userAvatar').textContent = av;
+    document.getElementById('userDisplay').textContent = u;
+    document.getElementById('loginError').classList.remove('show');
+    loadDashboard();
+    startClock();
+    loadScriptUrlInput();
+    setScriptCode();
+  } else {
+    document.getElementById('loginError').classList.add('show');
+    document.getElementById('loginPass').value = '';
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') doLogin();
+});
+
+function doLogout() {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminShell').style.display = 'none';
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+}
+
+function changeCredentials() {
+  const nu = document.getElementById('newUser').value.trim();
+  const np = document.getElementById('newPass').value;
+  const cp = document.getElementById('confirmPass').value;
+  if (!nu || !np) return showToast('Please fill in username and password.', 'error');
+  if (np !== cp) return showToast('Passwords do not match.', 'error');
+  localStorage.setItem('asfs_user', nu);
+  localStorage.setItem('asfs_pass', np);
+  document.getElementById('userDisplay').textContent = nu;
+  document.getElementById('userAvatar').textContent = nu.charAt(0).toUpperCase();
+  document.getElementById('newUser').value = '';
+  document.getElementById('newPass').value = '';
+  document.getElementById('confirmPass').value = '';
+  showToast('✅ Credentials updated! Use them next login.', 'success');
+}
+
+function saveScriptUrl() {
+  const url = document.getElementById('scriptUrlInput').value.trim();
+  if (!url) return showToast('Please paste a valid Apps Script URL.', 'error');
+  localStorage.setItem('asfs_script_url', url);
+  showToast('✅ Script URL saved!', 'success');
+}
+
+function loadScriptUrlInput() {
+  const saved = getScriptUrl();
+  if (saved) document.getElementById('scriptUrlInput').value = saved;
+}
+
+function openSheets() {
+  window.open(SHEET_URL, '_blank');
+}
+
+/* ════════════════════════════════════════
+   NAVIGATION
+════════════════════════════════════════ */
+const viewTitles = {
+  dashboard: 'Dashboard',
+  addCandidate: 'Add Candidate',
+  viewCandidates: 'All Candidates',
+  settings: 'Settings'
+};
+
+function showView(id, el) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('topbarTitle').textContent = viewTitles[id] || id;
+  closeSidebar();
+  if (id === 'dashboard') loadDashboard();
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+}
+
+/* ════════════════════════════════════════
+   CLOCK
+════════════════════════════════════════ */
+function startClock() {
+  function tick() {
+    const now = new Date();
+    document.getElementById('topbarTime').textContent =
+      now.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' }) + '  ' +
+      now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+  }
+  tick(); setInterval(tick, 10000);
+}
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+let toastTimer;
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  void t.offsetWidth;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3800);
+}
+
+/* ════════════════════════════════════════
+   TAG SELECT
+════════════════════════════════════════ */
+function toggleTag(el) {
+  el.classList.toggle('selected');
+}
+function getSelectedTags(containerId) {
+  return Array.from(document.querySelectorAll(`#${containerId} .tag-opt.selected`))
+    .map(el => el.textContent).join(', ');
+}
+function clearTags(containerId) {
+  document.querySelectorAll(`#${containerId} .tag-opt`).forEach(el => el.classList.remove('selected'));
+}
+
+/* ════════════════════════════════════════
+   GOOGLE SHEETS — READ (public CSV export)
+════════════════════════════════════════ */
+async function fetchFromSheet() {
+  const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=Candidates`;
+  try {
+    const res = await fetch(csvUrl + '&_=' + Date.now());
+    if (!res.ok) throw new Error('Network error');
+    const text = await res.text();
+    return parseCSV(text);
+  } catch(e) {
+    // If sheet is private or not published, return empty
+    return [];
+  }
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const headers = parseCSVRow(lines[0]);
+  return lines.slice(1).map(line => {
+    const vals = parseCSVRow(line);
+    const obj = {};
+    headers.forEach((h, i) => obj[h.replace(/"/g,'')] = (vals[i] || '').replace(/"/g,'').trim());
+    return obj;
+  }).filter(r => r['Full Name'] || r['Name']);
+}
+
+function parseCSVRow(row) {
+  const result = [];
+  let inQ = false, cur = '';
+  for (let i = 0; i < row.length; i++) {
+    const c = row[i];
+    if (c === '"') { inQ = !inQ; continue; }
+    if (c === ',' && !inQ) { result.push(cur); cur = ''; continue; }
+    cur += c;
+  }
+  result.push(cur);
+  return result;
+}
+
+/* ════════════════════════════════════════
+   GOOGLE SHEETS — WRITE (Apps Script)
+════════════════════════════════════════ */
+async function writeToSheet(rowData) {
+  const scriptUrl = getScriptUrl();
+  if (!scriptUrl) {
+    // Fallback: open prefilled form URL
+    showToast('⚠️ Apps Script URL not set. Opening sheet directly.', 'info');
+    window.open(SHEET_URL, '_blank');
+    return { ok: false, manual: true };
+  }
+  try {
+    const res = await fetch(scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'addRow', data: rowData })
+    });
+    const json = await res.json();
+    return { ok: json.result === 'success' };
+  } catch(e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+/* ════════════════════════════════════════
+   SAVE CANDIDATE
+════════════════════════════════════════ */
+async function saveCandidate() {
+  const name    = document.getElementById('f_name').value.trim();
+  const mobile  = document.getElementById('f_mobile').value.trim();
+  const hq      = document.getElementById('f_hq').value;
+  const exp     = document.getElementById('f_exp').value;
+  const status  = document.getElementById('f_status').value;
+
+  if (!name || !mobile || !hq || !exp || !status) {
+    showToast('⚠️ Please fill in all required fields.', 'error');
+    return;
+  }
+
+  const now = new Date().toLocaleString('en-IN');
+  const id  = 'ASFS-' + Date.now().toString().slice(-6);
+
+  const rowData = {
+    'ID': id,
+    'Date Added': now,
+    'Full Name': name,
+    'Mobile': mobile,
+    'Email': document.getElementById('f_email').value.trim(),
+    'DOB': document.getElementById('f_dob').value,
+    'Gender': document.getElementById('f_gender').value,
+    'Qualification': document.getElementById('f_qual').value,
+    'City / Address': document.getElementById('f_address').value.trim(),
+    'Experience': exp,
+    'Current Role': document.getElementById('f_role').value,
+    'Current Company': document.getElementById('f_company').value.trim(),
+    'Current CTC': document.getElementById('f_ctc').value,
+    'Expected CTC': document.getElementById('f_expected_ctc').value,
+    'Divisions': getSelectedTags('tagDivision'),
+    'Doctor Segment': getSelectedTags('tagDoctors'),
+    'Primary HQ': hq,
+    'Other Territories': document.getElementById('f_other_territory').value.trim(),
+    'Relocate': document.getElementById('f_relocate').value,
+    'Status': status,
+    'Joining Availability': document.getElementById('f_joining').value,
+    'Communication Rating': document.getElementById('f_comm').value,
+    'Notes': document.getElementById('f_notes').value.trim()
+  };
+
+  const btn = document.getElementById('saveBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Saving…';
+  showToast('Saving to Google Sheets…', 'info');
+
+  const result = await writeToSheet(rowData);
+
+  btn.disabled = false;
+  btn.innerHTML = '💾 Save to Google Sheets';
+
+  if (result.ok) {
+    showToast(`✅ ${name} saved to Google Sheets!`, 'success');
+    resetForm();
+    // Reload stats
+    setTimeout(loadDashboard, 800);
+  } else if (result.manual) {
+    // Apps Script not set up yet — guide user
+    showToast('Sheet opened. Please paste this data manually for now.', 'info');
+  } else {
+    // If script failed, open sheet with data in clipboard
+    const text = Object.entries(rowData).map(([k,v])=>`${k}: ${v}`).join('\n');
+    try { await navigator.clipboard.writeText(Object.values(rowData).join('\t')); } catch(e){}
+    showToast('⚠️ Script error. Row data copied to clipboard. Paste in sheet.', 'error');
+    window.open(SHEET_URL, '_blank');
+  }
+}
+
+function resetForm() {
+  document.getElementById('candidateForm').reset();
+  clearTags('tagDivision');
+  clearTags('tagDoctors');
+}
+
+/* ════════════════════════════════════════
+   LOAD & RENDER TABLE
+════════════════════════════════════════ */
+async function loadCandidates() {
+  document.getElementById('tableContainer').innerHTML = `
+    <div class="tbl-loading">
+      <div class="loader-spin"></div>
+      Loading from Google Sheets…
+    </div>`;
+  const data = await fetchFromSheet();
+  allCandidates = data;
+  updateHQFilter(data);
+  renderTable(data);
+  document.getElementById('sbCount').textContent = data.length || '0';
+}
+
+function updateHQFilter(data) {
+  const hqs = [...new Set(data.map(r => r['Primary HQ']).filter(Boolean))].sort();
+  const sel = document.getElementById('filterHQ');
+  sel.innerHTML = '<option value="">All HQs</option>';
+  hqs.forEach(h => sel.innerHTML += `<option>${h}</option>`);
+}
+
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const st = document.getElementById('filterStatus').value;
+  const hq = document.getElementById('filterHQ').value;
+  const filtered = allCandidates.filter(r => {
+    const name = (r['Full Name'] || r['Name'] || '').toLowerCase();
+    const hqVal = (r['Primary HQ'] || '').toLowerCase();
+    const divs = (r['Divisions'] || '').toLowerCase();
+    const matchQ = !q || name.includes(q) || hqVal.includes(q) || divs.includes(q) || (r['Mobile']||'').includes(q);
+    const matchSt = !st || (r['Status'] || '') === st;
+    const matchHQ = !hq || (r['Primary HQ'] || '') === hq;
+    return matchQ && matchSt && matchHQ;
+  });
+  renderTable(filtered);
+}
+
+function renderTable(data) {
+  if (!data.length) {
+    document.getElementById('tableContainer').innerHTML =
+      `<div class="tbl-empty">No candidates found.<br><span style="font-size:0.8rem;color:var(--muted);">Add your first candidate or check the Apps Script setup in Settings.</span></div>`;
+    document.getElementById('tblCount').textContent = '0 candidates';
+    return;
+  }
+  let html = `<table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Mobile</th>
+        <th>HQ</th>
+        <th>Experience</th>
+        <th>Division</th>
+        <th>Current CTC</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>`;
+  data.forEach((r, i) => {
+    const name = r['Full Name'] || r['Name'] || '—';
+    const id   = r['ID'] || ('ASFS-' + (i+1));
+    const mob  = r['Mobile'] || '—';
+    const hq   = r['Primary HQ'] || '—';
+    const exp  = r['Experience'] || '—';
+    const div  = r['Divisions'] || '—';
+    const ctc  = r['Current CTC'] ? '₹' + Number(r['Current CTC']).toLocaleString('en-IN') : '—';
+    const st   = r['Status'] || 'Unknown';
+    const badgeCls = st === 'Available' ? 'available' : st === 'Placed' ? 'placed' : st === 'Interview Scheduled' ? 'interview' : 'inactive';
+    html += `<tr>
+      <td><div class="td-id">${id}</div></td>
+      <td><div class="td-name">${escH(name)}</div></td>
+      <td>${escH(mob)}</td>
+      <td>${escH(hq)}</td>
+      <td>${escH(exp)}</td>
+      <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escH(div)}">${escH(div)}</td>
+      <td>${ctc}</td>
+      <td><span class="badge badge-${badgeCls}">${escH(st)}</span></td>
+      <td style="white-space:nowrap;">
+        <button class="tbl-action" onclick="callCandidate('${escH(mob)}')">📞 Call</button>
+        <button class="tbl-action" onclick="msgCandidate('${escH(mob)}','${escH(name)}')">💬</button>
+      </td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('tableContainer').innerHTML = html;
+  document.getElementById('tblCount').textContent = `${data.length} candidate${data.length !== 1 ? 's' : ''}`;
+}
+
+function escH(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function callCandidate(mob) { window.open('tel:' + mob.replace(/\s/g,'')); }
+function msgCandidate(mob, name) {
+  const msg = encodeURIComponent(`Hi ${name}, this is Aaradhya Sales Force Solutions. We have an MR opportunity that matches your profile. Are you currently available?`);
+  window.open(`https://wa.me/91${mob.replace(/\D/g,'')}?text=${msg}`, '_blank');
+}
+
+/* ════════════════════════════════════════
+   DASHBOARD
+════════════════════════════════════════ */
+async function loadDashboard() {
+  const data = await fetchFromSheet();
+  allCandidates = data;
+  const total    = data.length;
+  const avail    = data.filter(r => r['Status'] === 'Available').length;
+  const placed   = data.filter(r => r['Status'] === 'Placed').length;
+  const districts= new Set(data.map(r=>r['Primary HQ']).filter(Boolean)).size;
+  document.getElementById('statTotal').textContent     = total;
+  document.getElementById('statAvail').textContent     = avail;
+  document.getElementById('statPlaced').textContent    = placed;
+  document.getElementById('statDistricts').textContent = districts;
+  document.getElementById('sbCount').textContent       = total;
+
+  // Recent 5
+  const recent = data.slice(-5).reverse();
+  const rl = document.getElementById('recentList');
+  if (!recent.length) {
+    rl.innerHTML = `<div style="text-align:center;color:var(--muted);font-size:0.85rem;padding:1rem 0;">No candidates yet. Add your first one!</div>`;
+    return;
+  }
+  rl.innerHTML = recent.map(r => {
+    const st = r['Status'] || 'Unknown';
+    const bc = st==='Available'?'available':st==='Placed'?'placed':st==='Interview Scheduled'?'interview':'inactive';
+    return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">
+      <div style="width:36px;height:36px;background:rgba(232,160,32,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:700;color:var(--amber);flex-shrink:0;">${(r['Full Name']||r['Name']||'?').charAt(0)}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:0.88rem;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escH(r['Full Name']||r['Name']||'—')}</div>
+        <div style="font-size:0.75rem;color:var(--muted);">${escH(r['Primary HQ']||'—')} · ${escH(r['Experience']||'—')}</div>
+      </div>
+      <span class="badge badge-${bc}" style="flex-shrink:0;">${escH(st)}</span>
+    </div>`;
+  }).join('');
+}
+
+/* ════════════════════════════════════════
+   APPS SCRIPT CODE (shown in Settings)
+════════════════════════════════════════ */
+function setScriptCode() {
+  document.getElementById('scriptCode').value = `// ═══════════════════════════════════════════════
+// Aaradhya SFS — Google Apps Script
+// Paste this in Extensions → Apps Script
+// Then Deploy → New Deployment → Web App
+// Execute as: Me | Access: Anyone
+// ═══════════════════════════════════════════════
+
+const SHEET_NAME = 'Candidates';
+
+function doPost(e) {
+  try {
+    const payload = JSON.parse(e.postData.contents);
+    if (payload.action === 'addRow') {
+      appendRow(payload.data);
+      return jsonResponse({ result: 'success' });
+    }
+    return jsonResponse({ result: 'error', message: 'Unknown action' });
+  } catch(err) {
+    return jsonResponse({ result: 'error', message: err.toString() });
+  }
+}
+
+function doGet(e) {
+  return jsonResponse({ result: 'ok', message: 'Aaradhya SFS API is live' });
+}
+
+function appendRow(data) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_NAME);
+
+  // Auto-create sheet with headers if it doesn't exist
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAME);
+    const headers = [
+      'ID', 'Date Added', 'Full Name', 'Mobile', 'Email',
+      'DOB', 'Gender', 'Qualification', 'City / Address',
+      'Experience', 'Current Role', 'Current Company',
+      'Current CTC', 'Expected CTC', 'Divisions',
+      'Doctor Segment', 'Primary HQ', 'Other Territories',
+      'Relocate', 'Status', 'Joining Availability',
+      'Communication Rating', 'Notes'
+    ];
+    sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+    sheet.getRange(1, 1, 1, headers.length)
+      .setBackground('#1c3150')
+      .setFontColor('#e8a020')
+      .setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
+
+  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const row = headers.map(h => data[h] !== undefined ? data[h] : '');
+  sheet.appendRow(row);
+}
+
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}`;
+}
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+// Check if already logged in this session
+if (sessionStorage.getItem('asfs_logged_in')) {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminShell').style.display = 'block';
+  loadDashboard();
+  startClock();
+  loadScriptUrlInput();
+  setScriptCode();
+}
+document.getElementById('loginBtn').addEventListener('click', () => {
+  sessionStorage.setItem('asfs_logged_in','1');
+});
+</script>
+</body>
+</html>
