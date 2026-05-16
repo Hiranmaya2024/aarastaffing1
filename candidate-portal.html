@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Aaradhya SFS — Candidate Portal | Build Your Pharma Career</title>
+  <meta name="description" content="Medical Representatives: Create your profile and apply to jobs across Odisha. Join Aaradhya Sales Force Solutions talent pool.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ----- DESIGN TOKENS (same as main site) ----- */
+    :root {
+      --navy:    #0d1b2e;
+      --navy2:   #142236;
+      --navy3:   #1c3150;
+      --amber:   #e8a020;
+      --amber2:  #f5b840;
+      --white:   #ffffff;
+      --text:    #e2e8f0;
+      --muted:   #94a3b8;
+      --border:  rgba(255,255,255,0.08);
+      --card-bg: rgba(255,255,255,0.04);
+      --ff-head: 'Playfair Display', Georgia, serif;
+      --ff-body: 'DM Sans', system-ui, sans-serif;
+      --ff-mono: 'DM Mono', monospace;
+      --r:       10px;
+      --r-lg:    18px;
+      --trans:   0.25s ease;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--ff-body);
+      background: var(--navy);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font-family: var(--ff-body); }
+
+    /* ----- NAVIGATION ----- */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 0 5vw; display: flex; align-items: center; justify-content: space-between;
+      height: 68px; background: rgba(13,27,46,0.92); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border); transition: box-shadow var(--trans);
+    }
+    .nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,0.4); }
+    .nav-logo { font-family: var(--ff-head); font-size: 1.2rem; font-weight: 700; color: var(--white); }
+    .nav-logo span { color: var(--amber); }
+    .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.875rem; font-weight: 500; color: var(--muted); transition: color var(--trans); letter-spacing: 0.02em; }
+    .nav-links a:hover, .nav-links a.active { color: var(--white); }
+    .nav-cta { padding: 8px 20px; background: var(--amber); color: var(--navy) !important; font-weight: 600 !important; border-radius: 6px; font-size: 0.85rem !important; transition: background var(--trans), transform var(--trans) !important; }
+    .nav-cta:hover { background: var(--amber2) !important; transform: translateY(-1px); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+    .mobile-menu { display: none; position: fixed; top: 68px; left: 0; right: 0; background: var(--navy2); border-bottom: 1px solid var(--border); z-index: 99; padding: 1.5rem 5vw 2rem; flex-direction: column; gap: 0; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { display: block; padding: 0.85rem 0; font-size: 1rem; font-weight: 500; color: var(--text); border-bottom: 1px solid var(--border); transition: color var(--trans); }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--amber); }
+    .mobile-menu .mob-cta { margin-top: 1.2rem; display: inline-block; padding: 12px 28px; background: var(--amber); color: var(--navy); font-weight: 700; border-radius: 8px; text-align: center; }
+
+    main { padding-top: 68px; position: relative; z-index: 1; }
+    .section { padding: 5rem 5vw; }
+    .container { max-width: 1160px; margin: 0 auto; }
+    .eyebrow { display: inline-block; font-family: var(--ff-mono); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--amber); margin-bottom: 1rem; }
+    .section-title { font-family: var(--ff-head); font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; color: var(--white); line-height: 1.15; margin-bottom: 1.2rem; }
+    .section-title em { font-style: italic; color: var(--amber); display: block; }
+    .section-lead { font-size: 1.05rem; color: var(--muted); max-width: 620px; line-height: 1.7; }
+    .divider { width: 48px; height: 3px; background: var(--amber); margin: 1.5rem 0; border-radius: 2px; }
+
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 13px 28px; font-weight: 600; border-radius: 8px; cursor: pointer; border: none; transition: all var(--trans); }
+    .btn-primary { background: var(--amber); color: var(--navy); }
+    .btn-primary:hover { background: var(--amber2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,160,32,0.3); }
+    .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn-outline:hover { background: var(--card-bg); border-color: rgba(232,160,32,0.3); color: var(--amber); }
+
+    /* TWO COLUMN LAYOUT */
+    .portal-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; align-items: start; }
+    @media (max-width: 900px) { .portal-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    /* FORM CARD */
+    .form-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 2rem; backdrop-filter: blur(4px); }
+    .form-title { font-family: var(--ff-head); font-size: 1.5rem; color: var(--white); margin-bottom: 0.5rem; }
+    .form-sub { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.8rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 500; color: var(--muted); margin-bottom: 0.3rem; letter-spacing: 0.02em; }
+    .form-group label .req { color: var(--amber); }
+    .form-control, .form-select { width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; color: var(--text); outline: none; transition: all var(--trans); }
+    .form-control:focus, .form-select:focus { border-color: rgba(232,160,32,0.5); background: rgba(232,160,32,0.04); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    .submit-btn { width: 100%; padding: 12px; background: var(--amber); color: var(--navy); font-weight: 700; font-size: 1rem; border: none; border-radius: 8px; margin-top: 0.5rem; cursor: pointer; transition: all var(--trans); }
+    .submit-btn:hover { background: var(--amber2); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(232,160,32,0.3); }
+    .form-message { margin-top: 1rem; padding: 12px; border-radius: 8px; font-size: 0.85rem; display: none; text-align: center; }
+    .form-message.success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.3); color: #4ade80; display: block; }
+    .form-message.error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; display: block; }
+
+    /* JOBS SECTION */
+    .jobs-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin: 1rem 0 2rem; }
+    .jobs-count { font-family: var(--ff-mono); font-size: 0.75rem; background: var(--card-bg); padding: 5px 12px; border-radius: 40px; border: 1px solid var(--border); }
+    .job-list { display: flex; flex-direction: column; gap: 1.2rem; max-height: 70vh; overflow-y: auto; padding-right: 0.5rem; }
+    .job-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; transition: all var(--trans); }
+    .job-card:hover { border-color: rgba(232,160,32,0.3); transform: translateY(-2px); }
+    .job-title { font-family: var(--ff-head); font-size: 1.2rem; font-weight: 700; color: var(--white); margin-bottom: 0.3rem; }
+    .job-company { font-size: 0.85rem; color: var(--amber); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .job-meta { display: flex; flex-wrap: wrap; gap: 1rem; margin: 0.8rem 0; font-size: 0.8rem; color: var(--muted); }
+    .job-meta span { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,0.03); padding: 4px 10px; border-radius: 30px; }
+    .job-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin: 0.8rem 0; }
+    .job-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 1rem; }
+    .job-ctc { font-family: var(--ff-mono); font-size: 0.9rem; font-weight: 600; color: var(--amber); }
+    .apply-link { font-size: 0.8rem; color: var(--amber); text-decoration: none; border-bottom: 1px dashed rgba(232,160,32,0.4); transition: border var(--trans); }
+    .apply-link:hover { border-bottom-color: var(--amber); }
+
+    /* LOADING & EMPTY */
+    .loading-spinner { text-align: center; padding: 3rem; color: var(--muted); }
+    .loader { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--amber); border-radius: 50%; margin: 0 auto 1rem; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .empty-state { text-align: center; padding: 3rem; background: var(--card-bg); border-radius: var(--r-lg); color: var(--muted); }
+
+    /* CTA BANNER */
+    .cta-banner { text-align: center; background: linear-gradient(135deg, var(--navy3) 0%, #102040 100%); border: 1px solid rgba(232,160,32,0.2); border-radius: var(--r-lg); padding: 2.5rem; margin: 2rem 0 0; }
+    .cta-banner p { margin-bottom: 1rem; }
+
+    /* FOOTER */
+    footer { background: var(--navy2); border-top: 1px solid var(--border); padding: 3rem 5vw 1.5rem; margin-top: 3rem; }
+    .footer-inner { max-width: 1160px; margin: 0 auto; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
+    .footer-brand { font-family: var(--ff-head); font-size: 1.1rem; font-weight: 700; color: var(--white); }
+    .footer-brand span { color: var(--amber); }
+    .footer-copyright { font-size: 0.75rem; color: var(--muted); }
+
+    .wa-float { position: fixed; bottom: 24px; right: 24px; z-index: 200; width: 54px; height: 54px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); transition: transform var(--trans); font-size: 1.4rem; }
+    .wa-float:hover { transform: scale(1.1); }
+    .animate { opacity: 0; }
+    .animate.in { animation: fadeUp 0.6s ease forwards; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <a href="index.html" class="nav-logo">Aaradhya <span>SFS</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="our-work.html">Our Work</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="candidate-portal.html" class="nav-cta">Candidate Portal</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a><a href="about.html">About</a><a href="services.html">Services</a><a href="our-work.html">Our Work</a><a href="contact.html">Contact</a>
+  <a href="candidate-portal.html" class="mob-cta">Candidate Portal</a>
+</div>
+
+<main>
+  <section class="section">
+    <div class="container">
+      <div class="animate">
+        <span class="eyebrow">Candidate Portal</span>
+        <h1 class="section-title">Build Your Pharma Career<em>Get Hired in Odisha</em></h1>
+        <div class="divider"></div>
+        <p class="section-lead">Create a profile and get discovered by top pharma companies. Your data goes directly into our active MR database — just like our admin panel adds candidates.</p>
+      </div>
+
+      <div class="portal-grid" style="margin-top: 2.5rem;">
+        <!-- LEFT: PROFILE FORM (same fields as admin panel candidate addition) -->
+        <div class="form-card animate delay-1">
+          <div class="form-title">📄 Create Your Profile</div>
+          <div class="form-sub">Fill once — we'll match you with relevant job openings & share with recruiters.</div>
+          <form id="candidateForm">
+            <div class="form-row">
+              <div class="form-group"><label>Full Name <span class="req">*</span></label><input type="text" class="form-control" id="fullName" required placeholder="e.g. Rajesh Mohanty"></div>
+              <div class="form-group"><label>Mobile <span class="req">*</span></label><input type="tel" class="form-control" id="mobile" required placeholder="+91 XXXXXXXXXX"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Email</label><input type="email" class="form-control" id="email" placeholder="rajesh@example.com"></div>
+              <div class="form-group"><label>Primary HQ <span class="req">*</span></label><input type="text" class="form-control" id="primaryHQ" required placeholder="e.g. Bhubaneswar, Cuttack"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Current Role</label><input type="text" class="form-control" id="currentRole" placeholder="MR / Senior MR / ABM"></div>
+              <div class="form-group"><label>Experience <span class="req">*</span></label>
+                <select class="form-select" id="experience" required>
+                  <option value="">Select</option><option>Fresher (0 yr)</option><option>Less than 1 year</option><option>1 – 2 years</option><option>2 – 3 years</option><option>3 – 5 years</option><option>5 – 8 years</option><option>8+ years</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Current CTC (monthly)</label><input type="text" class="form-control" id="currentCTC" placeholder="₹18,000"></div>
+              <div class="form-group"><label>Expected CTC (monthly)</label><input type="text" class="form-control" id="expectedCTC" placeholder="₹22,000"></div>
+            </div>
+            <div class="form-group"><label>Product Divisions (comma separated)</label><input type="text" class="form-control" id="divisions" placeholder="e.g. Cardiology, Diabetology, General"></div>
+            <div class="form-group"><label>Doctor Segment</label><input type="text" class="form-control" id="doctorSegment" placeholder="GPs, Specialists, Mixed"></div>
+            <div class="form-row">
+              <div class="form-group"><label>Qualification</label><input type="text" class="form-control" id="qualification" placeholder="B.Pharm / D.Pharm / B.Sc"></div>
+              <div class="form-group"><label>Joining Availability</label><select class="form-select" id="joiningAvailability"><option>Immediate (within 1 week)</option><option>Within 15 days</option><option>Within 1 month</option></select></div>
+            </div>
+            <div class="form-group"><label>Current Company (if any)</label><input type="text" class="form-control" id="currentCompany" placeholder="Current employer"></div>
+            <div class="form-group"><label>Other Territories (optional)</label><input type="text" class="form-control" id="otherTerritories" placeholder="e.g. Kalahandi, Koraput"></div>
+            <div class="form-group"><label>Your City / Address</label><input type="text" class="form-control" id="city" placeholder="City, Odisha"></div>
+            <button type="submit" class="submit-btn" id="formSubmitBtn">🚀 Submit Profile →</button>
+            <div id="formMessage" class="form-message"></div>
+          </form>
+          <p style="font-size: 0.7rem; color: var(--muted); margin-top: 1rem; text-align: center;">By submitting, you agree to share your profile with verified pharma companies. Data stored in Aaradhya SFS database (same as admin panel).</p>
+        </div>
+
+        <!-- RIGHT: JOB POSTINGS -->
+        <div class="animate delay-2">
+          <div class="jobs-header">
+            <h2 style="font-family: var(--ff-head); font-size: 1.6rem; color: var(--white);">Open Positions</h2>
+            <div class="jobs-count" id="jobsCount">Loading jobs...</div>
+          </div>
+          <div id="jobsContainer" class="job-list">
+            <div class="loading-spinner"><div class="loader"></div><div>Fetching latest opportunities...</div></div>
+          </div>
+          <div class="cta-banner">
+            <p style="color: var(--amber); font-weight: 500;">🚀 After registration, your profile enters our active MR database — shortlisted within 48 hours.</p>
+            <a href="contact.html" class="btn btn-outline" style="margin-top: 0.5rem;">📞 Talk to recruiter</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Aaradhya <span>SFS</span> <span style="font-size:0.7rem; display:block; font-family: var(--ff-mono); color: var(--muted);">Pharma Field Force Partner, Odisha</span></div>
+    <div class="footer-copyright">© 2025 Aaradhya Sales Force Solutions — Candidate Portal</div>
+  </div>
+</footer>
+<a href="https://wa.me/91XXXXXXXXXX" class="wa-float" title="WhatsApp Enquiry">💬</a>
+
+<script>
+  // ======================= CONFIGURATION =======================
+  // GOOGLE SHEET ID (same as used in client portal)
+  const SPREADSHEET_ID = '10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg';
+  // SHEET NAMES: "Candidates" (for candidate profiles), "Jobs" (for job listings)
+  const CANDIDATE_SHEET_NAME = 'Candidates';
+  const JOBS_SHEET_NAME = 'Jobs';
+  
+  // -------------------- Apps Script Web App URL --------------------
+  // 🔧 IMPORTANT: Replace with your own Google Apps Script deployment URL after following the instructions below.
+  // The script must accept POST requests and append a new row to the "Candidates" sheet.
+  // Default placeholder – when not configured, the form will show demo mode warning but still try.
+  // To make it fully functional: Create Apps Script, paste code from comment block, deploy as web app (execute as me, access anyone).
+  const APPS_SCRIPT_WRITE_URL = 'https://script.google.com/macros/s/AKfycbz_DUMMY_PLACEHOLDER_REPLACE_WITH_YOUR_DEPLOYMENT_ID/exec';
+  
+  // --- Helper to get CSV URL for any sheet (public read) ---
+  function getSheetCSVUrl(sheetName) {
+    return `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&_=${Date.now()}`;
+  }
+
+  // -------------------- 1. LOAD & DISPLAY JOBS --------------------
+  async function loadJobs() {
+    const container = document.getElementById('jobsContainer');
+    const countSpan = document.getElementById('jobsCount');
+    try {
+      const url = getSheetCSVUrl(JOBS_SHEET_NAME);
+      const response = await fetch(url);
+      const csvText = await response.text();
+      const jobs = parseCSVtoJobs(csvText);
+      if (!jobs.length) {
+        container.innerHTML = `<div class="empty-state">✨ No active job openings right now. Submit your profile, we'll reach out!</div>`;
+        countSpan.innerText = '0 jobs';
+        return;
+      }
+      countSpan.innerText = `${jobs.length} opening${jobs.length !== 1 ? 's' : ''}`;
+      container.innerHTML = jobs.map(job => `
+        <div class="job-card">
+          <div class="job-title">${escapeHtml(job.title)}</div>
+          <div class="job-company">🏢 ${escapeHtml(job.company)} ${job.location ? `· 📍 ${escapeHtml(job.location)}` : ''}</div>
+          <div class="job-meta">
+            ${job.division ? `<span>💊 ${escapeHtml(job.division)}</span>` : ''}
+            ${job.experience ? `<span>⏱️ ${escapeHtml(job.experience)}</span>` : ''}
+            ${job.postedDate ? `<span>📅 ${escapeHtml(job.postedDate)}</span>` : ''}
+          </div>
+          ${job.description ? `<div class="job-desc">${escapeHtml(job.description).substring(0, 180)}${job.description.length > 180 ? '…' : ''}</div>` : ''}
+          <div class="job-footer">
+            <div class="job-ctc">💰 ${job.salaryRange ? escapeHtml(job.salaryRange) : 'CTC: On discussion'}</div>
+            <a href="contact.html?job=${encodeURIComponent(job.title)}" class="apply-link">Apply now →</a>
+          </div>
+        </div>
+      `).join('');
+    } catch (err) {
+      console.error(err);
+      container.innerHTML = `<div class="empty-state">⚠️ Unable to load jobs. Please try again later.</div>`;
+      countSpan.innerText = 'unavailable';
+    }
+  }
+
+  function parseCSVtoJobs(csvText) {
+    const lines = csvText.trim().split('\n');
+    if (lines.length < 2) return [];
+    const headers = csvRowParse(lines[0]).map(h => h.trim());
+    const jobRows = lines.slice(1).map(line => csvRowParse(line));
+    return jobRows.map(row => {
+      const obj = {};
+      headers.forEach((h, idx) => obj[h] = row[idx] || '');
+      return {
+        title: obj['Job Title'] || obj['Title'] || 'Medical Representative',
+        company: obj['Company Name'] || obj['Company'] || 'Leading Pharma',
+        location: obj['Location'] || obj['HQ'] || '',
+        division: obj['Division'] || obj['Therapy'] || '',
+        experience: obj['Experience Required'] || obj['Experience'] || '',
+        salaryRange: obj['Salary Range'] || obj['CTC'] || '',
+        description: obj['Description'] || obj['Job Description'] || '',
+        postedDate: obj['Posted Date'] || ''
+      };
+    }).filter(j => j.title);
+  }
+
+  function csvRowParse(rowStr) {
+    const result = [];
+    let inQuote = false;
+    let current = '';
+    for (let i = 0; i < rowStr.length; i++) {
+      const ch = rowStr[i];
+      if (ch === '"') { inQuote = !inQuote; continue; }
+      if (ch === ',' && !inQuote) { result.push(current); current = ''; continue; }
+      current += ch;
+    }
+    result.push(current);
+    return result;
+  }
+
+  // -------------------- 2. SUBMIT CANDIDATE PROFILE (same as admin adding row) --------------------
+  const candidateForm = document.getElementById('candidateForm');
+  const msgDiv = document.getElementById('formMessage');
+
+  candidateForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    msgDiv.className = 'form-message';
+    msgDiv.style.display = 'none';
+    
+    // gather all fields
+    const candidateData = {
+      'Full Name': document.getElementById('fullName').value.trim(),
+      'Mobile': document.getElementById('mobile').value.trim(),
+      'Email': document.getElementById('email').value.trim(),
+      'Primary HQ': document.getElementById('primaryHQ').value.trim(),
+      'Current / Last Role': document.getElementById('currentRole').value.trim() || 'Medical Representative',
+      'Experience': document.getElementById('experience').value,
+      'Current CTC': document.getElementById('currentCTC').value.trim(),
+      'Expected CTC': document.getElementById('expectedCTC').value.trim(),
+      'Divisions': document.getElementById('divisions').value.trim(),
+      'Doctor Segment': document.getElementById('doctorSegment').value.trim(),
+      'Qualification': document.getElementById('qualification').value.trim(),
+      'Joining Availability': document.getElementById('joiningAvailability').value,
+      'Current Company': document.getElementById('currentCompany').value.trim(),
+      'Other Territories': document.getElementById('otherTerritories').value.trim(),
+      'City / Address': document.getElementById('city').value.trim(),
+      'Status': 'Available',   // default – same as admin adding
+      'Date Added': new Date().toLocaleDateString('en-IN')
+    };
+    
+    // basic validation
+    if (!candidateData['Full Name'] || !candidateData['Mobile'] || !candidateData['Primary HQ'] || !candidateData['Experience']) {
+      showMessage('Please fill all required fields (Name, Mobile, Primary HQ, Experience).', 'error');
+      return;
+    }
+    
+    const submitBtn = document.getElementById('formSubmitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting ...';
+    
+    try {
+      // Try to send to Apps Script backend (exactly how admin panel would add candidate)
+      // If Apps Script URL is placeholder, we simulate success but show notice to configure.
+      const isDemoMode = APPS_SCRIPT_WRITE_URL.includes('DUMMY_PLACEHOLDER');
+      if (isDemoMode) {
+        // DEMO MODE: store in localStorage for demonstration + show instructions
+        console.warn('Apps Script URL not configured. In production, please deploy Google Apps Script.');
+        let demoProfiles = JSON.parse(localStorage.getItem('demo_candidate_profiles') || '[]');
+        candidateData['ID'] = 'DEMO-' + (demoProfiles.length + 1);
+        demoProfiles.push(candidateData);
+        localStorage.setItem('demo_candidate_profiles', JSON.stringify(demoProfiles));
+        showMessage('✅ [DEMO] Your profile has been saved locally. In live environment, profile would be added to the Candidates sheet (same as admin adding a candidate). To enable real insertion, follow the Apps Script setup instructions below.', 'success');
+        candidateForm.reset();
+      } else {
+        // Real POST to Google Apps Script web app
+        const response = await fetch(APPS_SCRIPT_WRITE_URL, {
+          method: 'POST',
+          mode: 'no-cors', // simpler for Apps Script; we won't read response content due to no-cors, but we can rely on success callback.
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(candidateData).toString()
+        });
+        // Because of no-cors we can't read response, but optimistic success.
+        showMessage('🎉 Profile submitted successfully! Your details are now in our active MR database (same as admin panel). Recruiters may contact you within 48 hours.', 'success');
+        candidateForm.reset();
+      }
+    } catch (err) {
+      console.error(err);
+      showMessage('Network error. Could not submit profile. Please try again or contact support.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '🚀 Submit Profile →';
+    }
+  });
+  
+  function showMessage(text, type) {
+    msgDiv.textContent = text;
+    msgDiv.className = `form-message ${type}`;
+    msgDiv.style.display = 'block';
+    setTimeout(() => { if (msgDiv) msgDiv.style.display = 'none'; }, 6000);
+  }
+
+  // -------------------- INITIALIZATION --------------------
+  loadJobs();
+  
+  // NAV SCROLL EFFECT + HAMBURGER
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40));
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => { hamburger.classList.toggle('open'); mobileMenu.classList.toggle('open'); });
+  
+  // Intersection Observer for animations
+  const observer = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }); }, { threshold: 0.12 });
+  document.querySelectorAll('.animate').forEach(el => observer.observe(el));
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // 🛠️ GOOGLE APPS SCRIPT CODE (Copy & Deploy to make real insertion work)
+  // ══════════════════════════════════════════════════════════════════════════
+  /*
+  function doPost(e) {
+    const sheet = SpreadsheetApp.openById('10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg').getSheetByName('Candidates');
+    const data = e.parameter;
+    const headers = sheet.getRange(1,1,1,sheet.getLastColumn()).getValues()[0];
+    const newRow = headers.map(h => data[h] || '');
+    if (newRow.length < headers.length) newRow.push(...Array(headers.length - newRow.length).fill(''));
+    sheet.appendRow(newRow);
+    return ContentService.createTextOutput(JSON.stringify({status:'success'})).setMimeType(ContentService.MimeType.JSON);
+  }
+  
+  // Also allow GET for testing
+  function doGet(e) { return ContentService.createTextOutput("Apps Script active for Aaradhya SFS Candidate Portal."); }
+  */
+  // After deploying, copy the web app URL and replace APPS_SCRIPT_WRITE_URL above.
+  // Make sure the "Candidates" sheet has the exact column headers: 
+  // Full Name, Mobile, Email, Primary HQ, Current / Last Role, Experience, Current CTC, Expected CTC, Divisions, Doctor Segment, Qualification, Joining Availability, Current Company, Other Territories, City / Address, Status, Date Added
+  // ========================================================================
+</script>
+</body>
+</html>
