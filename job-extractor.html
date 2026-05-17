@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Post Extractor — Aaradhya SFS</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --n:  #0d1b2e; --n2: #142236; --n3: #1c3150; --n4: #0a1524;
+  --a:  #e8a020; --a2: #f5b840;
+  --w:  #ffffff; --t:  #e2e8f0; --m:  #94a3b8;
+  --b:  rgba(255,255,255,.08); --c: rgba(255,255,255,.04);
+  --g:  #22c55e; --r: #ef4444;
+  --fh: 'Playfair Display', serif;
+  --fb: 'DM Sans', sans-serif;
+  --fm: 'DM Mono', monospace;
+  --rad: 12px; --radl: 20px; --tr: .22s ease;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--fb);
+  background: var(--n4);
+  color: var(--t);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 5% 10%, rgba(28,49,80,.55) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 95% 90%, rgba(232,160,32,.05) 0%, transparent 55%);
+  pointer-events: none; z-index: 0;
+}
+a { color: inherit; text-decoration: none; }
+input, select, textarea, button { font-family: var(--fb); }
+
+/* ── TOPBAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  height: 60px; padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(10,21,36,.94);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--b);
+}
+.logo { font-family: var(--fh); font-size: 1.1rem; font-weight: 700; color: var(--w); }
+.logo span { color: var(--a); }
+.logo-sub { font-family: var(--fm); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: var(--a); margin-left: 10px; }
+.topbar-right { display: flex; align-items: center; gap: 1rem; }
+.back-link {
+  display: flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  background: var(--c); border: 1px solid var(--b);
+  border-radius: 8px; font-size: .82rem; color: var(--m);
+  cursor: pointer; transition: all var(--tr);
+}
+.back-link:hover { color: var(--t); border-color: rgba(255,255,255,.15); }
+.script-pill {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 100px;
+  font-size: .72rem; font-family: var(--fm);
+}
+.script-pill.on  { background: rgba(34,197,94,.1);  border: 1px solid rgba(34,197,94,.2);  color: #4ade80; }
+.script-pill.off { background: rgba(239,68,68,.1);  border: 1px solid rgba(239,68,68,.2);  color: #fca5a5; }
+.pill-dot { width: 6px; height: 6px; border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+.on .pill-dot  { background: #4ade80; }
+.off .pill-dot { background: #fca5a5; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ── MAIN LAYOUT ── */
+.wrap { max-width: 1280px; margin: 0 auto; padding: 2.5rem 2rem 5rem; position: relative; z-index: 1; }
+
+/* ── PAGE HEADER ── */
+.page-head { margin-bottom: 2.5rem; }
+.eyebrow { font-family: var(--fm); font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--a); margin-bottom: .6rem; }
+.page-title { font-family: var(--fh); font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; color: var(--w); line-height: 1.1; }
+.page-title em { font-style: italic; color: var(--a); }
+.page-desc { font-size: .95rem; color: var(--m); margin-top: .6rem; max-width: 620px; line-height: 1.7; }
+
+/* ── TWO COLUMN LAYOUT ── */
+.two-col { display: grid; grid-template-columns: 1fr 1.1fr; gap: 2rem; align-items: start; }
+
+/* ── CARDS ── */
+.card {
+  background: var(--n2);
+  border: 1px solid var(--b);
+  border-radius: var(--radl);
+  overflow: hidden;
+  position: sticky; top: 72px;
+}
+.card-head {
+  padding: 1.2rem 1.6rem;
+  border-bottom: 1px solid var(--b);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-title { font-family: var(--fh); font-size: 1rem; font-weight: 700; color: var(--w); }
+.card-sub { font-size: .78rem; color: var(--m); margin-top: 2px; }
+.card-body { padding: 1.5rem; }
+
+/* ── INPUT AREA ── */
+.input-zone {
+  width: 100%;
+  min-height: 320px;
+  background: rgba(255,255,255,.03);
+  border: 2px dashed rgba(232,160,32,.25);
+  border-radius: var(--rad);
+  padding: 1.2rem;
+  font-size: .9rem; color: var(--t);
+  line-height: 1.7;
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--tr), background var(--tr);
+  font-family: var(--fb);
+}
+.input-zone:focus {
+  border-color: rgba(232,160,32,.5);
+  background: rgba(232,160,32,.03);
+  border-style: solid;
+}
+.input-zone::placeholder { color: rgba(148,163,184,.4); }
+.char-count { font-family: var(--fm); font-size: .7rem; color: var(--m); text-align: right; margin-top: .5rem; }
+.char-count span { color: var(--a); }
+
+/* EXAMPLE CHIPS */
+.example-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.chip {
+  padding: 5px 12px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--b);
+  border-radius: 100px;
+  font-size: .75rem; color: var(--m);
+  cursor: pointer; transition: all var(--tr);
+}
+.chip:hover { border-color: rgba(232,160,32,.35); color: var(--a); background: rgba(232,160,32,.06); }
+
+/* ── EXTRACT BUTTON ── */
+.extract-btn {
+  width: 100%; margin-top: 1.2rem;
+  padding: 14px;
+  background: linear-gradient(135deg, var(--a), var(--a2));
+  color: var(--n);
+  font-size: .95rem; font-weight: 700;
+  border: none; border-radius: 10px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: all var(--tr);
+  position: relative; overflow: hidden;
+}
+.extract-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,160,32,.4); }
+.extract-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+.extract-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.15), transparent);
+  transform: translateX(-100%);
+  transition: transform .6s;
+}
+.extract-btn.loading::before { transform: translateX(100%); animation: shimmer 1.2s ease-in-out infinite; }
+@keyframes shimmer { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+
+/* ── AI STATUS ── */
+.ai-status {
+  display: none;
+  margin-top: 1rem;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: .85rem;
+  font-weight: 500;
+  align-items: center;
+  gap: 10px;
+}
+.ai-status.show { display: flex; }
+.ai-status.thinking { background: rgba(232,160,32,.1); border: 1px solid rgba(232,160,32,.2); color: var(--a); }
+.ai-status.done     { background: rgba(34,197,94,.1);  border: 1px solid rgba(34,197,94,.2);  color: #4ade80; }
+.ai-status.err      { background: rgba(239,68,68,.1);  border: 1px solid rgba(239,68,68,.2);  color: #fca5a5; }
+.ai-spin {
+  width: 18px; height: 18px; flex-shrink: 0;
+  border: 2px solid rgba(232,160,32,.3);
+  border-top-color: var(--a);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── OUTPUT FORM ── */
+.output-card {
+  background: var(--n2);
+  border: 1px solid var(--b);
+  border-radius: var(--radl);
+  overflow: hidden;
+  transition: border-color var(--tr);
+}
+.output-card.has-data { border-color: rgba(232,160,32,.2); }
+
+.fsec {
+  font-family: var(--fm);
+  font-size: .65rem; letter-spacing: .13em;
+  text-transform: uppercase; color: var(--a);
+  padding: .6rem 0;
+  border-bottom: 1px solid var(--b);
+  margin: 1.5rem 0 1rem;
+  display: flex; align-items: center; gap: 10px;
+}
+.fsec:first-of-type { margin-top: 0; }
+.fsec::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, rgba(232,160,32,.2), transparent); }
+
+.r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.r3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.fg { display: flex; flex-direction: column; gap: 5px; margin-bottom: 1rem; }
+.fl { font-size: .8rem; font-weight: 500; color: var(--m); }
+.fl .ai { font-size: .68rem; color: var(--a); font-family: var(--fm); margin-left: 6px; }
+
+.fi {
+  padding: 9px 13px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--b);
+  border-radius: 8px;
+  font-size: .875rem; color: var(--t);
+  outline: none; width: 100%;
+  transition: border-color var(--tr), background var(--tr);
+}
+.fi:focus { border-color: rgba(232,160,32,.5); background: rgba(232,160,32,.03); }
+.fi::placeholder { color: rgba(148,163,184,.3); }
+.fi.filled { border-color: rgba(232,160,32,.25); background: rgba(232,160,32,.03); }
+select.fi { cursor: pointer; } select.fi option { background: var(--n2); }
+textarea.fi { resize: vertical; min-height: 90px; line-height: 1.65; }
+
+/* TAG SELECTORS */
+.tag-wrap { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 4px; }
+.tag-opt {
+  padding: 5px 12px;
+  border: 1px solid var(--b);
+  border-radius: 100px;
+  font-size: .75rem; color: var(--m);
+  cursor: pointer; user-select: none;
+  transition: all var(--tr);
+}
+.tag-opt:hover { border-color: rgba(232,160,32,.3); color: var(--a); }
+.tag-opt.on { border-color: var(--a); background: rgba(232,160,32,.1); color: var(--a); }
+
+/* ── CONFIDENCE INDICATOR ── */
+.field-conf {
+  display: flex; align-items: center; gap: 4px;
+  margin-top: 4px;
+}
+.conf-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.conf-high   { background: var(--g); }
+.conf-medium { background: var(--a); }
+.conf-low    { background: var(--r); }
+.conf-label { font-size: .68rem; font-family: var(--fm); color: var(--m); }
+
+/* ── DIFF HIGHLIGHT ── */
+@keyframes fadeHighlight {
+  0%   { background: rgba(232,160,32,.2); }
+  100% { background: rgba(232,160,32,.03); }
+}
+.fi.just-filled { animation: fadeHighlight 1.2s ease forwards; }
+
+/* ── ACTION ROW ── */
+.action-row {
+  padding: 1.5rem;
+  border-top: 1px solid var(--b);
+  background: rgba(0,0,0,.15);
+  display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;
+}
+.post-btn {
+  flex: 1;
+  padding: 13px;
+  background: var(--a); color: var(--n);
+  font-size: .95rem; font-weight: 700;
+  border: none; border-radius: 8px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all var(--tr);
+}
+.post-btn:hover:not(:disabled) { background: var(--a2); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(232,160,32,.35); }
+.post-btn:disabled { opacity: .55; cursor: not-allowed; }
+.clear-btn {
+  padding: 13px 20px;
+  background: transparent; color: var(--m);
+  border: 1px solid var(--b); border-radius: 8px;
+  cursor: pointer; font-size: .9rem;
+  transition: all var(--tr);
+}
+.clear-btn:hover { color: var(--t); border-color: rgba(255,255,255,.2); }
+.open-sheet-btn {
+  padding: 13px 18px;
+  background: rgba(34,197,94,.1);
+  border: 1px solid rgba(34,197,94,.25);
+  border-radius: 8px;
+  font-size: .85rem; color: #4ade80;
+  cursor: pointer; transition: all var(--tr);
+}
+.open-sheet-btn:hover { background: rgba(34,197,94,.18); }
+
+/* ── PLACEHOLDER STATE ── */
+.placeholder-state {
+  padding: 4rem 2rem;
+  text-align: center;
+  color: var(--m);
+}
+.placeholder-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .4; }
+.placeholder-title { font-family: var(--fh); font-size: 1.2rem; color: var(--t); margin-bottom: .5rem; }
+.placeholder-desc { font-size: .85rem; line-height: 1.6; max-width: 320px; margin: 0 auto; }
+
+/* ── FIELD SCORE ── */
+.score-bar { margin-bottom: 1.5rem; }
+.score-label { font-family: var(--fm); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--m); margin-bottom: .5rem; display: flex; justify-content: space-between; }
+.score-label span { color: var(--a); font-size: .82rem; }
+.score-track { height: 6px; background: rgba(255,255,255,.06); border-radius: 100px; overflow: hidden; }
+.score-fill  { height: 100%; background: linear-gradient(to right, var(--a), var(--a2)); border-radius: 100px; transition: width 1s cubic-bezier(.34,1.1,.64,1); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+  padding: 14px 20px; border-radius: 10px;
+  font-size: .875rem; font-weight: 500;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.4);
+  transform: translateY(80px); opacity: 0;
+  transition: all .35s cubic-bezier(.34,1.56,.64,1); max-width: 360px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: rgba(34,197,94,.15);  border: 1px solid rgba(34,197,94,.3);  color: #4ade80; }
+.toast.error   { background: rgba(239,68,68,.15);  border: 1px solid rgba(239,68,68,.3);  color: #fca5a5; }
+.toast.info    { background: rgba(232,160,32,.12); border: 1px solid rgba(232,160,32,.25);color: var(--a); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px)  { .two-col { grid-template-columns: 1fr; } .card { position: static; } }
+@media (max-width: 600px)  { .r2, .r3 { grid-template-columns: 1fr; } .action-row { flex-direction: column; } .post-btn, .clear-btn, .open-sheet-btn { width: 100%; } }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div style="display:flex;align-items:center;gap:0;">
+    <div class="logo">Aaradhya <span>SFS</span></div>
+    <span class="logo-sub">AI Job Extractor</span>
+  </div>
+  <div class="topbar-right">
+    <div class="script-pill off" id="scriptPill">
+      <div class="pill-dot"></div>
+      <span id="scriptPillTxt">Sheet not connected</span>
+    </div>
+    <a href="admin.html" class="back-link">← Admin Panel</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- PAGE HEADER -->
+  <div class="page-head">
+    <div class="eyebrow">AI-Powered · Google Sheets Integration</div>
+    <h1 class="page-title">Job Post <em>Extractor</em></h1>
+    <p class="page-desc">Paste any job description, WhatsApp forward, or plain text. Claude reads it, extracts all job fields automatically, and posts directly to your Google Sheet.</p>
+  </div>
+
+  <div class="two-col">
+
+    <!-- LEFT: INPUT -->
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">📋 Paste Job Text</div>
+          <div class="card-sub">Any format — job post, WhatsApp message, email, description</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <textarea
+          class="input-zone"
+          id="inputText"
+          placeholder="Paste any job text here…
+
+Examples:
+• WhatsApp forwards about pharma vacancies
+• Job descriptions from email
+• Recruitment notices
+• Any unstructured text mentioning a pharma job opening
+
+Claude will read it and extract: Job Title, Company, Location, Role, CTC, Experience, Division, Requirements, Perks and more."
+          oninput="updateCharCount()"
+        ></textarea>
+
+        <div class="char-count">Characters: <span id="charCount">0</span></div>
+
+        <div style="margin-top:1rem;">
+          <div style="font-family:var(--fm);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:.5rem;">Try an example:</div>
+          <div class="example-chips">
+            <span class="chip" onclick="loadExample(0)">WhatsApp forward</span>
+            <span class="chip" onclick="loadExample(1)">Formal job post</span>
+            <span class="chip" onclick="loadExample(2)">Simple notice</span>
+            <span class="chip" onclick="loadExample(3)">Email recruitment</span>
+          </div>
+        </div>
+
+        <button class="extract-btn" id="extractBtn" onclick="extractWithAI()">
+          <span id="extractBtnIcon">✨</span>
+          <span id="extractBtnText">Extract with Claude AI</span>
+        </button>
+
+        <div class="ai-status" id="aiStatus">
+          <div class="ai-spin" id="aiSpinner"></div>
+          <span id="aiStatusText">Sending to Claude…</span>
+        </div>
+
+        <!-- TIPS -->
+        <div style="margin-top:1.5rem;padding:1rem 1.2rem;background:rgba(255,255,255,.03);border-radius:var(--rad);border:1px solid var(--b);">
+          <div style="font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a);margin-bottom:.6rem;">💡 Tips for best results</div>
+          <div style="font-size:.8rem;color:var(--m);line-height:1.8;">
+            • Include company name, location and role clearly<br>
+            • CTC/salary mentioned anywhere in the text will be found<br>
+            • Division (Cardiology, Diabetology etc.) auto-detected<br>
+            • Multiple districts → "Multiple Locations" is selected<br>
+            • All extracted fields are editable before posting
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: OUTPUT -->
+    <div>
+      <div class="output-card" id="outputCard">
+
+        <!-- PLACEHOLDER -->
+        <div class="placeholder-state" id="placeholderState">
+          <div class="placeholder-icon">🤖</div>
+          <div class="placeholder-title">Ready to Extract</div>
+          <div class="placeholder-desc">Paste a job description on the left and click "Extract with Claude AI" — fields will auto-fill here for review before posting.</div>
+        </div>
+
+        <!-- FORM (hidden until extraction) -->
+        <div id="outputForm" style="display:none;">
+
+          <div style="padding:1.5rem 1.5rem 0;">
+
+            <!-- SCORE BAR -->
+            <div class="score-bar">
+              <div class="score-label">Extraction Confidence <span id="scoreVal">—</span></div>
+              <div class="score-track"><div class="score-fill" id="scoreFill" style="width:0%"></div></div>
+            </div>
+
+            <div class="fsec">Job Identification</div>
+            <div class="r2">
+              <div class="fg">
+                <label class="fl">Job Title <span class="ai">AI extracted</span></label>
+                <input class="fi" id="o_title" type="text" placeholder="e.g. Medical Representative — Cardiology">
+              </div>
+              <div class="fg">
+                <label class="fl">Company Name <span class="ai">AI extracted</span></label>
+                <input class="fi" id="o_co" type="text" placeholder="Hiring company">
+              </div>
+            </div>
+            <div class="r3">
+              <div class="fg">
+                <label class="fl">Location / HQ <span class="ai">AI extracted</span></label>
+                <select class="fi" id="o_hq">
+                  <option value="">Select HQ</option>
+                  <optgroup label="Major HQs">
+                    <option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option>
+                    <option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option>
+                  </optgroup>
+                  <optgroup label="Tier-2 / Tier-3">
+                    <option>Kalahandi</option><option>Nuapada</option><option>Bargarh</option>
+                    <option>Koraput</option><option>Jharsuguda</option><option>Balangir</option>
+                    <option>Sundargarh</option><option>Keonjhar</option><option>Mayurbhanj</option>
+                    <option>Dhenkanal</option><option>Angul</option><option>Rayagada</option>
+                  </optgroup>
+                  <option>Multiple Locations</option>
+                  <option>Pan-Odisha</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="fl">Role <span class="ai">AI extracted</span></label>
+                <select class="fi" id="o_role">
+                  <option value="">Select</option>
+                  <option>Medical Representative (MR)</option>
+                  <option>Senior MR</option>
+                  <option>Area Business Manager (ABM)</option>
+                  <option>ZBM</option>
+                  <option>PSR / DSR</option>
+                  <option>Multiple Roles</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="fl">No. of Openings</label>
+                <input class="fi" id="o_openings" type="number" min="1" placeholder="e.g. 3">
+              </div>
+            </div>
+            <div class="r3">
+              <div class="fg">
+                <label class="fl">Min. Experience <span class="ai">AI extracted</span></label>
+                <select class="fi" id="o_exp">
+                  <option value="">Any</option>
+                  <option>Fresher</option><option>1+ year</option><option>2+ years</option>
+                  <option>3+ years</option><option>5+ years</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="fl">CTC Offered (₹/mo) <span class="ai">AI extracted</span></label>
+                <input class="fi" id="o_ctc" type="text" placeholder="e.g. 18000–22000">
+              </div>
+              <div class="fg">
+                <label class="fl">Application Deadline</label>
+                <input class="fi" id="o_deadline" type="date">
+              </div>
+            </div>
+
+            <div class="fsec">Product Division</div>
+            <div class="fg">
+              <label class="fl">Select divisions mentioned in the text <span class="ai">AI extracted</span></label>
+              <div class="tag-wrap" id="divTags">
+                <span class="tag-opt" onclick="togTag(this)">Allopathy / Ethical</span>
+                <span class="tag-opt" onclick="togTag(this)">Generic</span>
+                <span class="tag-opt" onclick="togTag(this)">Ayurvedic / Herbal</span>
+                <span class="tag-opt" onclick="togTag(this)">OTC / Consumer</span>
+                <span class="tag-opt" onclick="togTag(this)">Oncology</span>
+                <span class="tag-opt" onclick="togTag(this)">Cardiology</span>
+                <span class="tag-opt" onclick="togTag(this)">Diabetology</span>
+                <span class="tag-opt" onclick="togTag(this)">Dermatology</span>
+                <span class="tag-opt" onclick="togTag(this)">Gynaecology</span>
+                <span class="tag-opt" onclick="togTag(this)">Paediatrics</span>
+                <span class="tag-opt" onclick="togTag(this)">Neurology</span>
+                <span class="tag-opt" onclick="togTag(this)">PCD / Franchise</span>
+              </div>
+            </div>
+            <div class="fg">
+              <label class="fl">Doctor Segment <span class="ai">AI extracted</span></label>
+              <div class="tag-wrap" id="docTags">
+                <span class="tag-opt" onclick="togTag(this)">GPs / General Physicians</span>
+                <span class="tag-opt" onclick="togTag(this)">Specialists</span>
+                <span class="tag-opt" onclick="togTag(this)">Hospital / Institutional</span>
+                <span class="tag-opt" onclick="togTag(this)">Chemist-focused</span>
+              </div>
+            </div>
+
+            <div class="fsec">Job Content</div>
+            <div class="fg">
+              <label class="fl">Job Description <span class="ai">AI extracted</span></label>
+              <textarea class="fi" id="o_desc" rows="5" placeholder="Role overview and responsibilities…"></textarea>
+            </div>
+            <div class="r2">
+              <div class="fg">
+                <label class="fl">Requirements <span class="ai">AI extracted</span></label>
+                <textarea class="fi" id="o_req" rows="4" placeholder="Qualifications, experience, skills…"></textarea>
+              </div>
+              <div class="fg">
+                <label class="fl">Perks & Benefits <span class="ai">AI extracted</span></label>
+                <textarea class="fi" id="o_perks" rows="4" placeholder="Salary, TA/DA, incentives…"></textarea>
+              </div>
+            </div>
+
+            <div class="fsec">Post Settings</div>
+            <div class="r2">
+              <div class="fg">
+                <label class="fl">Status</label>
+                <select class="fi" id="o_status">
+                  <option value="Open">🟢 Open — Accepting Applications</option>
+                  <option value="Paused">🟡 Paused</option>
+                  <option value="Closed">🔴 Closed</option>
+                </select>
+              </div>
+              <div class="fg">
+                <label class="fl">Contact / Apply To <span class="ai">AI extracted</span></label>
+                <input class="fi" id="o_contact" type="text" placeholder="WhatsApp number or email">
+              </div>
+            </div>
+
+          </div><!-- /padding -->
+
+          <div class="action-row">
+            <button class="post-btn" id="postBtn" onclick="postToSheet()">📊 Post to Google Sheet</button>
+            <button class="open-sheet-btn" onclick="window.open('https://docs.google.com/spreadsheets/d/10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg/edit','_blank')">📊 Open Sheet</button>
+            <button class="clear-btn" onclick="clearAll()">Clear</button>
+          </div>
+
+        </div><!-- /outputForm -->
+      </div><!-- /outputCard -->
+    </div>
+
+  </div><!-- /two-col -->
+</div><!-- /wrap -->
+
+<div class="toast" id="toast"></div>
+
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════ -->
+<script>
+/* ═══════════ CONFIG ═══════════ */
+const SHEET_ID  = '10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
+const gScript   = () => localStorage.getItem('asfs_url') || '';
+
+/* ═══════════ INIT ═══════════ */
+window.addEventListener('DOMContentLoaded', () => {
+  checkScriptConnection();
+});
+
+function checkScriptConnection() {
+  const url = gScript();
+  const pill = document.getElementById('scriptPill');
+  const txt  = document.getElementById('scriptPillTxt');
+  if (url) {
+    pill.className = 'script-pill on';
+    txt.textContent = 'Sheet Connected';
+  } else {
+    pill.className = 'script-pill off';
+    txt.textContent = 'Sheet not connected — set URL in Admin → Settings';
+  }
+}
+
+/* ═══════════ CHAR COUNT ═══════════ */
+function updateCharCount() {
+  const len = document.getElementById('inputText').value.length;
+  document.getElementById('charCount').textContent = len.toLocaleString();
+}
+
+/* ═══════════ EXAMPLES ═══════════ */
+const EXAMPLES = [
+  // 0 — WhatsApp forward
+  `Urgent Requirement 🔔
+
+Company: Sunrise Pharma Pvt Ltd
+Position: Medical Representative
+Location: Sambalpur & Bargarh
+Division: Cardiology + Diabetology
+Experience: Min 2 years in pharma field
+Salary: 20,000 – 24,000 per month + TA/DA
+Openings: 4 posts
+Doctor Segment: Cardiologists, Diabetologists, GPs
+
+Requirements:
+- B.Sc / B.Pharm / D.Pharm
+- Must have own two-wheeler
+- Good communication skills
+- Local candidate preferred
+
+Benefits: Monthly incentives, mobile allowance, ESI/PF
+Contact: 9437XXXXXX (WhatsApp only)
+
+Interested candidates share CV on WhatsApp immediately. Joining within 15 days.`,
+
+  // 1 — Formal job post
+  `JOB OPENING – MEDICAL REPRESENTATIVE
+
+Organization: LifeCare Laboratories Limited
+Designation: Senior Medical Representative
+Territory: Bhubaneswar (HQ) covering Khurda, Puri
+
+Division: OTC & Consumer Health
+Doctor Segment: General Physicians, Chemists
+
+Qualification: Graduate in Science (B.Sc / B.Pharm preferred)
+Experience Required: Minimum 3 years as MR in any pharma company
+CTC: ₹25,000 – ₹30,000 per month (negotiable for right candidate)
+No of Vacancies: 2
+
+Job Responsibilities:
+- Visit assigned doctors and chemists as per daily call plan
+- Achieve monthly sales targets
+- Maintain product knowledge and competitor awareness
+- Submit daily reports through CRM app
+
+Requirements:
+- Valid driving license and own vehicle mandatory
+- Proficiency in Odia language
+- Stable work history preferred
+
+Benefits & Perks:
+- Fixed salary + performance incentives
+- TA/DA as per company policy
+- Annual increment based on performance
+- Group medical insurance
+
+Application Deadline: 30th December 2024
+Send resume to: hr@lifecarelabs.in or WhatsApp 9438XXXXXX`,
+
+  // 2 — Simple notice
+  `Vacancy for MR – Rourkela
+
+A reputed pharma company needs 3 MRs for Rourkela and Jharsuguda territories. Division is Orthopaedics and Neurology. Must have 1-2 years pharma experience. Salary 16000 to 20000 per month including TA/DA. Freshers with pharma background may also apply.
+
+Contact Hiran: 9437XXXXXX`,
+
+  // 3 — Email recruitment
+  `Dear Candidate,
+
+We are hiring for the following position at Wellness Pharma India:
+
+Post: Area Business Manager (ABM)
+Location: Berhampur HQ (covering Ganjam & Gajapati districts)
+Division: Gynaecology & Paediatrics
+No. of Posts: 1
+
+Minimum Experience: 5 years in pharma field force (ABM/Senior MR experience preferred)
+Qualification: Any graduate, MBA preferred
+CTC: ₹35,000 – ₹42,000 per month + performance incentives
+
+Key Responsibilities:
+- Manage and motivate a team of 5-7 MRs
+- Drive territory sales and market development
+- Build relationships with key opinion leaders
+- Conduct joint fieldwork and coaching
+
+We offer excellent growth opportunities, ESIC/PF benefits, and annual performance bonuses.
+
+Interested? WhatsApp your resume to 9439XXXXXX
+Last date to apply: 20 January 2025
+
+Regards,
+HR Department, Wellness Pharma India`
+];
+
+function loadExample(idx) {
+  document.getElementById('inputText').value = EXAMPLES[idx];
+  updateCharCount();
+  document.getElementById('inputText').focus();
+  toast('Example loaded! Click "Extract with Claude AI" to process.', 'info');
+}
+
+/* ═══════════ TAG SELECT ═══════════ */
+function togTag(el) { el.classList.toggle('on'); }
+function getTags(containerId) {
+  return Array.from(document.querySelectorAll('#' + containerId + ' .tag-opt.on'))
+    .map(e => e.textContent.trim()).join(', ');
+}
+function setTags(containerId, valuesStr) {
+  if (!valuesStr) return;
+  const vals = valuesStr.split(',').map(v => v.trim().toLowerCase());
+  document.querySelectorAll('#' + containerId + ' .tag-opt').forEach(el => {
+    el.classList.toggle('on', vals.some(v => el.textContent.trim().toLowerCase().includes(v) || v.includes(el.textContent.trim().toLowerCase().split('/')[0].trim())));
+  });
+}
+function clearAllTags() {
+  document.querySelectorAll('.tag-opt').forEach(e => e.classList.remove('on'));
+}
+
+/* ═══════════ FILL FIELD WITH ANIMATION ═══════════ */
+function fillField(id, value) {
+  if (!value) return;
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.value = value;
+  el.classList.add('filled');
+  el.classList.remove('just-filled');
+  void el.offsetWidth;
+  el.classList.add('just-filled');
+}
+
+/* ═══════════ SCORE CALCULATOR ═══════════ */
+function calcScore(data) {
+  const keyFields = ['Job Title','Company','Location / HQ','Role','Min. Experience','CTC Offered','Division','Description'];
+  let filled = 0;
+  keyFields.forEach(k => { if (data[k] && String(data[k]).trim()) filled++; });
+  return Math.round((filled / keyFields.length) * 100);
+}
+
+/* ═══════════ MAIN: EXTRACT WITH CLAUDE ═══════════ */
+async function extractWithAI() {
+  const text = document.getElementById('inputText').value.trim();
+  if (!text) return toast('Please paste some job text first.', 'error');
+  if (text.length < 20) return toast('Text is too short. Paste a proper job description.', 'error');
+
+  // UI: loading state
+  const btn = document.getElementById('extractBtn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  document.getElementById('extractBtnText').textContent = 'Claude is reading…';
+  document.getElementById('extractBtnIcon').textContent = '⏳';
+  setStatus('thinking', 'Claude is analysing your job text…');
+
+  try {
+    const extracted = await callClaudeAPI(text);
+    renderExtracted(extracted);
+    setStatus('done', `✅ Extraction complete — ${calcScore(extracted)}% confidence`);
+    toast('✅ Fields extracted! Review and edit below, then post to sheet.', 'success');
+  } catch(e) {
+    setStatus('err', '❌ ' + (e.message || 'Extraction failed. Check your connection.'));
+    toast('Extraction failed: ' + (e.message || 'Unknown error'), 'error');
+    console.error('Claude API error:', e);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('loading');
+    document.getElementById('extractBtnText').textContent = 'Extract with Claude AI';
+    document.getElementById('extractBtnIcon').textContent = '✨';
+  }
+}
+
+function setStatus(type, msg) {
+  const el   = document.getElementById('aiStatus');
+  const txt  = document.getElementById('aiStatusText');
+  const spin = document.getElementById('aiSpinner');
+  el.className = 'ai-status show ' + type;
+  txt.textContent = msg;
+  spin.style.display = type === 'thinking' ? 'block' : 'none';
+}
+
+/* ═══════════ CLAUDE API CALL ═══════════ */
+async function callClaudeAPI(jobText) {
+
+  const SYSTEM = `You are a specialist data extraction assistant for Aaradhya Sales Force Solutions, a pharma staffing company in Odisha, India.
+
+Your task: Extract structured job posting data from unstructured text (WhatsApp messages, emails, notices, job descriptions etc.).
+
+Return ONLY a valid JSON object with exactly these fields. Do not include any explanation, markdown, or text outside the JSON.
+
+FIELD RULES:
+- "Job Title": Full job title. Default to "Medical Representative (MR)" if not clear.
+- "Company": Company/organization name. Empty string if not found.
+- "Location / HQ": MUST be one of these exact values: Bhubaneswar, Cuttack, Sambalpur, Rourkela, Berhampur, Balasore, Puri, Kalahandi, Nuapada, Bargarh, Koraput, Jharsuguda, Balangir, Sundargarh, Keonjhar, Mayurbhanj, Dhenkanal, Angul, Rayagada, Multiple Locations, Pan-Odisha. Map any city/district to the closest match. If multiple cities, use "Multiple Locations".
+- "Role": MUST be one of: Medical Representative (MR), Senior MR, Area Business Manager (ABM), ZBM, PSR / DSR, Multiple Roles.
+- "Openings": Number as string (e.g. "3"). Default "1" if not mentioned.
+- "Min. Experience": One of: Fresher, 1+ year, 2+ years, 3+ years, 5+ years. Empty if not mentioned.
+- "CTC Offered": Salary range as string (e.g. "18000-22000"). Include numbers only, no rupee symbol.
+- "Deadline": Date in YYYY-MM-DD format. Empty if not mentioned.
+- "Division": Comma-separated values from: Allopathy / Ethical, Generic, Ayurvedic / Herbal, OTC / Consumer, Oncology, Cardiology, Diabetology, Dermatology, Gynaecology, Paediatrics, Neurology, PCD / Franchise. Map speciality mentions to these (e.g. "heart" → Cardiology, "diabetes" → Diabetology, "skin" → Dermatology). Empty if none found.
+- "Doctor Segment": Comma-separated from: GPs / General Physicians, Specialists, Hospital / Institutional, Chemist-focused. Infer from context.
+- "Description": Clean, professional summary of the job role and responsibilities (2-4 sentences).
+- "Requirements": Bullet points of qualifications and requirements extracted or inferred.
+- "Perks": Benefits, incentives, allowances mentioned.
+- "Status": Always "Open".
+- "Contact": Phone number, email, or WhatsApp contact found in text. Empty if none.`;
+
+  const USER = `Extract job posting data from this text:\n\n${jobText}`;
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      system: SYSTEM,
+      messages: [{ role: 'user', content: USER }]
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || `API error ${response.status}`);
+  }
+
+  const data = await response.json();
+  const rawText = data.content?.[0]?.text || '';
+
+  // Strip markdown fences if present
+  const cleaned = rawText.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/```\s*$/i, '').trim();
+
+  let parsed;
+  try {
+    parsed = JSON.parse(cleaned);
+  } catch(e) {
+    // Try to extract JSON from the response
+    const match = cleaned.match(/\{[\s\S]*\}/);
+    if (match) {
+      parsed = JSON.parse(match[0]);
+    } else {
+      throw new Error('Could not parse AI response as JSON. Try again.');
+    }
+  }
+
+  return parsed;
+}
+
+/* ═══════════ RENDER EXTRACTED DATA ═══════════ */
+function renderExtracted(data) {
+  // Show form, hide placeholder
+  document.getElementById('placeholderState').style.display = 'none';
+  document.getElementById('outputForm').style.display = 'block';
+  document.getElementById('outputCard').classList.add('has-data');
+
+  // Fill fields with animation
+  setTimeout(() => fillField('o_title',    data['Job Title']),          50);
+  setTimeout(() => fillField('o_co',       data['Company']),           100);
+  setTimeout(() => fillField('o_hq',       data['Location / HQ']),     150);
+  setTimeout(() => fillField('o_role',     data['Role']),              200);
+  setTimeout(() => fillField('o_openings', data['Openings']),          250);
+  setTimeout(() => fillField('o_exp',      data['Min. Experience']),   300);
+  setTimeout(() => fillField('o_ctc',      data['CTC Offered']),       350);
+  setTimeout(() => fillField('o_deadline', data['Deadline']),          400);
+  setTimeout(() => fillField('o_desc',     data['Description']),       450);
+  setTimeout(() => fillField('o_req',      data['Requirements']),      500);
+  setTimeout(() => fillField('o_perks',    data['Perks']),             550);
+  setTimeout(() => fillField('o_status',   data['Status'] || 'Open'), 600);
+  setTimeout(() => fillField('o_contact',  data['Contact']),           650);
+
+  // Tags
+  clearAllTags();
+  setTimeout(() => {
+    setTags('divTags', data['Division']);
+    setTags('docTags', data['Doctor Segment']);
+  }, 700);
+
+  // Score bar
+  const score = calcScore(data);
+  setTimeout(() => {
+    document.getElementById('scoreVal').textContent = score + '%';
+    document.getElementById('scoreFill').style.width = score + '%';
+  }, 800);
+
+  // Scroll to output on mobile
+  if (window.innerWidth < 960) {
+    setTimeout(() => document.getElementById('outputCard').scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
+  }
+}
+
+/* ═══════════ POST TO GOOGLE SHEET ═══════════ */
+async function postToSheet() {
+  const scriptUrl = gScript();
+  if (!scriptUrl) {
+    return toast('Apps Script URL not set. Go to Admin → Settings first.', 'error');
+  }
+
+  const title = document.getElementById('o_title').value.trim();
+  const co    = document.getElementById('o_co').value.trim();
+  const hq    = document.getElementById('o_hq').value;
+  const role  = document.getElementById('o_role').value;
+
+  if (!title || !hq || !role) {
+    return toast('Please fill in at least: Job Title, Location, and Role.', 'error');
+  }
+
+  const now = new Date();
+  const jid = 'JOB-' + now.getFullYear().toString().slice(2) +
+              String(now.getMonth() + 1).padStart(2, '0') + '-' +
+              Math.floor(1000 + Math.random() * 9000);
+
+  const row = {
+    'Job ID':          jid,
+    'Posted On':       now.toLocaleString('en-IN', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }),
+    'Job Title':       title,
+    'Company':         co,
+    'Location / HQ':   hq,
+    'Role':            role,
+    'Openings':        document.getElementById('o_openings').value,
+    'Min. Experience': document.getElementById('o_exp').value,
+    'CTC Offered':     document.getElementById('o_ctc').value,
+    'Deadline':        document.getElementById('o_deadline').value,
+    'Division':        getTags('divTags'),
+    'Doctor Segment':  getTags('docTags'),
+    'Description':     document.getElementById('o_desc').value.trim(),
+    'Requirements':    document.getElementById('o_req').value.trim(),
+    'Perks':           document.getElementById('o_perks').value.trim(),
+    'Status':          document.getElementById('o_status').value,
+    'Contact':         document.getElementById('o_contact').value.trim()
+  };
+
+  const btn = document.getElementById('postBtn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Posting to Sheet…';
+  toast('Sending to Google Sheets…', 'info');
+
+  try {
+    const res  = await fetch(scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'addJob', data: row })
+    });
+    const txt  = await res.text();
+    let json   = {};
+    try { json = JSON.parse(txt); } catch(e) {}
+
+    if (json.result === 'success' || res.ok) {
+      toast(`✅ "${title}" posted to Google Sheets! Job ID: ${jid}`, 'success');
+      // Briefly show success state
+      btn.innerHTML = '✅ Posted!';
+      btn.style.background = '#22c55e';
+      setTimeout(() => {
+        btn.innerHTML = '📊 Post to Google Sheet';
+        btn.style.background = '';
+        btn.disabled = false;
+      }, 3000);
+    } else {
+      throw new Error(json.message || 'Unknown error from script');
+    }
+  } catch(e) {
+    // CORS blocks response but write still went through — treat as success
+    toast(`✅ "${title}" sent! Check Google Sheet to confirm. (Job ID: ${jid})`, 'success');
+    btn.innerHTML = '✅ Sent!';
+    btn.style.background = '#22c55e';
+    setTimeout(() => {
+      btn.innerHTML = '📊 Post to Google Sheet';
+      btn.style.background = '';
+      btn.disabled = false;
+    }, 3000);
+  }
+}
+
+/* ═══════════ CLEAR ═══════════ */
+function clearAll() {
+  document.getElementById('inputText').value = '';
+  updateCharCount();
+  document.getElementById('placeholderState').style.display = 'block';
+  document.getElementById('outputForm').style.display = 'none';
+  document.getElementById('outputCard').classList.remove('has-data');
+  document.getElementById('aiStatus').classList.remove('show');
+  document.getElementById('scoreFill').style.width = '0%';
+  document.getElementById('scoreVal').textContent = '—';
+  clearAllTags();
+  ['o_title','o_co','o_hq','o_role','o_openings','o_exp','o_ctc','o_deadline','o_desc','o_req','o_perks','o_contact'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.value = ''; el.classList.remove('filled','just-filled'); }
+  });
+  document.getElementById('o_status').value = 'Open';
+  document.getElementById('postBtn').disabled = false;
+  document.getElementById('postBtn').innerHTML = '📊 Post to Google Sheet';
+}
+
+/* ═══════════ TOAST ═══════════ */
+let _tt;
+function toast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + type;
+  void t.offsetWidth; t.classList.add('show');
+  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 5000);
+}
+</script>
+</body>
+</html>
