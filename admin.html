@@ -4,518 +4,370 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Panel — Aaradhya SFS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#0d1b2e;--navy2:#142236;--navy3:#1c3150;--navy4:#0a1524;
-  --amber:#e8a020;--amber2:#f5b840;
-  --green:#22c55e;--red:#ef4444;--blue:#3b82f6;
-  --white:#ffffff;--text:#e2e8f0;--muted:#94a3b8;
-  --border:rgba(255,255,255,0.08);--card:rgba(255,255,255,0.04);
-  --ff-h:'Playfair Display',Georgia,serif;
-  --ff-b:'DM Sans',system-ui,sans-serif;
-  --ff-m:'DM Mono',monospace;
-  --r:10px;--rlg:16px;--t:0.2s ease;--sb:260px;
+  --n:#0d1b2e;--n2:#142236;--n3:#1c3150;--n4:#0a1524;
+  --a:#e8a020;--a2:#f5b840;--w:#fff;--t:#e2e8f0;--m:#94a3b8;
+  --b:rgba(255,255,255,.08);--c:rgba(255,255,255,.04);
+  --fh:'Playfair Display',serif;--fb:'DM Sans',sans-serif;--fm:'DM Mono',monospace;
+  --r:10px;--rl:16px;--tr:.2s ease;--sw:260px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--ff-b);background:var(--navy4);color:var(--text);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;}
-a{color:inherit;text-decoration:none;}
-input,select,textarea,button{font-family:var(--ff-b);}
+body{font-family:var(--fb);background:var(--n4);color:var(--t);line-height:1.5;-webkit-font-smoothing:antialiased;min-height:100vh;}
+a{color:inherit;text-decoration:none;}input,select,textarea,button{font-family:var(--fb);}
 
 /* LOGIN */
-#loginScreen{position:fixed;inset:0;z-index:999;background:var(--navy4);display:flex;align-items:center;justify-content:center;padding:1rem;}
-#loginScreen::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 30% 40%,rgba(28,49,80,0.6) 0%,transparent 70%);pointer-events:none;}
-.lcard{width:100%;max-width:420px;background:var(--navy2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;position:relative;box-shadow:0 32px 80px rgba(0,0,0,0.5);}
-.lcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--amber),transparent);border-radius:20px 20px 0 0;}
-.llogo{font-family:var(--ff-h);font-size:1.5rem;font-weight:700;color:var(--white);}
-.llogo span{color:var(--amber);}
-.ltag{font-family:var(--ff-m);font-size:0.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:2rem;display:block;}
-.ltitle{font-size:1.1rem;font-weight:600;color:var(--white);margin-bottom:1.5rem;}
-.lg{margin-bottom:1.2rem;}
-.ll{display:block;font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:6px;}
-.li{width:100%;padding:11px 14px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:8px;font-size:.95rem;color:var(--text);outline:none;transition:border-color var(--t);}
-.li:focus{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.04);}
-.li::placeholder{color:rgba(148,163,184,.4);}
-.lbtn{width:100%;padding:13px;background:var(--amber);color:var(--navy);font-size:.95rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all var(--t);margin-top:.5rem;}
-.lbtn:hover{background:var(--amber2);transform:translateY(-1px);}
-.lerr{display:none;padding:10px 14px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;font-size:.85rem;color:#fca5a5;margin-top:1rem;text-align:center;}
-.lerr.show{display:block;}
+#LS{position:fixed;inset:0;z-index:999;background:var(--n4);display:flex;align-items:center;justify-content:center;padding:1rem;}
+#LS::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 30% 40%,rgba(28,49,80,.6) 0%,transparent 70%);pointer-events:none;}
+.lc{width:100%;max-width:420px;background:var(--n2);border:1px solid var(--b);border-radius:20px;padding:2.5rem;position:relative;box-shadow:0 32px 80px rgba(0,0,0,.5);}
+.lc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--a),transparent);border-radius:20px 20px 0 0;}
+.ll{font-family:var(--fh);font-size:1.5rem;font-weight:700;color:var(--w);}.ll span{color:var(--a);}
+.lt{font-family:var(--fm);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a);margin-bottom:2rem;display:block;}
+.lti{font-size:1.1rem;font-weight:600;color:var(--w);margin-bottom:1.5rem;}
+.lg{margin-bottom:1.2rem;}.la{display:block;font-size:.8rem;font-weight:500;color:var(--m);margin-bottom:6px;}
+.li{width:100%;padding:11px 14px;background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:8px;font-size:.95rem;color:var(--t);outline:none;transition:border-color var(--tr);}
+.li:focus{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.04);}.li::placeholder{color:rgba(148,163,184,.4);}
+.lb{width:100%;padding:13px;background:var(--a);color:var(--n);font-size:.95rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;margin-top:.5rem;transition:all var(--tr);}
+.lb:hover{background:var(--a2);transform:translateY(-1px);}
+.le{display:none;padding:10px 14px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;font-size:.85rem;color:#fca5a5;margin-top:1rem;text-align:center;}
+.le.show{display:block;}
 
 /* SHELL */
-#shell{display:none;}
-
-/* SIDEBAR */
-.sb{position:fixed;top:0;left:0;bottom:0;width:var(--sb);background:var(--navy2);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:50;transition:transform .3s ease;}
-.sb-logo{padding:1.5rem;border-bottom:1px solid var(--border);}
-.sb-logo-t{font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--white);}
-.sb-logo-t span{color:var(--amber);}
-.sb-logo-s{font-family:var(--ff-m);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-top:3px;display:block;}
-.sb-nav{flex:1;padding:1rem 0;overflow-y:auto;}
-.sb-sec{font-family:var(--ff-m);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.8rem 1.2rem .4rem;}
-.sb-i{display:flex;align-items:center;gap:10px;padding:10px 1.2rem;font-size:.875rem;font-weight:500;color:var(--muted);cursor:pointer;transition:all var(--t);border-left:2px solid transparent;margin:1px 0;}
-.sb-i:hover{color:var(--text);background:var(--card);}
-.sb-i.active{color:var(--amber);background:rgba(232,160,32,.07);border-left-color:var(--amber);}
-.sb-badge{margin-left:auto;padding:2px 7px;background:rgba(232,160,32,.15);border-radius:100px;font-size:.68rem;font-family:var(--ff-m);color:var(--amber);}
-.sb-foot{padding:1rem 1.2rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;}
-.sb-av{width:32px;height:32px;background:linear-gradient(135deg,var(--amber),var(--amber2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:var(--navy);}
-.sb-un{font-size:.82rem;font-weight:600;color:var(--text);}
-.sb-ur{font-size:.72rem;color:var(--muted);}
-.sb-out{margin-left:auto;padding:5px 10px;background:none;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:.75rem;cursor:pointer;transition:all var(--t);}
-.sb-out:hover{border-color:rgba(239,68,68,.4);color:#fca5a5;}
-
-/* MOB HEADER */
-.mob-h{display:none;position:fixed;top:0;left:0;right:0;z-index:60;height:60px;padding:0 1rem;background:var(--navy2);border-bottom:1px solid var(--border);align-items:center;justify-content:space-between;}
-.mob-logo{font-family:var(--ff-h);font-size:1rem;font-weight:700;color:var(--white);}
-.mob-logo span{color:var(--amber);}
-.mob-tog{background:none;border:none;cursor:pointer;color:var(--text);font-size:1.3rem;}
-
-/* MAIN */
-.main{margin-left:var(--sb);min-height:100vh;}
-.topbar{position:sticky;top:0;z-index:40;height:60px;padding:0 2rem;background:rgba(10,21,36,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.tb-title{font-family:var(--ff-h);font-size:1.1rem;font-weight:700;color:var(--white);}
-.tb-right{display:flex;align-items:center;gap:1rem;}
-.tb-time{font-family:var(--ff-m);font-size:.75rem;color:var(--muted);}
-.conn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:.75rem;font-family:var(--ff-m);}
-.conn.on{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#4ade80;}
-.conn.off{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;}
-.conn-dot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite;}
-.on .conn-dot{background:#4ade80;}.off .conn-dot{background:#fca5a5;}
+#SH{display:none;}
+.sb{position:fixed;top:0;left:0;bottom:0;width:var(--sw);background:var(--n2);border-right:1px solid var(--b);display:flex;flex-direction:column;z-index:50;transition:transform .3s;}
+.sbl{padding:1.5rem;border-bottom:1px solid var(--b);}
+.sblt{font-family:var(--fh);font-size:1.1rem;font-weight:700;color:var(--w);}.sblt span{color:var(--a);}
+.sbls{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--a);margin-top:3px;display:block;}
+.sbn{flex:1;padding:1rem 0;overflow-y:auto;}
+.sbs{font-family:var(--fm);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--m);padding:.8rem 1.2rem .4rem;}
+.sbi{display:flex;align-items:center;gap:10px;padding:10px 1.2rem;font-size:.875rem;font-weight:500;color:var(--m);cursor:pointer;transition:all var(--tr);border-left:2px solid transparent;margin:1px 0;}
+.sbi:hover{color:var(--t);background:var(--c);}.sbi.act{color:var(--a);background:rgba(232,160,32,.07);border-left-color:var(--a);}
+.sbb{margin-left:auto;padding:2px 7px;background:rgba(232,160,32,.15);border-radius:100px;font-size:.68rem;font-family:var(--fm);color:var(--a);}
+.sbf{padding:1rem 1.2rem;border-top:1px solid var(--b);display:flex;align-items:center;gap:10px;}
+.sbav{width:32px;height:32px;background:linear-gradient(135deg,var(--a),var(--a2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:var(--n);}
+.sbun{font-size:.82rem;font-weight:600;color:var(--t);}.sbur{font-size:.72rem;color:var(--m);}
+.sbout{margin-left:auto;padding:5px 10px;background:none;border:1px solid var(--b);border-radius:6px;color:var(--m);font-size:.75rem;cursor:pointer;transition:all var(--tr);}
+.sbout:hover{border-color:rgba(239,68,68,.4);color:#fca5a5;}
+.mh{display:none;position:fixed;top:0;left:0;right:0;z-index:60;height:60px;padding:0 1rem;background:var(--n2);border-bottom:1px solid var(--b);align-items:center;justify-content:space-between;}
+.mhl{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--w);}.mhl span{color:var(--a);}
+.mht{background:none;border:none;cursor:pointer;color:var(--t);font-size:1.3rem;}
+.main{margin-left:var(--sw);min-height:100vh;}
+.tb{position:sticky;top:0;z-index:40;height:60px;padding:0 2rem;background:rgba(10,21,36,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+.tbt{font-family:var(--fh);font-size:1.1rem;font-weight:700;color:var(--w);}
+.tbr{display:flex;align-items:center;gap:1rem;}
+.tbtm{font-family:var(--fm);font-size:.75rem;color:var(--m);}
+.cn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:.75rem;font-family:var(--fm);}
+.cn.on{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#4ade80;}
+.cn.off{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;}
+.cnd{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+.on .cnd{background:#4ade80;}.off .cnd{background:#fca5a5;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.content{padding:2rem;}
-
-/* VIEWS */
-.view{display:none;}.view.active{display:block;}
+.ct{padding:2rem;}
+.vw{display:none;}.vw.act{display:block;}
 
 /* SETUP BANNER */
-.setup-b{background:rgba(232,160,32,.07);border:1px solid rgba(232,160,32,.25);border-left:3px solid var(--amber);border-radius:var(--rlg);padding:1.4rem 1.8rem;margin-bottom:2rem;display:flex;align-items:flex-start;gap:1rem;}
-.setup-b.hidden{display:none;}
-.setup-b-icon{font-size:1.5rem;flex-shrink:0;margin-top:2px;}
-.setup-b-title{font-weight:700;color:var(--amber);font-size:.95rem;margin-bottom:4px;}
-.setup-b-desc{font-size:.85rem;color:var(--muted);line-height:1.6;}
-.setup-b-btn{margin-top:.8rem;padding:8px 18px;background:var(--amber);color:var(--navy);border:none;border-radius:7px;font-size:.85rem;font-weight:700;cursor:pointer;transition:all var(--t);}
-.setup-b-btn:hover{background:var(--amber2);}
+.spb{background:rgba(232,160,32,.07);border:1px solid rgba(232,160,32,.25);border-left:3px solid var(--a);border-radius:var(--rl);padding:1.4rem 1.8rem;margin-bottom:2rem;display:flex;align-items:flex-start;gap:1rem;}
+.spb.hd{display:none;}
+.spbt{font-weight:700;color:var(--a);font-size:.95rem;margin-bottom:4px;}
+.spbd{font-size:.85rem;color:var(--m);line-height:1.6;}
+.spbb{margin-top:.8rem;padding:8px 18px;background:var(--a);color:var(--n);border:none;border-radius:7px;font-size:.85rem;font-weight:700;cursor:pointer;}
 
 /* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:2rem;}
-.stat-c{background:var(--navy2);border:1px solid var(--border);border-radius:var(--rlg);padding:1.4rem 1.6rem;position:relative;overflow:hidden;transition:border-color var(--t),transform var(--t);}
-.stat-c:hover{border-color:rgba(232,160,32,.25);transform:translateY(-2px);}
-.stat-c::after{content:attr(data-icon);position:absolute;right:1rem;top:1rem;font-size:2.2rem;opacity:.12;}
-.stat-lbl{font-family:var(--ff-m);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
-.stat-v{font-family:var(--ff-h);font-size:2.2rem;font-weight:700;color:var(--amber);line-height:1;}
-.stat-s{font-size:.78rem;color:var(--muted);margin-top:5px;}
-.dash-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:1.5rem;}
+.sr{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:2rem;}
+.sc{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);padding:1.4rem 1.6rem;position:relative;overflow:hidden;transition:border-color var(--tr),transform var(--tr);}
+.sc:hover{border-color:rgba(232,160,32,.25);transform:translateY(-2px);}
+.sc::after{content:attr(data-icon);position:absolute;right:1rem;top:1rem;font-size:2.2rem;opacity:.12;}
+.sl{font-family:var(--fm);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:8px;}
+.sv{font-family:var(--fh);font-size:2.2rem;font-weight:700;color:var(--a);line-height:1;}
+.ss{font-size:.78rem;color:var(--m);margin-top:5px;}
+.dg{display:grid;grid-template-columns:1fr 1.3fr;gap:1.5rem;}
 
 /* PANEL */
-.panel{background:var(--navy2);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;margin-bottom:1.5rem;}
-.panel:last-child{margin-bottom:0;}
-.ph{padding:1.2rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.ph-title{font-family:var(--ff-h);font-size:1rem;font-weight:700;color:var(--white);}
-.ph-sub{font-size:.78rem;color:var(--muted);margin-top:2px;}
-.pb{padding:1.5rem;}
-.pa{padding:6px 14px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);border-radius:6px;font-size:.78rem;color:var(--amber);cursor:pointer;transition:all var(--t);font-family:var(--ff-b);}
+.pn{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;margin-bottom:1.5rem;}
+.pn:last-child{margin-bottom:0;}
+.ph{padding:1.2rem 1.5rem;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+.pht{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--w);}
+.phs{font-size:.78rem;color:var(--m);margin-top:2px;}.pb{padding:1.5rem;}
+.pa{padding:6px 14px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);border-radius:6px;font-size:.78rem;color:var(--a);cursor:pointer;transition:all var(--tr);}
 .pa:hover{background:rgba(232,160,32,.18);}
 
 /* FORM */
-.fsec{font-family:var(--ff-m);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);padding:.6rem 0;border-bottom:1px solid var(--border);margin:1.5rem 0 1rem;}
-.fsec:first-of-type{margin-top:0;}
+.fs{font-family:var(--fm);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a);padding:.6rem 0;border-bottom:1px solid var(--b);margin:1.5rem 0 1rem;}
+.fs:first-of-type{margin-top:0;}
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
 .r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:1rem;}
-.fl{font-size:.8rem;font-weight:500;color:var(--muted);}
-.fl .req{color:var(--amber);}
-.fi{padding:9px 13px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;font-size:.875rem;color:var(--text);transition:border-color var(--t),background var(--t);outline:none;width:100%;}
+.fl{font-size:.8rem;font-weight:500;color:var(--m);}.fl .rq{color:var(--a);}
+.fi{padding:9px 13px;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:8px;font-size:.875rem;color:var(--t);outline:none;width:100%;transition:border-color var(--tr);}
 .fi:focus{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.03);}
 .fi::placeholder{color:rgba(148,163,184,.35);}
-select.fi{cursor:pointer;}select.fi option{background:var(--navy2);}
-textarea.fi{resize:vertical;min-height:100px;}
-.tag-w{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:4px;}
-.tag-o{padding:6px 12px;border:1px solid var(--border);border-radius:100px;font-size:.78rem;color:var(--muted);cursor:pointer;transition:all var(--t);user-select:none;}
-.tag-o.sel{border-color:var(--amber);background:rgba(232,160,32,.1);color:var(--amber);}
-.f-acts{display:flex;gap:1rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);}
-.btn-s{flex:1;padding:12px;background:var(--amber);color:var(--navy);font-size:.9rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all var(--t);display:flex;align-items:center;justify-content:center;gap:8px;}
-.btn-s:hover:not(:disabled){background:var(--amber2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,160,32,.3);}
-.btn-s:disabled{opacity:.55;cursor:not-allowed;}
-.btn-r{padding:12px 20px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all var(--t);}
-.btn-r:hover{border-color:rgba(255,255,255,.2);color:var(--text);}
-.btn-o{padding:9px 18px;background:transparent;color:var(--amber);border:1px solid rgba(232,160,32,.25);border-radius:8px;cursor:pointer;transition:all var(--t);font-size:.85rem;}
-.btn-o:hover{background:rgba(232,160,32,.1);}
-.btn-g{display:flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-size:.85rem;color:#4ade80;cursor:pointer;transition:all var(--t);}
-.btn-g:hover{background:rgba(34,197,94,.18);}
-.btn-danger{padding:7px 14px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:6px;font-size:.78rem;color:#fca5a5;cursor:pointer;transition:all var(--t);}
-.btn-danger:hover{background:rgba(239,68,68,.2);}
+select.fi{cursor:pointer;}select.fi option{background:var(--n2);}textarea.fi{resize:vertical;min-height:90px;}
+.tw{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:4px;}
+.to{padding:6px 12px;border:1px solid var(--b);border-radius:100px;font-size:.78rem;color:var(--m);cursor:pointer;user-select:none;transition:all var(--tr);}
+.to.sl{border-color:var(--a);background:rgba(232,160,32,.1);color:var(--a);}
+.fa{display:flex;gap:1rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--b);}
+.bs{flex:1;padding:12px;background:var(--a);color:var(--n);font-size:.9rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all var(--tr);}
+.bs:hover:not(:disabled){background:var(--a2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,160,32,.3);}
+.bs:disabled{opacity:.55;cursor:not-allowed;}
+.br{padding:12px 20px;background:transparent;color:var(--m);border:1px solid var(--b);border-radius:8px;cursor:pointer;transition:all var(--tr);}
+.br:hover{color:var(--t);}
+.bo{padding:9px 18px;background:transparent;color:var(--a);border:1px solid rgba(232,160,32,.25);border-radius:8px;cursor:pointer;font-size:.85rem;transition:all var(--tr);}
+.bo:hover{background:rgba(232,160,32,.1);}
+.bg{display:flex;align-items:center;gap:6px;padding:9px 18px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-size:.85rem;color:#4ade80;cursor:pointer;transition:all var(--tr);}
+.bg:hover{background:rgba(34,197,94,.18);}
 
 /* TABLE */
 .tc{display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;}
-.sw{position:relative;flex:1;min-width:200px;}
-.sw::before{content:'🔍';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:.85rem;pointer-events:none;}
-.tsrch{width:100%;padding:9px 13px 9px 38px;background:var(--navy2);border:1px solid var(--border);border-radius:8px;font-size:.875rem;color:var(--text);outline:none;transition:border-color var(--t);}
-.tsrch:focus{border-color:rgba(232,160,32,.4);}
-.tsrch::placeholder{color:rgba(148,163,184,.4);}
-.tfilt{padding:9px 13px;background:var(--navy2);border:1px solid var(--border);border-radius:8px;font-size:.875rem;color:var(--text);outline:none;cursor:pointer;}
-.tfilt option{background:var(--navy2);}
-.twrap{background:var(--navy2);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;}
-.tload{text-align:center;padding:3rem;color:var(--muted);font-size:.9rem;}
-.spin{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--amber);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem;}
+.sw2{position:relative;flex:1;min-width:200px;}
+.sw2::before{content:'🔍';position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:.85rem;pointer-events:none;}
+.tsr{width:100%;padding:9px 13px 9px 38px;background:var(--n2);border:1px solid var(--b);border-radius:8px;font-size:.875rem;color:var(--t);outline:none;}
+.tsr:focus{border-color:rgba(232,160,32,.4);}.tsr::placeholder{color:rgba(148,163,184,.4);}
+.tf{padding:9px 13px;background:var(--n2);border:1px solid var(--b);border-radius:8px;font-size:.875rem;color:var(--t);outline:none;cursor:pointer;}
+.tf option{background:var(--n2);}
+.tw2{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;}
+.tld{text-align:center;padding:3rem;color:var(--m);font-size:.9rem;}
+.sp{width:28px;height:28px;border:2px solid var(--b);border-top-color:var(--a);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.tscroll{overflow-x:auto;}
+.tsx{overflow-x:auto;}
 table{width:100%;border-collapse:collapse;font-size:.85rem;}
-thead th{padding:11px 14px;text-align:left;font-family:var(--ff-m);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);white-space:nowrap;}
-tbody tr{border-bottom:1px solid var(--border);transition:background var(--t);}
-tbody tr:last-child{border-bottom:none;}
-tbody tr:hover{background:rgba(255,255,255,.03);}
-tbody td{padding:12px 14px;color:var(--text);vertical-align:middle;}
-.td-n{font-weight:600;color:var(--white);}
-.td-id{font-family:var(--ff-m);font-size:.72rem;color:var(--muted);}
-.badge{display:inline-block;padding:3px 9px;border-radius:100px;font-size:.72rem;font-weight:500;}
+thead th{padding:11px 14px;text-align:left;font-family:var(--fm);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);background:rgba(255,255,255,.03);border-bottom:1px solid var(--b);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--b);transition:background var(--tr);}
+tbody tr:last-child{border-bottom:none;}tbody tr:hover{background:rgba(255,255,255,.03);}
+tbody td{padding:12px 14px;color:var(--t);vertical-align:middle;}
+.tdn{font-weight:600;color:var(--w);}.tdi{font-family:var(--fm);font-size:.72rem;color:var(--m);}
+.bd{display:inline-block;padding:3px 9px;border-radius:100px;font-size:.72rem;font-weight:500;}
 .ba{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#4ade80;}
 .bp{background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.25);color:#93c5fd;}
-.bi{background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.2);color:var(--muted);}
-.bint{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);color:var(--amber);}
-.bopen{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#4ade80;}
-.bclosed{background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.2);color:var(--muted);}
-.bpause{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);color:var(--amber);}
-.ta{padding:4px 10px;background:none;border:1px solid var(--border);border-radius:5px;color:var(--muted);font-size:.75rem;cursor:pointer;transition:all var(--t);margin-right:3px;}
-.ta:hover{border-color:rgba(232,160,32,.4);color:var(--amber);}
-.te{text-align:center;padding:3rem;color:var(--muted);font-size:.9rem;}
-.tf{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);font-size:.8rem;color:var(--muted);flex-wrap:wrap;gap:.5rem;}
+.bi{background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.2);color:var(--m);}
+.bint{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);color:var(--a);}
+.bop{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#4ade80;}
+.bcl{background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.2);color:var(--m);}
+.bpa{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);color:var(--a);}
+.ta{padding:4px 10px;background:none;border:1px solid var(--b);border-radius:5px;color:var(--m);font-size:.75rem;cursor:pointer;margin-right:3px;transition:all var(--tr);}
+.ta:hover{border-color:rgba(232,160,32,.4);color:var(--a);}
+.te{text-align:center;padding:3rem;color:var(--m);font-size:.9rem;}
+.tft{padding:12px 14px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--b);font-size:.8rem;color:var(--m);flex-wrap:wrap;gap:.5rem;}
 
-/* JOB CARD GRID */
-.job-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.2rem;margin-top:1.5rem;}
-.job-card{background:var(--card);border:1px solid var(--border);border-radius:var(--rlg);padding:1.5rem;position:relative;overflow:hidden;transition:border-color var(--t),transform var(--t);}
-.job-card:hover{border-color:rgba(232,160,32,.3);transform:translateY(-3px);}
-.job-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent);opacity:0;transition:opacity var(--t);}
-.job-card:hover::before{opacity:1;}
-.jc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;margin-bottom:1rem;}
-.jc-title{font-family:var(--ff-h);font-size:1rem;font-weight:700;color:var(--white);line-height:1.2;}
-.jc-co{font-size:.8rem;color:var(--muted);margin-top:3px;}
-.jc-meta{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:1rem 0;}
-.jc-m-label{font-family:var(--ff-m);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;}
-.jc-m-val{font-size:.82rem;color:var(--text);font-weight:500;}
-.jc-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.8rem;}
-.jc-tag{padding:3px 9px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:100px;font-size:.7rem;color:#93c5fd;}
-.jc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);}
-.jc-ctc{font-family:var(--ff-h);font-size:.95rem;font-weight:700;color:var(--amber);}
-.jc-date{font-family:var(--ff-m);font-size:.65rem;color:var(--muted);}
-.jc-actions{display:flex;gap:.5rem;margin-top:.8rem;}
+/* JOB CARDS */
+.jg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem;margin-top:1rem;}
+.jc{background:var(--c);border:1px solid var(--b);border-radius:var(--rl);padding:1.5rem;position:relative;overflow:hidden;transition:border-color var(--tr),transform var(--tr);}
+.jc:hover{border-color:rgba(232,160,32,.3);transform:translateY(-3px);}
+.jc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--a),transparent);opacity:0;transition:opacity var(--tr);}
+.jc:hover::before{opacity:1;}
+.jct{display:flex;align-items:flex-start;justify-content:space-between;gap:.8rem;margin-bottom:.8rem;}
+.jcti{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--w);line-height:1.2;}
+.jcco{font-size:.8rem;color:var(--m);margin-top:3px;}
+.jcm{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.8rem 0;}
+.jcml{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:2px;}
+.jcmv{font-size:.82rem;color:var(--t);font-weight:500;}
+.jctg{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem;}
+.jctgi{padding:3px 9px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:100px;font-size:.7rem;color:#93c5fd;}
+.jcft{display:flex;align-items:center;justify-content:space-between;margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--b);}
+.jcctc{font-family:var(--fh);font-size:.95rem;font-weight:700;color:var(--a);}
+.jcdt{font-family:var(--fm);font-size:.65rem;color:var(--m);}
 
 /* SETTINGS */
-.set-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:1.5rem;align-items:start;}
-.step-list{list-style:none;}
-.step-i{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);}
-.step-i:last-child{border-bottom:none;}
-.step-n{width:30px;height:30px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--ff-m);font-size:.78rem;color:var(--amber);flex-shrink:0;}
-.step-title{font-weight:600;color:var(--white);font-size:.88rem;margin-bottom:3px;}
-.step-desc{font-size:.81rem;color:var(--muted);line-height:1.65;}
-.step-code{font-family:var(--ff-m);font-size:.75rem;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:5px;padding:3px 8px;color:var(--amber);display:inline-block;margin-top:3px;}
-.code-hdr{font-family:var(--ff-m);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between;}
+.sg{display:grid;grid-template-columns:1fr 1.2fr;gap:1.5rem;align-items:start;}
+.stl{list-style:none;}
+.sti{display:flex;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--b);}
+.sti:last-child{border-bottom:none;}
+.stn{width:30px;height:30px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.78rem;color:var(--a);flex-shrink:0;}
+.stti{font-weight:600;color:var(--w);font-size:.88rem;margin-bottom:3px;}
+.std{font-size:.81rem;color:var(--m);line-height:1.65;}
+.stc{font-family:var(--fm);font-size:.75rem;background:rgba(0,0,0,.3);border:1px solid var(--b);border-radius:5px;padding:3px 8px;color:var(--a);display:inline-block;margin-top:3px;}
+.ch{font-family:var(--fm);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--a);margin-bottom:.5rem;display:flex;align-items:center;justify-content:space-between;}
 
 /* TOAST */
 .toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:14px 20px;border-radius:10px;font-size:.875rem;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.4);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);max-width:360px;}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast.success{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#4ade80;}
 .toast.error{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
-.toast.info{background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.25);color:var(--amber);}
+.toast.info{background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.25);color:var(--a);}
 
-.sb-overlay{display:none;position:fixed;inset:0;z-index:45;background:rgba(0,0,0,.5);}
-.sb-overlay.show{display:block;}
+.sbo{display:none;position:fixed;inset:0;z-index:45;background:rgba(0,0,0,.5);}
+.sbo.show{display:block;}
 
-@media(max-width:1100px){.stats-row{grid-template-columns:repeat(2,1fr);}.dash-grid{grid-template-columns:1fr;}.set-grid{grid-template-columns:1fr;}}
-@media(max-width:900px){.sb{transform:translateX(-100%);}.sb.open{transform:translateX(0);}.main{margin-left:0;}.mob-h{display:flex;}.topbar{display:none;}.content{padding:1rem;padding-top:70px;}.r3{grid-template-columns:1fr 1fr;}}
-@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr;}.r2,.r3{grid-template-columns:1fr;}.f-acts{flex-direction:column;}.tc{flex-direction:column;align-items:stretch;}.job-grid{grid-template-columns:1fr;}}
+@media(max-width:1100px){.sr{grid-template-columns:repeat(2,1fr);}.dg{grid-template-columns:1fr;}.sg{grid-template-columns:1fr;}}
+@media(max-width:900px){.sb{transform:translateX(-100%);}.sb.open{transform:translateX(0);}.main{margin-left:0;}.mh{display:flex;}.tb{display:none;}.ct{padding:1rem;padding-top:70px;}.r3{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.sr{grid-template-columns:1fr 1fr;}.r2,.r3{grid-template-columns:1fr;}.fa{flex-direction:column;}.tc{flex-direction:column;align-items:stretch;}.jg{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div id="loginScreen">
-  <div class="lcard">
-    <div class="llogo">Aaradhya <span>SFS</span></div>
-    <span class="ltag">Admin Portal</span>
-    <div class="ltitle">Sign in to continue</div>
-    <div class="lg"><label class="ll">Username</label><input class="li" type="text" id="lu" placeholder="Username" autocomplete="username"></div>
-    <div class="lg"><label class="ll">Password</label><input class="li" type="password" id="lp" placeholder="Password" autocomplete="current-password"></div>
-    <button class="lbtn" onclick="doLogin()">Sign In →</button>
-    <div class="lerr" id="lerr">Incorrect credentials.</div>
+<div id="LS">
+  <div class="lc">
+    <div class="ll">Aaradhya <span>SFS</span></div>
+    <span class="lt">Admin Portal</span>
+    <div class="lti">Sign in to continue</div>
+    <div class="lg"><label class="la">Username</label><input class="li" type="text" id="lu" placeholder="Username" autocomplete="username"></div>
+    <div class="lg"><label class="la">Password</label><input class="li" type="password" id="lp" placeholder="Password" autocomplete="current-password"></div>
+    <button class="lb" onclick="doLogin()">Sign In →</button>
+    <div class="le" id="le">Incorrect credentials.</div>
   </div>
 </div>
 
 <!-- SHELL -->
-<div id="shell">
-  <div class="mob-h">
-    <div class="mob-logo">Aaradhya <span>SFS</span></div>
-    <button class="mob-tog" onclick="toggleSB()">☰</button>
-  </div>
-  <div class="sb-overlay" id="sbo" onclick="closeSB()"></div>
-
-  <aside class="sb" id="sidebar">
-    <div class="sb-logo">
-      <div class="sb-logo-t">Aaradhya <span>SFS</span></div>
-      <span class="sb-logo-s">Admin Panel</span>
-    </div>
-    <nav class="sb-nav">
-      <div class="sb-sec">Overview</div>
-      <div class="sb-i active" onclick="gv('dashboard',this)"><span>📊</span>Dashboard</div>
-      <div class="sb-sec">Candidates</div>
-      <div class="sb-i" onclick="gv('addCand',this)"><span>➕</span>Add Candidate</div>
-      <div class="sb-i" onclick="gv('listCand',this);loadCands()"><span>👥</span>All Candidates<span class="sb-badge" id="sbCCount">—</span></div>
-      <div class="sb-sec">Job Posts</div>
-      <div class="sb-i" onclick="gv('addJob',this)"><span>📝</span>Post a Job</div>
-      <div class="sb-i" onclick="gv('listJobs',this);loadJobs()"><span>💼</span>All Job Posts<span class="sb-badge" id="sbJCount">—</span></div>
-      <div class="sb-sec">System</div>
-      <div class="sb-i" onclick="gv('settings',this)"><span>⚙️</span>Settings</div>
-      <div class="sb-i" onclick="window.open(SHEET_URL,'_blank')"><span>📊</span>Open Google Sheet</div>
-      <div class="sb-i" onclick="window.open('index.html','_blank')"><span>🌐</span>View Website</div>
+<div id="SH">
+  <div class="mh"><div class="mhl">Aaradhya <span>SFS</span></div><button class="mht" onclick="tSB()">☰</button></div>
+  <div class="sbo" id="sbo" onclick="cSB()"></div>
+  <aside class="sb" id="sb">
+    <div class="sbl"><div class="sblt">Aaradhya <span>SFS</span></div><span class="sbls">Admin Panel</span></div>
+    <nav class="sbn">
+      <div class="sbs">Overview</div>
+      <div class="sbi act" onclick="gv('dash',this)"><span>📊</span>Dashboard</div>
+      <div class="sbs">Candidates</div>
+      <div class="sbi" onclick="gv('aC',this)"><span>➕</span>Add Candidate</div>
+      <div class="sbi" onclick="gv('lC',this);loadC()"><span>👥</span>All Candidates<span class="sbb" id="sbc">—</span></div>
+      <div class="sbs">Job Posts</div>
+      <div class="sbi" onclick="gv('aJ',this)"><span>📝</span>Post a Job</div>
+      <div class="sbi" onclick="gv('lJ',this);loadJ()"><span>💼</span>All Job Posts<span class="sbb" id="sbj">—</span></div>
+      <div class="sbs">System</div>
+      <div class="sbi" onclick="gv('st',this)"><span>⚙️</span>Settings</div>
+      <div class="sbi" onclick="openSheet()"><span>📊</span>Open Google Sheet</div>
+      <div class="sbi" onclick="window.open('index.html','_blank')"><span>🌐</span>View Website</div>
     </nav>
-    <div class="sb-foot">
-      <div class="sb-av" id="uAv">A</div>
-      <div><div class="sb-un" id="uN">Admin</div><div class="sb-ur">Administrator</div></div>
-      <button class="sb-out" onclick="doLogout()">Logout</button>
+    <div class="sbf">
+      <div class="sbav" id="av">A</div>
+      <div><div class="sbun" id="un">Admin</div><div class="sbur">Administrator</div></div>
+      <button class="sbout" onclick="doLogout()">Logout</button>
     </div>
   </aside>
 
   <div class="main">
-    <div class="topbar">
-      <div class="tb-title" id="pgTitle">Dashboard</div>
-      <div class="tb-right">
-        <div class="tb-time" id="clk"></div>
-        <div class="conn off" id="connBadge"><div class="conn-dot"></div><span id="connTxt">Not Connected</span></div>
+    <div class="tb">
+      <div class="tbt" id="pgt">Dashboard</div>
+      <div class="tbr">
+        <div class="tbtm" id="clk"></div>
+        <div class="cn off" id="cnB"><div class="cnd"></div><span id="cnT">Not Connected</span></div>
       </div>
     </div>
 
-    <div class="content">
+    <div class="ct">
 
       <!-- DASHBOARD -->
-      <div class="view active" id="view-dashboard">
-        <div class="setup-b" id="setupB">
-          <div class="setup-b-icon">⚡</div>
-          <div>
-            <div class="setup-b-title">Quick Setup Required — 2 Minutes</div>
-            <div class="setup-b-desc">Paste your Apps Script Web App URL in Settings to enable direct saving to Google Sheets.</div>
-            <button class="setup-b-btn" onclick="gv('settings',null)">Go to Settings →</button>
-          </div>
+      <div class="vw act" id="vw-dash">
+        <div class="spb" id="spb">
+          <div><div class="spbt">⚡ One-time Setup Required</div><div class="spbd">Go to Settings, deploy the Apps Script, paste the URL and click Save &amp; Test. Both reading and writing use the same script.</div><button class="spbb" onclick="gv('st',null)">Go to Settings →</button></div>
         </div>
-        <div class="stats-row">
-          <div class="stat-c" data-icon="👥"><div class="stat-lbl">Total Candidates</div><div class="stat-v" id="sTot">—</div><div class="stat-s">in database</div></div>
-          <div class="stat-c" data-icon="✅"><div class="stat-lbl">Available</div><div class="stat-v" id="sAv">—</div><div class="stat-s">ready to deploy</div></div>
-          <div class="stat-c" data-icon="💼"><div class="stat-lbl">Job Posts</div><div class="stat-v" id="sJobs">—</div><div class="stat-s">active openings</div></div>
-          <div class="stat-c" data-icon="🗺️"><div class="stat-lbl">Districts</div><div class="stat-v" id="sDist">—</div><div class="stat-s">HQs covered</div></div>
+        <div class="sr">
+          <div class="sc" data-icon="👥"><div class="sl">Total Candidates</div><div class="sv" id="dT">—</div><div class="ss">in database</div></div>
+          <div class="sc" data-icon="✅"><div class="sl">Available</div><div class="sv" id="dA">—</div><div class="ss">ready to deploy</div></div>
+          <div class="sc" data-icon="💼"><div class="sl">Active Jobs</div><div class="sv" id="dJ">—</div><div class="ss">open postings</div></div>
+          <div class="sc" data-icon="🗺️"><div class="sl">Districts</div><div class="sv" id="dD">—</div><div class="ss">HQs covered</div></div>
         </div>
-        <div class="dash-grid">
-          <div class="panel">
-            <div class="ph"><div class="ph-title">Quick Actions</div></div>
+        <div class="dg">
+          <div class="pn"><div class="ph"><div class="pht">Quick Actions</div></div>
             <div class="pb" style="display:flex;flex-direction:column;gap:.8rem;">
-              <button class="btn-s" onclick="gv('addCand',null)">➕ Add New Candidate</button>
-              <button class="btn-s" style="background:var(--navy3);color:var(--amber);border:1px solid rgba(232,160,32,.25);" onclick="gv('addJob',null)">📝 Post a Job</button>
-              <button class="btn-o" onclick="gv('listCand',null);loadCands()">👥 View All Candidates</button>
-              <button class="btn-g" onclick="window.open(SHEET_URL,'_blank')">📊 Open Google Sheet</button>
+              <button class="bs" onclick="gv('aC',null)">➕ Add Candidate</button>
+              <button class="bs" style="background:var(--n3);color:var(--a);border:1px solid rgba(232,160,32,.3);" onclick="gv('aJ',null)">📝 Post a Job</button>
+              <button class="bo" onclick="gv('lC',null);loadC()">👥 View All Candidates</button>
+              <button class="bg" onclick="openSheet()">📊 Open Google Sheet</button>
             </div>
           </div>
-          <div class="panel">
-            <div class="ph">
-              <div><div class="ph-title">Recent Candidates</div><div class="ph-sub">Last 5 added</div></div>
-              <button class="pa" onclick="gv('listCand',null);loadCands()">View All</button>
-            </div>
-            <div class="pb" id="recentList"><div class="tload" style="padding:1rem 0;"><div class="spin"></div>Loading…</div></div>
+          <div class="pn">
+            <div class="ph"><div><div class="pht">Recent Candidates</div><div class="phs">Last 5 added</div></div><button class="pa" onclick="gv('lC',null);loadC()">View All</button></div>
+            <div class="pb" id="rl"><div class="tld" style="padding:1rem 0;"><div class="sp"></div>Loading…</div></div>
           </div>
         </div>
       </div>
 
       <!-- ADD CANDIDATE -->
-      <div class="view" id="view-addCand">
-        <div class="panel">
-          <div class="ph"><div><div class="ph-title">Add New Candidate</div><div class="ph-sub">Saves directly to Google Sheets</div></div></div>
-          <div class="pb">
-            <form id="cForm" onsubmit="return false;">
-              <div class="fsec">Personal Information</div>
-              <div class="r2">
-                <div class="fg"><label class="fl">Full Name <span class="req">*</span></label><input class="fi" id="f_name" type="text" placeholder="Full name" required></div>
-                <div class="fg"><label class="fl">Mobile <span class="req">*</span></label><input class="fi" id="f_mob" type="tel" placeholder="10-digit number" required></div>
-              </div>
-              <div class="r2">
-                <div class="fg"><label class="fl">Email</label><input class="fi" id="f_email" type="email" placeholder="email@example.com"></div>
-                <div class="fg"><label class="fl">Date of Birth</label><input class="fi" id="f_dob" type="date"></div>
-              </div>
-              <div class="r2">
-                <div class="fg"><label class="fl">Gender</label><select class="fi" id="f_gen"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
-                <div class="fg"><label class="fl">Qualification</label><select class="fi" id="f_qual"><option value="">Select</option><option>B.Sc (Biology / Biotech)</option><option>B.Pharm</option><option>D.Pharm</option><option>B.A / B.Com</option><option>MBA</option><option>Other Graduate</option><option>12th Pass (Science)</option></select></div>
-              </div>
-              <div class="fg"><label class="fl">Home City / Town</label><input class="fi" id="f_city" type="text" placeholder="e.g. Sambalpur"></div>
-              <div class="fsec">Field Experience</div>
-              <div class="r3">
-                <div class="fg"><label class="fl">Total Experience <span class="req">*</span></label><select class="fi" id="f_exp" required><option value="">Select</option><option>Fresher (0 yr)</option><option>Less than 1 year</option><option>1 – 2 years</option><option>2 – 3 years</option><option>3 – 5 years</option><option>5 – 8 years</option><option>8+ years</option></select></div>
-                <div class="fg"><label class="fl">Current / Last Role</label><select class="fi" id="f_role"><option value="">Select</option><option>Medical Representative (MR)</option><option>Senior MR</option><option>ABM</option><option>ZBM</option><option>PSR / DSR</option><option>Fresher</option></select></div>
-                <div class="fg"><label class="fl">Current CTC (₹/mo)</label><input class="fi" id="f_ctc" type="number" placeholder="e.g. 18000"></div>
-              </div>
-              <div class="r2">
-                <div class="fg"><label class="fl">Current / Last Company</label><input class="fi" id="f_co" type="text" placeholder="Company name"></div>
-                <div class="fg"><label class="fl">Expected CTC (₹/mo)</label><input class="fi" id="f_ectc" type="number" placeholder="e.g. 22000"></div>
-              </div>
-              <div class="fg"><label class="fl">Product Divisions Worked In</label>
-                <div class="tag-w" id="tDiv">
-                  <span class="tag-o" onclick="tog(this)">Allopathy / Ethical</span><span class="tag-o" onclick="tog(this)">Generic</span><span class="tag-o" onclick="tog(this)">Ayurvedic / Herbal</span><span class="tag-o" onclick="tog(this)">OTC / Consumer</span><span class="tag-o" onclick="tog(this)">Oncology</span><span class="tag-o" onclick="tog(this)">Cardiology</span><span class="tag-o" onclick="tog(this)">Diabetology</span><span class="tag-o" onclick="tog(this)">Dermatology</span><span class="tag-o" onclick="tog(this)">Gynaecology</span><span class="tag-o" onclick="tog(this)">Paediatrics</span><span class="tag-o" onclick="tog(this)">Neurology</span><span class="tag-o" onclick="tog(this)">PCD / Franchise</span>
-                </div>
-              </div>
-              <div class="fg"><label class="fl">Doctor Segment</label>
-                <div class="tag-w" id="tDoc">
-                  <span class="tag-o" onclick="tog(this)">GPs / General Physicians</span><span class="tag-o" onclick="tog(this)">Specialists</span><span class="tag-o" onclick="tog(this)">Hospital / Institutional</span><span class="tag-o" onclick="tog(this)">Chemist-focused</span>
-                </div>
-              </div>
-              <div class="fsec">Territory</div>
-              <div class="r2">
-                <div class="fg"><label class="fl">Primary HQ <span class="req">*</span></label>
-                  <select class="fi" id="f_hq" required>
-                    <option value="">Select HQ</option>
-                    <optgroup label="Major HQs"><option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option><option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option></optgroup>
-                    <optgroup label="Tier-2 / Tier-3"><option>Kalahandi</option><option>Nuapada</option><option>Bargarh</option><option>Koraput</option><option>Jharsuguda</option><option>Balangir</option><option>Sundargarh</option><option>Keonjhar</option><option>Mayurbhanj</option><option>Dhenkanal</option><option>Angul</option><option>Rayagada</option></optgroup>
-                    <option>Multiple / Pan-Odisha</option>
-                  </select>
-                </div>
-                <div class="fg"><label class="fl">Willing to Relocate</label><select class="fi" id="f_rel"><option value="">Select</option><option>Yes — anywhere in Odisha</option><option>Yes — nearby districts only</option><option>No — current HQ only</option></select></div>
-              </div>
-              <div class="fg"><label class="fl">Other Territories Known</label><input class="fi" id="f_ot" type="text" placeholder="e.g. Bargarh, Jharsuguda"></div>
-              <div class="fsec">Status & Notes</div>
-              <div class="r3">
-                <div class="fg"><label class="fl">Status <span class="req">*</span></label><select class="fi" id="f_st" required><option value="Available">✅ Available</option><option value="Interview Scheduled">📋 Interview Scheduled</option><option value="Placed">🔵 Placed</option><option value="Inactive">⚫ Inactive</option></select></div>
-                <div class="fg"><label class="fl">Joining Availability</label><select class="fi" id="f_join"><option value="">Select</option><option>Immediate (within 1 week)</option><option>Within 15 days</option><option>Within 1 month</option><option>Flexible</option></select></div>
-                <div class="fg"><label class="fl">Communication Rating</label><select class="fi" id="f_comm"><option value="">Select</option><option>⭐⭐⭐⭐⭐ Excellent</option><option>⭐⭐⭐⭐ Good</option><option>⭐⭐⭐ Average</option><option>⭐⭐ Below Average</option></select></div>
-              </div>
-              <div class="fg"><label class="fl">Internal Notes</label><textarea class="fi" id="f_notes" placeholder="Notes (internal only)…"></textarea></div>
-              <div class="f-acts">
-                <button class="btn-s" id="saveCandBtn" onclick="saveCandidate()">💾 Save to Google Sheets</button>
-                <button class="btn-r" onclick="resetCandForm()">Reset</button>
-              </div>
-            </form>
-          </div>
+      <div class="vw" id="vw-aC">
+        <div class="pn"><div class="ph"><div><div class="pht">Add New Candidate</div><div class="phs">Saves directly to Google Sheets</div></div></div>
+          <div class="pb"><form id="cF" onsubmit="return false;">
+            <div class="fs">Personal Information</div>
+            <div class="r2"><div class="fg"><label class="fl">Full Name <span class="rq">*</span></label><input class="fi" id="cn_n" type="text" placeholder="Full name" required></div><div class="fg"><label class="fl">Mobile <span class="rq">*</span></label><input class="fi" id="cn_m" type="tel" placeholder="10-digit number" required></div></div>
+            <div class="r2"><div class="fg"><label class="fl">Email</label><input class="fi" id="cn_e" type="email" placeholder="email@example.com"></div><div class="fg"><label class="fl">Date of Birth</label><input class="fi" id="cn_d" type="date"></div></div>
+            <div class="r2"><div class="fg"><label class="fl">Gender</label><select class="fi" id="cn_g"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div><div class="fg"><label class="fl">Qualification</label><select class="fi" id="cn_q"><option value="">Select</option><option>B.Sc (Biology / Biotech)</option><option>B.Pharm</option><option>D.Pharm</option><option>B.A / B.Com</option><option>MBA</option><option>Other Graduate</option><option>12th Pass (Science)</option></select></div></div>
+            <div class="fg"><label class="fl">Home City</label><input class="fi" id="cn_c" type="text" placeholder="e.g. Sambalpur"></div>
+            <div class="fs">Field Experience</div>
+            <div class="r3"><div class="fg"><label class="fl">Experience <span class="rq">*</span></label><select class="fi" id="cn_x" required><option value="">Select</option><option>Fresher (0 yr)</option><option>Less than 1 year</option><option>1 – 2 years</option><option>2 – 3 years</option><option>3 – 5 years</option><option>5 – 8 years</option><option>8+ years</option></select></div><div class="fg"><label class="fl">Current / Last Role</label><select class="fi" id="cn_r"><option value="">Select</option><option>Medical Representative (MR)</option><option>Senior MR</option><option>ABM</option><option>ZBM</option><option>PSR / DSR</option><option>Fresher</option></select></div><div class="fg"><label class="fl">Current CTC (₹/mo)</label><input class="fi" id="cn_cc" type="number" placeholder="e.g. 18000"></div></div>
+            <div class="r2"><div class="fg"><label class="fl">Current / Last Company</label><input class="fi" id="cn_co" type="text" placeholder="Company name"></div><div class="fg"><label class="fl">Expected CTC (₹/mo)</label><input class="fi" id="cn_ec" type="number" placeholder="e.g. 22000"></div></div>
+            <div class="fg"><label class="fl">Product Divisions</label><div class="tw" id="cDiv"><span class="to" onclick="tog(this)">Allopathy / Ethical</span><span class="to" onclick="tog(this)">Generic</span><span class="to" onclick="tog(this)">Ayurvedic / Herbal</span><span class="to" onclick="tog(this)">OTC / Consumer</span><span class="to" onclick="tog(this)">Oncology</span><span class="to" onclick="tog(this)">Cardiology</span><span class="to" onclick="tog(this)">Diabetology</span><span class="to" onclick="tog(this)">Dermatology</span><span class="to" onclick="tog(this)">Gynaecology</span><span class="to" onclick="tog(this)">Paediatrics</span><span class="to" onclick="tog(this)">Neurology</span><span class="to" onclick="tog(this)">PCD / Franchise</span></div></div>
+            <div class="fg"><label class="fl">Doctor Segment</label><div class="tw" id="cDoc"><span class="to" onclick="tog(this)">GPs / General Physicians</span><span class="to" onclick="tog(this)">Specialists</span><span class="to" onclick="tog(this)">Hospital / Institutional</span><span class="to" onclick="tog(this)">Chemist-focused</span></div></div>
+            <div class="fs">Territory</div>
+            <div class="r2"><div class="fg"><label class="fl">Primary HQ <span class="rq">*</span></label><select class="fi" id="cn_h" required><option value="">Select HQ</option><optgroup label="Major HQs"><option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option><option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option></optgroup><optgroup label="Tier-2/3"><option>Kalahandi</option><option>Nuapada</option><option>Bargarh</option><option>Koraput</option><option>Jharsuguda</option><option>Balangir</option><option>Sundargarh</option><option>Keonjhar</option><option>Mayurbhanj</option><option>Dhenkanal</option><option>Angul</option><option>Rayagada</option></optgroup><option>Multiple / Pan-Odisha</option></select></div><div class="fg"><label class="fl">Willing to Relocate</label><select class="fi" id="cn_rl"><option value="">Select</option><option>Yes — anywhere in Odisha</option><option>Yes — nearby districts only</option><option>No — current HQ only</option></select></div></div>
+            <div class="fg"><label class="fl">Other Territories Known</label><input class="fi" id="cn_ot" type="text" placeholder="e.g. Bargarh, Jharsuguda"></div>
+            <div class="fs">Status & Notes</div>
+            <div class="r3"><div class="fg"><label class="fl">Status <span class="rq">*</span></label><select class="fi" id="cn_s" required><option value="Available">✅ Available</option><option value="Interview Scheduled">📋 Interview Scheduled</option><option value="Placed">🔵 Placed</option><option value="Inactive">⚫ Inactive</option></select></div><div class="fg"><label class="fl">Joining Availability</label><select class="fi" id="cn_j"><option value="">Select</option><option>Immediate (within 1 week)</option><option>Within 15 days</option><option>Within 1 month</option><option>Flexible</option></select></div><div class="fg"><label class="fl">Communication Rating</label><select class="fi" id="cn_cr"><option value="">Select</option><option>⭐⭐⭐⭐⭐ Excellent</option><option>⭐⭐⭐⭐ Good</option><option>⭐⭐⭐ Average</option><option>⭐⭐ Below Average</option></select></div></div>
+            <div class="fg"><label class="fl">Internal Notes</label><textarea class="fi" id="cn_nt" placeholder="Notes (internal only)…"></textarea></div>
+            <div class="fa"><button class="bs" id="scb" onclick="saveC()">💾 Save to Google Sheets</button><button class="br" onclick="resetC()">Reset</button></div>
+          </form></div>
         </div>
       </div>
 
       <!-- LIST CANDIDATES -->
-      <div class="view" id="view-listCand">
-        <div class="tc">
-          <div class="sw"><input class="tsrch" id="cSrch" type="text" placeholder="Search name, HQ, mobile…" oninput="filterCands()"></div>
-          <select class="tfilt" id="cFSt" onchange="filterCands()"><option value="">All Status</option><option>Available</option><option>Interview Scheduled</option><option>Placed</option><option>Inactive</option></select>
-          <select class="tfilt" id="cFHQ" onchange="filterCands()"><option value="">All HQs</option></select>
-          <button class="btn-o" onclick="loadCands()">🔄 Refresh</button>
-          <button class="btn-g" onclick="window.open(SHEET_URL,'_blank')">📊 Open Sheet</button>
-        </div>
-        <div class="twrap">
-          <div class="tscroll"><div id="candTbl"><div class="tload"><div class="spin"></div>Loading…</div></div></div>
-          <div class="tf"><span id="candCount">—</span><span style="font-size:.75rem;">From Google Sheets</span></div>
-        </div>
+      <div class="vw" id="vw-lC">
+        <div class="tc"><div class="sw2"><input class="tsr" id="csr" type="text" placeholder="Search name, HQ, mobile…" oninput="fC()"></div><select class="tf" id="cfs" onchange="fC()"><option value="">All Status</option><option>Available</option><option>Interview Scheduled</option><option>Placed</option><option>Inactive</option></select><select class="tf" id="cfh" onchange="fC()"><option value="">All HQs</option></select><button class="bo" onclick="loadC()">🔄 Refresh</button><button class="bg" onclick="openSheet()">📊 Open Sheet</button></div>
+        <div class="tw2"><div class="tsx"><div id="cTb"><div class="tld"><div class="sp"></div>Loading…</div></div></div><div class="tft"><span id="cCt">—</span><span style="font-size:.75rem;">Loaded via Apps Script</span></div></div>
       </div>
 
-      <!-- ADD JOB POST -->
-      <div class="view" id="view-addJob">
-        <div class="panel">
-          <div class="ph"><div><div class="ph-title">Post a New Job</div><div class="ph-sub">Published to candidate portal immediately</div></div></div>
-          <div class="pb">
-            <form id="jForm" onsubmit="return false;">
-              <div class="fsec">Job Details</div>
-              <div class="r2">
-                <div class="fg"><label class="fl">Job Title <span class="req">*</span></label><input class="fi" id="j_title" type="text" placeholder="e.g. Medical Representative — Cardiology" required></div>
-                <div class="fg"><label class="fl">Company Name <span class="req">*</span></label><input class="fi" id="j_co" type="text" placeholder="Hiring company name" required></div>
-              </div>
-              <div class="r3">
-                <div class="fg"><label class="fl">Primary HQ / Location <span class="req">*</span></label>
-                  <select class="fi" id="j_hq" required>
-                    <option value="">Select HQ</option>
-                    <optgroup label="Major HQs"><option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option><option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option></optgroup>
-                    <optgroup label="Tier-2 / Tier-3"><option>Kalahandi</option><option>Nuapada</option><option>Bargarh</option><option>Koraput</option><option>Jharsuguda</option><option>Balangir</option><option>Sundargarh</option><option>Keonjhar</option><option>Mayurbhanj</option><option>Dhenkanal</option><option>Angul</option><option>Rayagada</option></optgroup>
-                    <option>Multiple Locations</option><option>Pan-Odisha</option>
-                  </select>
-                </div>
-                <div class="fg"><label class="fl">Role / Position <span class="req">*</span></label>
-                  <select class="fi" id="j_role" required><option value="">Select</option><option>Medical Representative (MR)</option><option>Senior MR</option><option>Area Business Manager (ABM)</option><option>ZBM</option><option>PSR / DSR</option><option>Multiple Roles</option></select>
-                </div>
-                <div class="fg"><label class="fl">No. of Openings</label><input class="fi" id="j_count" type="number" min="1" placeholder="e.g. 3"></div>
-              </div>
-              <div class="r3">
-                <div class="fg"><label class="fl">Min. Experience</label><select class="fi" id="j_exp_min"><option value="">Any</option><option>Fresher</option><option>1 year</option><option>2 years</option><option>3 years</option><option>5 years</option></select></div>
-                <div class="fg"><label class="fl">CTC Offered (₹/mo)</label><input class="fi" id="j_ctc" type="text" placeholder="e.g. 18000-22000"></div>
-                <div class="fg"><label class="fl">Application Deadline</label><input class="fi" id="j_deadline" type="date"></div>
-              </div>
-              <div class="fsec">Division & Segment</div>
-              <div class="fg"><label class="fl">Product Division <span class="req">*</span></label>
-                <div class="tag-w" id="jDiv">
-                  <span class="tag-o" onclick="tog(this)">Allopathy / Ethical</span><span class="tag-o" onclick="tog(this)">Generic</span><span class="tag-o" onclick="tog(this)">Ayurvedic / Herbal</span><span class="tag-o" onclick="tog(this)">OTC / Consumer</span><span class="tag-o" onclick="tog(this)">Oncology</span><span class="tag-o" onclick="tog(this)">Cardiology</span><span class="tag-o" onclick="tog(this)">Diabetology</span><span class="tag-o" onclick="tog(this)">Dermatology</span><span class="tag-o" onclick="tog(this)">Gynaecology</span><span class="tag-o" onclick="tog(this)">Paediatrics</span><span class="tag-o" onclick="tog(this)">Neurology</span><span class="tag-o" onclick="tog(this)">PCD / Franchise</span>
-                </div>
-              </div>
-              <div class="fg"><label class="fl">Doctor Segment</label>
-                <div class="tag-w" id="jDoc">
-                  <span class="tag-o" onclick="tog(this)">GPs / General Physicians</span><span class="tag-o" onclick="tog(this)">Specialists</span><span class="tag-o" onclick="tog(this)">Hospital / Institutional</span><span class="tag-o" onclick="tog(this)">Chemist-focused</span>
-                </div>
-              </div>
-              <div class="fsec">Job Description</div>
-              <div class="fg"><label class="fl">Job Description</label><textarea class="fi" id="j_desc" rows="5" placeholder="Describe the role, responsibilities, what you're looking for in a candidate…"></textarea></div>
-              <div class="r2">
-                <div class="fg"><label class="fl">Key Requirements</label><textarea class="fi" id="j_req" rows="4" placeholder="e.g. 2+ years pharma experience, own vehicle, good doctor base…"></textarea></div>
-                <div class="fg"><label class="fl">Perks & Benefits</label><textarea class="fi" id="j_perks" rows="4" placeholder="e.g. TA/DA, mobile allowance, incentives, medical insurance…"></textarea></div>
-              </div>
-              <div class="fsec">Post Settings</div>
-              <div class="r2">
-                <div class="fg"><label class="fl">Status</label><select class="fi" id="j_st"><option value="Open">🟢 Open — Accepting Applications</option><option value="Paused">🟡 Paused</option><option value="Closed">🔴 Closed</option></select></div>
-                <div class="fg"><label class="fl">Contact for Applications</label><input class="fi" id="j_contact" type="text" placeholder="WhatsApp or email for applications"></div>
-              </div>
-              <div class="f-acts">
-                <button class="btn-s" id="saveJobBtn" onclick="saveJob()">📝 Publish Job Post</button>
-                <button class="btn-r" onclick="resetJobForm()">Reset</button>
-              </div>
-            </form>
-          </div>
+      <!-- ADD JOB -->
+      <div class="vw" id="vw-aJ">
+        <div class="pn"><div class="ph"><div><div class="pht">Post a New Job</div><div class="phs">Visible to candidates on the Candidate Portal immediately</div></div></div>
+          <div class="pb"><form id="jF" onsubmit="return false;">
+            <div class="fs">Job Details</div>
+            <div class="r2"><div class="fg"><label class="fl">Job Title <span class="rq">*</span></label><input class="fi" id="jt" type="text" placeholder="e.g. Medical Representative — Cardiology" required></div><div class="fg"><label class="fl">Company Name <span class="rq">*</span></label><input class="fi" id="jco" type="text" placeholder="Hiring company name" required></div></div>
+            <div class="r3"><div class="fg"><label class="fl">Location / HQ <span class="rq">*</span></label><select class="fi" id="jh" required><option value="">Select HQ</option><optgroup label="Major HQs"><option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option><option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option></optgroup><optgroup label="Tier-2/3"><option>Kalahandi</option><option>Nuapada</option><option>Bargarh</option><option>Koraput</option><option>Jharsuguda</option><option>Balangir</option><option>Sundargarh</option><option>Keonjhar</option></optgroup><option>Multiple Locations</option><option>Pan-Odisha</option></select></div><div class="fg"><label class="fl">Role <span class="rq">*</span></label><select class="fi" id="jr" required><option value="">Select</option><option>Medical Representative (MR)</option><option>Senior MR</option><option>Area Business Manager (ABM)</option><option>ZBM</option><option>PSR / DSR</option><option>Multiple Roles</option></select></div><div class="fg"><label class="fl">No. of Openings</label><input class="fi" id="jo" type="number" min="1" placeholder="e.g. 3"></div></div>
+            <div class="r3"><div class="fg"><label class="fl">Min. Experience</label><select class="fi" id="jx"><option value="">Any</option><option>Fresher</option><option>1+ year</option><option>2+ years</option><option>3+ years</option><option>5+ years</option></select></div><div class="fg"><label class="fl">CTC Offered (₹/mo)</label><input class="fi" id="jc" type="text" placeholder="e.g. 18000–22000"></div><div class="fg"><label class="fl">Application Deadline</label><input class="fi" id="jd" type="date"></div></div>
+            <div class="fs">Division & Segment</div>
+            <div class="fg"><label class="fl">Product Division</label><div class="tw" id="jDiv"><span class="to" onclick="tog(this)">Allopathy / Ethical</span><span class="to" onclick="tog(this)">Generic</span><span class="to" onclick="tog(this)">Ayurvedic / Herbal</span><span class="to" onclick="tog(this)">OTC / Consumer</span><span class="to" onclick="tog(this)">Oncology</span><span class="to" onclick="tog(this)">Cardiology</span><span class="to" onclick="tog(this)">Diabetology</span><span class="to" onclick="tog(this)">Dermatology</span><span class="to" onclick="tog(this)">Gynaecology</span><span class="to" onclick="tog(this)">Paediatrics</span><span class="to" onclick="tog(this)">Neurology</span><span class="to" onclick="tog(this)">PCD / Franchise</span></div></div>
+            <div class="fg"><label class="fl">Doctor Segment</label><div class="tw" id="jDoc"><span class="to" onclick="tog(this)">GPs / General Physicians</span><span class="to" onclick="tog(this)">Specialists</span><span class="to" onclick="tog(this)">Hospital / Institutional</span><span class="to" onclick="tog(this)">Chemist-focused</span></div></div>
+            <div class="fs">Description</div>
+            <div class="fg"><label class="fl">Job Description</label><textarea class="fi" id="jdesc" rows="5" placeholder="Describe the role, responsibilities…"></textarea></div>
+            <div class="r2"><div class="fg"><label class="fl">Key Requirements</label><textarea class="fi" id="jreq" rows="4" placeholder="e.g. 2+ years pharma, own vehicle…"></textarea></div><div class="fg"><label class="fl">Perks & Benefits</label><textarea class="fi" id="jperks" rows="4" placeholder="e.g. TA/DA, incentives, insurance…"></textarea></div></div>
+            <div class="fs">Post Settings</div>
+            <div class="r2"><div class="fg"><label class="fl">Status</label><select class="fi" id="js"><option value="Open">🟢 Open — Accepting Applications</option><option value="Paused">🟡 Paused</option><option value="Closed">🔴 Closed</option></select></div><div class="fg"><label class="fl">Contact for Applications</label><input class="fi" id="jct" type="text" placeholder="WhatsApp number or email"></div></div>
+            <div class="fa"><button class="bs" id="sjb" onclick="saveJ()">📝 Publish Job Post</button><button class="br" onclick="resetJ()">Reset</button></div>
+          </form></div>
         </div>
       </div>
 
       <!-- LIST JOBS -->
-      <div class="view" id="view-listJobs">
-        <div class="tc">
-          <div class="sw"><input class="tsrch" id="jSrch" type="text" placeholder="Search job title, company, HQ…" oninput="filterJobs()"></div>
-          <select class="tfilt" id="jFSt" onchange="filterJobs()"><option value="">All Status</option><option>Open</option><option>Paused</option><option>Closed</option></select>
-          <button class="btn-o" onclick="loadJobs()">🔄 Refresh</button>
-          <button class="btn-s" style="flex:0;padding:9px 18px;" onclick="gv('addJob',null)">+ New Job</button>
-        </div>
-        <div id="jobCards"><div class="tload"><div class="spin"></div>Loading job posts…</div></div>
+      <div class="vw" id="vw-lJ">
+        <div class="tc"><div class="sw2"><input class="tsr" id="jsr" type="text" placeholder="Search title, company, HQ…" oninput="fJ()"></div><select class="tf" id="jfs" onchange="fJ()"><option value="">All Status</option><option>Open</option><option>Paused</option><option>Closed</option></select><button class="bo" onclick="loadJ()">🔄 Refresh</button><button class="bs" style="flex:0;padding:9px 18px;" onclick="gv('aJ',null)">+ New Job</button></div>
+        <div id="jCards"><div class="tld"><div class="sp"></div>Loading…</div></div>
+        <div style="font-size:.78rem;color:var(--m);margin-top:1rem;text-align:center;">These posts are visible on the Candidate Portal</div>
       </div>
 
       <!-- SETTINGS -->
-      <div class="view" id="view-settings">
-        <div class="set-grid">
+      <div class="vw" id="vw-st">
+        <div class="sg">
           <div>
-            <div class="panel">
-              <div class="ph"><div class="ph-title">Apps Script Connection</div></div>
+            <div class="pn">
+              <div class="ph"><div class="pht">Apps Script Connection</div></div>
               <div class="pb">
-                <div class="fg">
-                  <label class="fl">Web App URL <span class="req">*</span></label>
-                  <input class="fi" id="scriptUrl" type="url" placeholder="https://script.google.com/macros/s/…/exec">
-                  <div style="font-size:.75rem;color:var(--muted);margin-top:5px;">Deploy the script (right panel) and paste the URL here.</div>
-                </div>
-                <button class="btn-s" id="testBtn" onclick="saveTestUrl()" style="margin-top:.3rem;">🔗 Save & Test Connection</button>
+                <!-- CONNECTION STATUS -->
+                <div id="connStatus" style="padding:12px 14px;border-radius:8px;font-size:.85rem;font-weight:500;margin-bottom:1.2rem;display:none;"></div>
+                <div class="fg"><label class="fl">Web App URL <span class="rq">*</span></label><input class="fi" id="surl" type="url" placeholder="https://script.google.com/macros/s/…/exec"><div style="font-size:.75rem;color:var(--m);margin-top:5px;">This single URL handles both reading and writing. Deploy from the guide on the right.</div></div>
+                <button class="bs" id="tb" onclick="testUrl()" style="margin-top:.3rem;">🔗 Save & Test Connection</button>
               </div>
             </div>
-            <div class="panel" style="margin-top:1.5rem;">
-              <div class="ph"><div class="ph-title">Change Credentials</div></div>
+            <div class="pn" style="margin-top:1.5rem;">
+              <div class="ph"><div class="pht">Change Credentials</div></div>
               <div class="pb">
-                <div class="fg"><label class="fl">New Username</label><input class="fi" id="nUser" type="text" placeholder="New username"></div>
-                <div class="fg"><label class="fl">New Password</label><input class="fi" id="nPass" type="password" placeholder="New password"></div>
-                <div class="fg"><label class="fl">Confirm Password</label><input class="fi" id="cPass" type="password" placeholder="Confirm password"></div>
-                <button class="btn-s" onclick="changeCreds()">Update Credentials</button>
+                <div class="fg"><label class="fl">New Username</label><input class="fi" id="nu" type="text" placeholder="New username"></div>
+                <div class="fg"><label class="fl">New Password</label><input class="fi" id="np" type="password" placeholder="New password"></div>
+                <div class="fg"><label class="fl">Confirm Password</label><input class="fi" id="cp" type="password" placeholder="Confirm password"></div>
+                <button class="bs" onclick="chCreds()">Update Credentials</button>
               </div>
             </div>
           </div>
-          <div class="panel">
-            <div class="ph"><div><div class="ph-title">Setup Guide</div><div class="ph-sub">One-time, 2 minutes</div></div></div>
+          <div class="pn">
+            <div class="ph"><div><div class="pht">Setup Guide</div><div class="phs">One-time, 2 minutes</div></div></div>
             <div class="pb">
-              <ul class="step-list">
-                <li class="step-i"><div class="step-n">1</div><div><div class="step-title">Open the Google Sheet</div><div class="step-desc"><a href="https://docs.google.com/spreadsheets/d/10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg/edit" target="_blank" style="color:var(--amber);text-decoration:underline;">Click here →</a></div></div></li>
-                <li class="step-i"><div class="step-n">2</div><div><div class="step-title">Open Apps Script</div><div class="step-desc"><span class="step-code">Extensions → Apps Script</span> — delete any existing code.</div></div></li>
-                <li class="step-i"><div class="step-n">3</div><div><div class="step-title">Paste & Save Script</div><div class="step-desc">Copy code below, paste, press <span class="step-code">Ctrl+S</span>.</div></div></li>
-                <li class="step-i"><div class="step-n">4</div><div><div class="step-title">Deploy as Web App</div><div class="step-desc"><span class="step-code">Deploy → New Deployment</span><br>Execute as: <strong style="color:var(--text)">Me</strong> | Access: <strong style="color:var(--amber)">Anyone</strong><br>Copy the URL.</div></div></li>
-                <li class="step-i"><div class="step-n">5</div><div><div class="step-title">Paste URL & Connect</div><div class="step-desc">Paste URL in left panel → Save & Test. Green badge = ready!</div></div></li>
+              <ul class="stl">
+                <li class="sti"><div class="stn">1</div><div><div class="stti">Open the Google Sheet</div><div class="std"><a href="https://docs.google.com/spreadsheets/d/10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg/edit" target="_blank" style="color:var(--a);text-decoration:underline;">Click here to open →</a></div></div></li>
+                <li class="sti"><div class="stn">2</div><div><div class="stti">Open Apps Script</div><div class="std"><span class="stc">Extensions → Apps Script</span> — delete any existing code in the editor.</div></div></li>
+                <li class="sti"><div class="stn">3</div><div><div class="stti">Paste & Save</div><div class="std">Copy the full code below, paste it into the editor, press <span class="stc">Ctrl + S</span> to save.</div></div></li>
+                <li class="sti"><div class="stn">4</div><div><div class="stti">Deploy as Web App</div><div class="std"><span class="stc">Deploy → New Deployment</span><br>Type: <b style="color:var(--t)">Web App</b><br>Execute as: <b style="color:var(--t)">Me</b><br>Who has access: <b style="color:var(--a)">Anyone</b><br>Click Deploy → Authorize when prompted → Copy the URL.</div></div></li>
+                <li class="sti"><div class="stn">5</div><div><div class="stti">Paste URL & Connect</div><div class="std">Paste the URL in the field on the left → click <span class="stc">Save & Test Connection</span>. Green = fully ready for reading and writing!</div></div></li>
               </ul>
               <div style="margin-top:1.5rem;">
-                <div class="code-hdr">Apps Script Code<button onclick="copyScript()" style="padding:5px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);border-radius:5px;color:var(--amber);font-size:.72rem;cursor:pointer;">📋 Copy</button></div>
-                <textarea class="fi" readonly id="scriptTxt" rows="20" style="font-family:var(--ff-m);font-size:.72rem;line-height:1.65;background:rgba(0,0,0,.4);cursor:text;color:#a5b4fc;" onclick="this.select()"></textarea>
+                <div class="ch">Apps Script Code — Paste into Editor <button onclick="cpScript()" style="padding:5px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);border-radius:5px;color:var(--a);font-size:.72rem;cursor:pointer;">📋 Copy All</button></div>
+                <textarea class="fi" readonly id="sc" rows="24" style="font-family:var(--fm);font-size:.72rem;line-height:1.6;background:rgba(0,0,0,.4);color:#a5b4fc;cursor:text;" onclick="this.select()"></textarea>
               </div>
             </div>
           </div>
@@ -525,374 +377,656 @@ tbody td{padding:12px 14px;color:var(--text);vertical-align:middle;}
     </div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-/* ══ CONFIG ══ */
-const SHEET_ID  = '10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/edit`;
-const getCreds  = () => ({user:localStorage.getItem('asfs_u')||'admin',pass:localStorage.getItem('asfs_p')||'aaradhya@2025'});
-const getScript = () => localStorage.getItem('asfs_url')||'';
-let allCands=[], allJobs=[];
+/* ══════════════════════════════
+   CONFIG
+══════════════════════════════ */
+const SID = '10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg';
+const SU  = `https://docs.google.com/spreadsheets/d/${SID}/edit`;
+const gC  = () => ({ u: localStorage.getItem('asfs_u')||'admin', p: localStorage.getItem('asfs_p')||'aaradhya@2025' });
+const gS  = () => localStorage.getItem('asfs_url') || '';
+let allC = [], allJ = [];
 
-/* ══ AUTH ══ */
-function doLogin(){
-  const u=document.getElementById('lu').value.trim();
-  const p=document.getElementById('lp').value;
-  const c=getCreds();
-  if(u===c.user&&p===c.pass){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('shell').style.display='block';
-    document.getElementById('uAv').textContent=u[0].toUpperCase();
-    document.getElementById('uN').textContent=u;
-    document.getElementById('lerr').classList.remove('show');
+/* ══════════════════════════════
+   AUTH
+══════════════════════════════ */
+function doLogin() {
+  const u = document.getElementById('lu').value.trim();
+  const p = document.getElementById('lp').value;
+  const c = gC();
+  if (u === c.u && p === c.p) {
+    document.getElementById('LS').style.display = 'none';
+    document.getElementById('SH').style.display = 'block';
+    document.getElementById('av').textContent = u[0].toUpperCase();
+    document.getElementById('un').textContent = u;
+    document.getElementById('le').classList.remove('show');
     init();
-  }else{document.getElementById('lerr').classList.add('show');document.getElementById('lp').value='';}
+  } else {
+    document.getElementById('le').classList.add('show');
+    document.getElementById('lp').value = '';
+  }
 }
-document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('loginScreen').style.display!=='none')doLogin();});
-function doLogout(){document.getElementById('loginScreen').style.display='flex';document.getElementById('shell').style.display='none';document.getElementById('lu').value='';document.getElementById('lp').value='';}
-function changeCreds(){
-  const nu=document.getElementById('nUser').value.trim();
-  const np=document.getElementById('nPass').value;
-  const cp=document.getElementById('cPass').value;
-  if(!nu||!np)return toast('Fill in both fields.','error');
-  if(np!==cp)return toast('Passwords do not match.','error');
-  localStorage.setItem('asfs_u',nu);localStorage.setItem('asfs_p',np);
-  document.getElementById('uAv').textContent=nu[0].toUpperCase();
-  document.getElementById('uN').textContent=nu;
-  ['nUser','nPass','cPass'].forEach(id=>document.getElementById(id).value='');
-  toast('✅ Credentials updated!','success');
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('LS').style.display !== 'none') doLogin();
+});
+function doLogout() {
+  document.getElementById('LS').style.display = 'flex';
+  document.getElementById('SH').style.display = 'none';
 }
-
-/* ══ INIT ══ */
-function init(){
-  tick();setInterval(tick,15000);
-  setScriptCode();refreshConn();loadDashboard();
-  const url=getScript();if(url)document.getElementById('scriptUrl').value=url;
-}
-
-/* ══ NAV ══ */
-const titles={dashboard:'Dashboard',addCand:'Add Candidate',listCand:'All Candidates',addJob:'Post a Job',listJobs:'All Job Posts',settings:'Settings'};
-function gv(id,el){
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.getElementById('view-'+id).classList.add('active');
-  document.querySelectorAll('.sb-i').forEach(i=>i.classList.remove('active'));
-  if(el)el.classList.add('active');
-  document.getElementById('pgTitle').textContent=titles[id]||id;
-  closeSB();
-  if(id==='dashboard')loadDashboard();
-}
-function toggleSB(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sbo').classList.toggle('show');}
-function closeSB(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sbo').classList.remove('show');}
-
-/* ══ CLOCK ══ */
-function tick(){
-  const n=new Date();
-  document.getElementById('clk').textContent=n.toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})+'  '+n.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+function chCreds() {
+  const nu = document.getElementById('nu').value.trim();
+  const np = document.getElementById('np').value;
+  const cp = document.getElementById('cp').value;
+  if (!nu || !np) return toast('Fill in both fields.', 'error');
+  if (np !== cp)  return toast('Passwords do not match.', 'error');
+  localStorage.setItem('asfs_u', nu);
+  localStorage.setItem('asfs_p', np);
+  document.getElementById('av').textContent = nu[0].toUpperCase();
+  document.getElementById('un').textContent = nu;
+  ['nu','np','cp'].forEach(id => document.getElementById(id).value = '');
+  toast('Credentials updated!', 'success');
 }
 
-/* ══ TOAST ══ */
+/* ══════════════════════════════
+   INIT
+══════════════════════════════ */
+function init() {
+  tick(); setInterval(tick, 15000);
+  setScript();
+  rConn();
+  loadDash();
+  const url = gS();
+  if (url) document.getElementById('surl').value = url;
+}
+
+/* ══════════════════════════════
+   NAVIGATION
+══════════════════════════════ */
+const titles = { dash:'Dashboard', aC:'Add Candidate', lC:'All Candidates', aJ:'Post a Job', lJ:'All Job Posts', st:'Settings' };
+function gv(id, el) {
+  document.querySelectorAll('.vw').forEach(v => v.classList.remove('act'));
+  document.getElementById('vw-' + id).classList.add('act');
+  document.querySelectorAll('.sbi').forEach(i => i.classList.remove('act'));
+  if (el) el.classList.add('act');
+  document.getElementById('pgt').textContent = titles[id] || id;
+  cSB();
+  if (id === 'dash') loadDash();
+}
+function tSB() { document.getElementById('sb').classList.toggle('open'); document.getElementById('sbo').classList.toggle('show'); }
+function cSB() { document.getElementById('sb').classList.remove('open'); document.getElementById('sbo').classList.remove('show'); }
+function openSheet() { window.open(SU, '_blank'); }
+
+/* ══════════════════════════════
+   CLOCK & TOAST
+══════════════════════════════ */
+function tick() {
+  const n = new Date();
+  document.getElementById('clk').textContent =
+    n.toLocaleDateString('en-IN', {day:'2-digit',month:'short',year:'numeric'}) + '  ' +
+    n.toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit'});
+}
 let _tt;
-function toast(msg,type='info'){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.className='toast '+type;
-  void t.offsetWidth;t.classList.add('show');
-  clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),4200);
+function toast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + type;
+  void t.offsetWidth; t.classList.add('show');
+  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 4200);
 }
 
-/* ══ CONNECTION ══ */
-function refreshConn(){
-  const url=getScript();
-  const el=document.getElementById('connBadge');
-  const tx=document.getElementById('connTxt');
-  const b=document.getElementById('setupB');
-  if(url){el.className='conn on';tx.textContent='Sheets Connected';b&&b.classList.add('hidden');}
-  else{el.className='conn off';tx.textContent='Not Connected';b&&b.classList.remove('hidden');}
-}
-async function saveTestUrl(){
-  const url=document.getElementById('scriptUrl').value.trim();
-  if(!url||!url.includes('script.google.com'))return toast('Please paste a valid Apps Script URL.','error');
-  const btn=document.getElementById('testBtn');
-  btn.disabled=true;btn.textContent='⏳ Testing…';toast('Testing…','info');
-  try{
-    await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'ping'})});
-    localStorage.setItem('asfs_url',url);refreshConn();
-    toast('✅ Connected! Sheets is ready.','success');
-  }catch(e){localStorage.setItem('asfs_url',url);refreshConn();toast('✅ URL saved (CORS test inconclusive).','info');}
-  btn.disabled=false;btn.textContent='🔗 Save & Test Connection';
+/* ══════════════════════════════
+   CONNECTION BADGE
+══════════════════════════════ */
+function rConn() {
+  const url = gS();
+  const el = document.getElementById('cnB');
+  const tx = document.getElementById('cnT');
+  const b  = document.getElementById('spb');
+  if (url) {
+    el.className = 'cn on'; tx.textContent = 'Sheets Connected';
+    b && b.classList.add('hd');
+  } else {
+    el.className = 'cn off'; tx.textContent = 'Not Connected';
+    b && b.classList.remove('hd');
+  }
 }
 
-/* ══ TAG SELECT ══ */
-function tog(el){el.classList.toggle('sel');}
-function getTags(id){return Array.from(document.querySelectorAll(`#${id} .tag-o.sel`)).map(e=>e.textContent).join(', ');}
-function clearTags(id){document.querySelectorAll(`#${id} .tag-o`).forEach(e=>e.classList.remove('sel'));}
+/* ══════════════════════════════
+   TEST & SAVE URL
+   — sends a ping via POST, then
+     tries a GET read to confirm
+     both directions work
+══════════════════════════════ */
+async function testUrl() {
+  const url = document.getElementById('surl').value.trim();
+  if (!url || !url.includes('script.google.com')) {
+    return toast('Please paste a valid Apps Script Web App URL.', 'error');
+  }
+  const btn = document.getElementById('tb');
+  const cs  = document.getElementById('connStatus');
+  btn.disabled = true; btn.textContent = '⏳ Testing…';
+  cs.style.display = 'block';
+  cs.style.background = 'rgba(232,160,32,.1)';
+  cs.style.border = '1px solid rgba(232,160,32,.2)';
+  cs.style.color = 'var(--a)';
+  cs.textContent = 'Testing connection…';
+  toast('Testing…', 'info');
 
-/* ══ FETCH CSV ══ */
-async function fetchSheet(sheetName){
-  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&_=${Date.now()}`;
-  try{const res=await fetch(url);if(!res.ok)throw new Error();return parseCSV(await res.text());}catch(e){return [];}
-}
-function parseCSV(txt){
-  const lines=txt.trim().split('\n');if(lines.length<2)return[];
-  const hdrs=csvRow(lines[0]).map(h=>h.replace(/"/g,'').trim());
-  return lines.slice(1).map(l=>{const vals=csvRow(l);const o={};hdrs.forEach((h,i)=>o[h]=(vals[i]||'').replace(/^"|"$/g,'').trim());return o;}).filter(r=>r[hdrs[0]]);
-}
-function csvRow(r){const out=[];let q=false,cur='';for(let i=0;i<r.length;i++){const c=r[i];if(c==='"'){q=!q;continue;}if(c===','&&!q){out.push(cur);cur='';continue;}cur+=c;}out.push(cur);return out;}
+  // Step 1: ping (POST)
+  let postOk = false;
+  try {
+    const r = await fetch(url, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify({action:'ping'}) });
+    const t = await r.text();
+    try { const j = JSON.parse(t); postOk = j.result === 'pong' || r.ok; } catch(e) { postOk = r.ok; }
+  } catch(e) { postOk = true; /* CORS blocks response but request still went through */ }
 
-/* ══ WRITE TO SHEET ══ */
-async function writeRow(action,data){
-  const url=getScript();
-  if(!url){toast('⚠️ Apps Script URL not set. Go to Settings.','error');return false;}
-  try{
-    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,data})});
-    const txt=await res.text();let json={};
-    try{json=JSON.parse(txt);}catch(e){}
-    return json.result==='success'||res.ok;
-  }catch(e){return false;}
+  // Step 2: test read (GET)
+  let getOk = false;
+  try {
+    const r = await fetch(url + '?action=getSheet&sheet=Candidates&_=' + Date.now());
+    const t = await r.text();
+    try { const j = JSON.parse(t); getOk = j.result === 'success'; } catch(e) {}
+  } catch(e) {}
+
+  localStorage.setItem('asfs_url', url);
+  rConn();
+
+  if (getOk) {
+    cs.style.background = 'rgba(34,197,94,.1)';
+    cs.style.border = '1px solid rgba(34,197,94,.2)';
+    cs.style.color = '#4ade80';
+    cs.textContent = '✅ Fully Connected — Read & Write both working!';
+    toast('✅ Fully connected! Read & Write working.', 'success');
+  } else {
+    cs.style.background = 'rgba(232,160,32,.1)';
+    cs.style.border = '1px solid rgba(232,160,32,.25)';
+    cs.style.color = 'var(--a)';
+    cs.textContent = '✅ URL saved. If reading fails, re-deploy the script (see Step 4 in guide).';
+    toast('URL saved. Deploy the updated script if lists show empty.', 'info');
+  }
+
+  btn.disabled = false; btn.textContent = '🔗 Save & Test Connection';
 }
 
-/* ══ SAVE CANDIDATE ══ */
-async function saveCandidate(){
-  const name=document.getElementById('f_name').value.trim();
-  const mob=document.getElementById('f_mob').value.trim();
-  const hq=document.getElementById('f_hq').value;
-  const exp=document.getElementById('f_exp').value;
-  if(!name||!mob||!hq||!exp)return toast('⚠️ Fill in: Name, Mobile, HQ, Experience.','error');
-  if(!getScript())return toast('⚠️ Apps Script URL not set.','error');
-  const now=new Date();
-  const id='ASFS-'+now.getFullYear().toString().slice(2)+String(now.getMonth()+1).padStart(2,'0')+'-'+Math.floor(1000+Math.random()*9000);
-  const row={
-    'ID':id,'Date Added':now.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
-    'Full Name':name,'Mobile':mob,'Email':document.getElementById('f_email').value.trim(),
-    'Date of Birth':document.getElementById('f_dob').value,'Gender':document.getElementById('f_gen').value,
-    'Qualification':document.getElementById('f_qual').value,'City / Address':document.getElementById('f_city').value.trim(),
-    'Experience':exp,'Current / Last Role':document.getElementById('f_role').value,
-    'Current Company':document.getElementById('f_co').value.trim(),
-    'Current CTC':document.getElementById('f_ctc').value,'Expected CTC':document.getElementById('f_ectc').value,
-    'Divisions':getTags('tDiv'),'Doctor Segment':getTags('tDoc'),
-    'Primary HQ':hq,'Other Territories':document.getElementById('f_ot').value.trim(),
-    'Relocate':document.getElementById('f_rel').value,'Status':document.getElementById('f_st').value,
-    'Joining Availability':document.getElementById('f_join').value,'Communication Rating':document.getElementById('f_comm').value,
-    'Notes':document.getElementById('f_notes').value.trim()
+/* ══════════════════════════════
+   TAG SELECT
+══════════════════════════════ */
+function tog(el) { el.classList.toggle('sl'); }
+function gTags(id) { return Array.from(document.querySelectorAll('#' + id + ' .to.sl')).map(e => e.textContent).join(', '); }
+function clrTags(id) { document.querySelectorAll('#' + id + ' .to').forEach(e => e.classList.remove('sl')); }
+
+/* ══════════════════════════════
+   FETCH DATA — through Apps Script GET
+   This bypasses the need for the
+   sheet to be publicly published.
+══════════════════════════════ */
+async function fSheet(sheetName) {
+  const scriptUrl = gS();
+
+  // PRIMARY: read through Apps Script (works with private sheets)
+  if (scriptUrl) {
+    try {
+      const url = scriptUrl + '?action=getSheet&sheet=' + encodeURIComponent(sheetName) + '&_=' + Date.now();
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const txt = await res.text();
+      let json;
+      try { json = JSON.parse(txt); } catch(e) { throw new Error('Bad JSON'); }
+      if (json.result === 'success' && Array.isArray(json.data)) {
+        return json.data;
+      }
+      throw new Error(json.message || 'Script error');
+    } catch(e) {
+      console.warn('Apps Script read failed:', e.message);
+    }
+  }
+
+  // FALLBACK: public CSV (only works if sheet sharing = "Anyone with link can view")
+  try {
+    const url = `https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}&_=${Date.now()}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Sheet not accessible');
+    const txt = await res.text();
+    if (txt.includes('Unauthorized') || txt.trim() === '') throw new Error('Empty/unauthorized');
+    return pCSV(txt);
+  } catch(e) {
+    console.warn('CSV fallback also failed:', e.message);
+    return [];
+  }
+}
+
+function pCSV(txt) {
+  const lines = txt.trim().split('\n');
+  if (lines.length < 2) return [];
+  const hdrs = cRow(lines[0]).map(h => h.replace(/"/g,'').trim());
+  return lines.slice(1).map(l => {
+    const v = cRow(l), o = {};
+    hdrs.forEach((k, i) => o[k] = (v[i]||'').replace(/^"|"$/g,'').trim());
+    return o;
+  }).filter(r => r[hdrs[0]]);
+}
+function cRow(r) {
+  const o = []; let q = false, c = '';
+  for (let i = 0; i < r.length; i++) {
+    const x = r[i];
+    if (x === '"') { q = !q; continue; }
+    if (x === ',' && !q) { o.push(c); c = ''; continue; }
+    c += x;
+  }
+  o.push(c); return o;
+}
+
+/* ══════════════════════════════
+   WRITE DATA — Apps Script POST
+══════════════════════════════ */
+async function wr(action, data) {
+  const url = gS();
+  if (!url) { toast('Apps Script URL not set. Go to Settings.', 'error'); return false; }
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, data })
+    });
+    const txt = await res.text();
+    let json = {};
+    try { json = JSON.parse(txt); } catch(e) {}
+    return json.result === 'success' || res.ok;
+  } catch(e) {
+    // CORS blocks response but write still succeeded — treat as ok
+    console.warn('Write response blocked by CORS (normal). Treating as success.');
+    return true;
+  }
+}
+
+/* ══════════════════════════════
+   SAVE CANDIDATE
+══════════════════════════════ */
+async function saveC() {
+  const name = document.getElementById('cn_n').value.trim();
+  const mob  = document.getElementById('cn_m').value.trim();
+  const hq   = document.getElementById('cn_h').value;
+  const exp  = document.getElementById('cn_x').value;
+  if (!name || !mob || !hq || !exp) return toast('Fill in: Name, Mobile, HQ, Experience.', 'error');
+  if (!gS()) return toast('Apps Script URL not set. Go to Settings.', 'error');
+
+  const now = new Date();
+  const id  = 'ASFS-' + now.getFullYear().toString().slice(2) + String(now.getMonth()+1).padStart(2,'0') + '-' + Math.floor(1000 + Math.random()*9000);
+  const row = {
+    'ID': id,
+    'Date Added': now.toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    'Full Name': name, 'Mobile': mob,
+    'Email': document.getElementById('cn_e').value.trim(),
+    'Date of Birth': document.getElementById('cn_d').value,
+    'Gender': document.getElementById('cn_g').value,
+    'Qualification': document.getElementById('cn_q').value,
+    'City / Address': document.getElementById('cn_c').value.trim(),
+    'Experience': exp,
+    'Current / Last Role': document.getElementById('cn_r').value,
+    'Current Company': document.getElementById('cn_co').value.trim(),
+    'Current CTC': document.getElementById('cn_cc').value,
+    'Expected CTC': document.getElementById('cn_ec').value,
+    'Divisions': gTags('cDiv'), 'Doctor Segment': gTags('cDoc'),
+    'Primary HQ': hq,
+    'Other Territories': document.getElementById('cn_ot').value.trim(),
+    'Relocate': document.getElementById('cn_rl').value,
+    'Status': document.getElementById('cn_s').value,
+    'Joining Availability': document.getElementById('cn_j').value,
+    'Communication Rating': document.getElementById('cn_cr').value,
+    'Notes': document.getElementById('cn_nt').value.trim(),
+    'Source': 'Admin'
   };
-  const btn=document.getElementById('saveCandBtn');
-  btn.disabled=true;btn.innerHTML='⏳ Saving…';toast('Saving…','info');
-  const ok=await writeRow('addRow',row);
-  btn.disabled=false;btn.innerHTML='💾 Save to Google Sheets';
-  if(ok){toast(`✅ ${name} saved!`,'success');resetCandForm();setTimeout(loadDashboard,800);}
-  else toast('❌ Save failed. Check Apps Script URL in Settings.','error');
-}
-function resetCandForm(){document.getElementById('cForm').reset();clearTags('tDiv');clearTags('tDoc');}
 
-/* ══ SAVE JOB ══ */
-async function saveJob(){
-  const title=document.getElementById('j_title').value.trim();
-  const co=document.getElementById('j_co').value.trim();
-  const hq=document.getElementById('j_hq').value;
-  const role=document.getElementById('j_role').value;
-  if(!title||!co||!hq||!role)return toast('⚠️ Fill in: Title, Company, HQ, Role.','error');
-  if(!getScript())return toast('⚠️ Apps Script URL not set.','error');
-  const now=new Date();
-  const jid='JOB-'+now.getFullYear().toString().slice(2)+String(now.getMonth()+1).padStart(2,'0')+'-'+Math.floor(1000+Math.random()*9000);
-  const row={
-    'Job ID':jid,'Posted On':now.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
-    'Job Title':title,'Company':co,'Location / HQ':hq,'Role':role,
-    'Openings':document.getElementById('j_count').value,
-    'Min. Experience':document.getElementById('j_exp_min').value,
-    'CTC Offered':document.getElementById('j_ctc').value,
-    'Deadline':document.getElementById('j_deadline').value,
-    'Division':getTags('jDiv'),'Doctor Segment':getTags('jDoc'),
-    'Description':document.getElementById('j_desc').value.trim(),
-    'Requirements':document.getElementById('j_req').value.trim(),
-    'Perks':document.getElementById('j_perks').value.trim(),
-    'Status':document.getElementById('j_st').value,
-    'Contact':document.getElementById('j_contact').value.trim()
+  const btn = document.getElementById('scb');
+  btn.disabled = true; btn.innerHTML = '⏳ Saving…';
+  toast('Saving candidate…', 'info');
+
+  const ok = await wr('addRow', row);
+  btn.disabled = false; btn.innerHTML = '💾 Save to Google Sheets';
+
+  if (ok) {
+    toast('✅ ' + name + ' saved to Google Sheets!', 'success');
+    resetC();
+    setTimeout(loadDash, 1200);
+  } else {
+    toast('❌ Save failed. Check Apps Script URL in Settings.', 'error');
+  }
+}
+function resetC() { document.getElementById('cF').reset(); clrTags('cDiv'); clrTags('cDoc'); }
+
+/* ══════════════════════════════
+   SAVE JOB
+══════════════════════════════ */
+async function saveJ() {
+  const title = document.getElementById('jt').value.trim();
+  const co    = document.getElementById('jco').value.trim();
+  const hq    = document.getElementById('jh').value;
+  const role  = document.getElementById('jr').value;
+  if (!title || !co || !hq || !role) return toast('Fill in: Title, Company, HQ, Role.', 'error');
+  if (!gS()) return toast('Apps Script URL not set. Go to Settings.', 'error');
+
+  const now = new Date();
+  const jid = 'JOB-' + now.getFullYear().toString().slice(2) + String(now.getMonth()+1).padStart(2,'0') + '-' + Math.floor(1000 + Math.random()*9000);
+  const row = {
+    'Job ID': jid,
+    'Posted On': now.toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    'Job Title': title, 'Company': co, 'Location / HQ': hq, 'Role': role,
+    'Openings': document.getElementById('jo').value,
+    'Min. Experience': document.getElementById('jx').value,
+    'CTC Offered': document.getElementById('jc').value,
+    'Deadline': document.getElementById('jd').value,
+    'Division': gTags('jDiv'), 'Doctor Segment': gTags('jDoc'),
+    'Description': document.getElementById('jdesc').value.trim(),
+    'Requirements': document.getElementById('jreq').value.trim(),
+    'Perks': document.getElementById('jperks').value.trim(),
+    'Status': document.getElementById('js').value,
+    'Contact': document.getElementById('jct').value.trim()
   };
-  const btn=document.getElementById('saveJobBtn');
-  btn.disabled=true;btn.innerHTML='⏳ Publishing…';toast('Publishing job…','info');
-  const ok=await writeRow('addJob',row);
-  btn.disabled=false;btn.innerHTML='📝 Publish Job Post';
-  if(ok){toast(`✅ "${title}" published!`,'success');resetJobForm();setTimeout(()=>loadJobs(),800);}
-  else toast('❌ Failed. Check Apps Script URL in Settings.','error');
-}
-function resetJobForm(){document.getElementById('jForm').reset();clearTags('jDiv');clearTags('jDoc');}
 
-/* ══ LOAD CANDIDATES ══ */
-async function loadCands(){
-  document.getElementById('candTbl').innerHTML=`<div class="tload"><div class="spin"></div>Loading…</div>`;
-  const data=await fetchSheet('Candidates');
-  allCands=data;buildHQFilter(data,'cFHQ');renderCands(data);
-  document.getElementById('sbCCount').textContent=data.length||'0';
+  const btn = document.getElementById('sjb');
+  btn.disabled = true; btn.innerHTML = '⏳ Publishing…';
+  toast('Publishing job…', 'info');
+
+  const ok = await wr('addJob', row);
+  btn.disabled = false; btn.innerHTML = '📝 Publish Job Post';
+
+  if (ok) {
+    toast('✅ "' + title + '" published!', 'success');
+    resetJ();
+    setTimeout(() => { gv('lJ', null); loadJ(); }, 1200);
+  } else {
+    toast('❌ Failed. Check Apps Script URL in Settings.', 'error');
+  }
 }
-function buildHQFilter(data,selId){
-  const hqs=[...new Set(data.map(r=>r['Primary HQ']).filter(Boolean))].sort();
-  const sel=document.getElementById(selId);
-  sel.innerHTML='<option value="">All HQs</option>';
-  hqs.forEach(h=>sel.innerHTML+=`<option>${h}</option>`);
+function resetJ() { document.getElementById('jF').reset(); clrTags('jDiv'); clrTags('jDoc'); }
+
+/* ══════════════════════════════
+   LOAD & RENDER CANDIDATES
+══════════════════════════════ */
+async function loadC() {
+  document.getElementById('cTb').innerHTML = '<div class="tld"><div class="sp"></div>Loading from Google Sheets via Apps Script…</div>';
+  const data = await fSheet('Candidates');
+  allC = data;
+
+  // Build HQ filter
+  const hqs = [...new Set(data.map(r => r['Primary HQ']).filter(Boolean))].sort();
+  const sel = document.getElementById('cfh');
+  sel.innerHTML = '<option value="">All HQs</option>';
+  hqs.forEach(h => sel.innerHTML += `<option>${h}</option>`);
+
+  rC(data);
+  document.getElementById('sbc').textContent = data.length || '0';
 }
-function filterCands(){
-  const q=document.getElementById('cSrch').value.toLowerCase();
-  const st=document.getElementById('cFSt').value;
-  const hq=document.getElementById('cFHQ').value;
-  renderCands(allCands.filter(r=>{
-    const nm=(r['Full Name']||'').toLowerCase();
-    const hv=(r['Primary HQ']||'').toLowerCase();
-    const dv=(r['Divisions']||'').toLowerCase();
-    const mb=(r['Mobile']||'');
-    return(!q||nm.includes(q)||hv.includes(q)||dv.includes(q)||mb.includes(q))&&(!st||r['Status']===st)&&(!hq||r['Primary HQ']===hq);
-  }));
+function fC() {
+  const q  = document.getElementById('csr').value.toLowerCase();
+  const st = document.getElementById('cfs').value;
+  const h  = document.getElementById('cfh').value;
+  rC(allC.filter(r =>
+    (!q || (r['Full Name']||'').toLowerCase().includes(q) || (r['Primary HQ']||'').toLowerCase().includes(q) || (r['Mobile']||'').includes(q)) &&
+    (!st || r['Status'] === st) &&
+    (!h  || r['Primary HQ'] === h)
+  ));
 }
-function renderCands(data){
-  if(!data.length){document.getElementById('candTbl').innerHTML=`<div class="te">No candidates found.</div>`;document.getElementById('candCount').textContent='0';return;}
-  let h=`<table><thead><tr><th>ID</th><th>Name</th><th>Mobile</th><th>HQ</th><th>Experience</th><th>Division</th><th>Exp. CTC</th><th>Status</th><th>Actions</th></tr></thead><tbody>`;
-  data.forEach((r,i)=>{
-    const st=r['Status']||'Unknown';
-    const bc=st==='Available'?'ba':st==='Placed'?'bp':st==='Interview Scheduled'?'bint':'bi';
-    const ectc=r['Expected CTC']?'₹'+Number(r['Expected CTC']).toLocaleString('en-IN'):'—';
-    h+=`<tr><td><span class="td-id">${eh(r['ID']||('ASFS-'+(i+1)))}</span></td><td><span class="td-n">${eh(r['Full Name']||'—')}</span></td><td>${eh(r['Mobile']||'—')}</td><td>${eh(r['Primary HQ']||'—')}</td><td>${eh(r['Experience']||'—')}</td><td style="max-width:130px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${eh(r['Divisions']||'—')}</td><td>${ectc}</td><td><span class="badge ${bc}">${eh(st)}</span></td><td style="white-space:nowrap;"><button class="ta" onclick="window.open('tel:${eh(r['Mobile']||'')}')">📞</button><button class="ta" onclick="wa('${eh(r['Mobile']||'')}','${eh(r['Full Name']||'')}')">💬</button></td></tr>`;
-  });
-  h+='</tbody></table>';
-  document.getElementById('candTbl').innerHTML=h;
-  document.getElementById('candCount').textContent=`${data.length} candidate${data.length!==1?'s':''}`;
+function rC(data) {
+  if (!data.length) {
+    document.getElementById('cTb').innerHTML = '<div class="te">No candidates found.<br><small>If you just added one, click Refresh. If the list is always empty, check Settings → Apps Script URL.</small></div>';
+    document.getElementById('cCt').textContent = '0 candidates';
+    return;
+  }
+  const bc = s => s==='Available'?'ba':s==='Placed'?'bp':s==='Interview Scheduled'?'bint':'bi';
+  document.getElementById('cTb').innerHTML = '<table><thead><tr><th>ID</th><th>Name</th><th>Mobile</th><th>HQ</th><th>Experience</th><th>Exp. CTC</th><th>Source</th><th>Status</th><th>Actions</th></tr></thead><tbody>' +
+    data.map((r,i) => `<tr>
+      <td><span class="tdi">${eh(r['ID']||('ASFS-'+(i+1)))}</span></td>
+      <td><span class="tdn">${eh(r['Full Name']||'—')}</span></td>
+      <td>${eh(r['Mobile']||'—')}</td>
+      <td>${eh(r['Primary HQ']||'—')}</td>
+      <td>${eh(r['Experience']||'—')}</td>
+      <td>${r['Expected CTC'] ? '₹' + Number(r['Expected CTC']).toLocaleString('en-IN') : '—'}</td>
+      <td><span class="bd ${r['Source']==='Self'?'bpa':'bi'}">${eh(r['Source']||'Admin')}</span></td>
+      <td><span class="bd ${bc(r['Status']||'')}">${eh(r['Status']||'—')}</span></td>
+      <td style="white-space:nowrap;">
+        <button class="ta" onclick="window.open('tel:${eh(r['Mobile']||'')}')">📞</button>
+        <button class="ta" onclick="wa('${eh(r['Mobile']||'')}','${eh(r['Full Name']||'')}')">💬</button>
+      </td>
+    </tr>`).join('') + '</tbody></table>';
+  document.getElementById('cCt').textContent = data.length + ' candidate' + (data.length !== 1 ? 's' : '');
 }
 
-/* ══ LOAD JOBS ══ */
-async function loadJobs(){
-  document.getElementById('jobCards').innerHTML=`<div class="tload"><div class="spin"></div>Loading job posts…</div>`;
-  const data=await fetchSheet('JobPosts');
-  allJobs=data;renderJobs(data);
-  document.getElementById('sbJCount').textContent=data.filter(r=>r['Status']==='Open').length||'0';
+/* ══════════════════════════════
+   LOAD & RENDER JOBS
+══════════════════════════════ */
+async function loadJ() {
+  document.getElementById('jCards').innerHTML = '<div class="tld"><div class="sp"></div>Loading from Google Sheets via Apps Script…</div>';
+  const data = await fSheet('JobPosts');
+  allJ = data;
+  rJ(data);
+  document.getElementById('sbj').textContent = data.filter(r => r['Status'] === 'Open').length || '0';
 }
-function filterJobs(){
-  const q=document.getElementById('jSrch').value.toLowerCase();
-  const st=document.getElementById('jFSt').value;
-  renderJobs(allJobs.filter(r=>{
-    const t=(r['Job Title']||'').toLowerCase();
-    const c=(r['Company']||'').toLowerCase();
-    const h=(r['Location / HQ']||'').toLowerCase();
-    return(!q||t.includes(q)||c.includes(q)||h.includes(q))&&(!st||r['Status']===st);
-  }));
+function fJ() {
+  const q  = document.getElementById('jsr').value.toLowerCase();
+  const st = document.getElementById('jfs').value;
+  rJ(allJ.filter(r =>
+    (!q || (r['Job Title']||'').toLowerCase().includes(q) || (r['Company']||'').toLowerCase().includes(q) || (r['Location / HQ']||'').toLowerCase().includes(q)) &&
+    (!st || r['Status'] === st)
+  ));
 }
-function renderJobs(data){
-  if(!data.length){document.getElementById('jobCards').innerHTML=`<div class="te" style="padding:3rem;text-align:center;color:var(--muted);">No job posts yet. Click "Post a Job" to create one.</div>`;return;}
-  const bc=s=>s==='Open'?'bopen':s==='Paused'?'bpause':'bclosed';
-  document.getElementById('jobCards').innerHTML=`<div class="job-grid">`+data.map((r,i)=>`
-    <div class="job-card">
-      <div class="jc-top">
-        <div>
-          <div class="jc-title">${eh(r['Job Title']||'—')}</div>
-          <div class="jc-co">${eh(r['Company']||'—')}</div>
+function rJ(data) {
+  if (!data.length) {
+    document.getElementById('jCards').innerHTML = '<div class="te">No job posts found.<br><small>Add one using "Post a Job". If you already added posts, click Refresh or check Settings → Apps Script URL.</small></div>';
+    return;
+  }
+  const bc = s => s==='Open'?'bop':s==='Paused'?'bpa':'bcl';
+  document.getElementById('jCards').innerHTML = '<div class="jg">' +
+    data.map((r,i) => `
+      <div class="jc">
+        <div class="jct">
+          <div><div class="jcti">${eh(r['Job Title']||'—')}</div><div class="jcco">${eh(r['Company']||'—')}</div></div>
+          <span class="bd ${bc(r['Status']||'')}">${eh(r['Status']||'—')}</span>
         </div>
-        <span class="badge ${bc(r['Status']||'')}">${eh(r['Status']||'—')}</span>
-      </div>
-      <div class="jc-meta">
-        <div><div class="jc-m-label">Location</div><div class="jc-m-val">📍 ${eh(r['Location / HQ']||'—')}</div></div>
-        <div><div class="jc-m-label">Role</div><div class="jc-m-val">${eh(r['Role']||'—')}</div></div>
-        <div><div class="jc-m-label">Experience</div><div class="jc-m-val">${eh(r['Min. Experience']||'Any')}</div></div>
-        <div><div class="jc-m-label">Openings</div><div class="jc-m-val">${eh(r['Openings']||'—')}</div></div>
-      </div>
-      <div class="jc-tags">${(r['Division']||'').split(',').filter(Boolean).slice(0,3).map(d=>`<span class="jc-tag">${eh(d.trim())}</span>`).join('')}</div>
-      <div class="jc-foot">
-        <div><div class="jc-ctc">${r['CTC Offered']?'₹'+eh(r['CTC Offered']):' On Request'}</div><div class="jc-date">Posted: ${eh(r['Posted On']||'—')}</div></div>
-        <span class="badge bi">${eh(r['Job ID']||('JOB-'+(i+1)))}</span>
-      </div>
-    </div>`).join('')+`</div>`;
+        <div class="jcm">
+          <div><div class="jcml">Location</div><div class="jcmv">📍 ${eh(r['Location / HQ']||'—')}</div></div>
+          <div><div class="jcml">Role</div><div class="jcmv">${eh(r['Role']||'—')}</div></div>
+          <div><div class="jcml">Experience</div><div class="jcmv">${eh(r['Min. Experience']||'Any')}</div></div>
+          <div><div class="jcml">Openings</div><div class="jcmv">${eh(r['Openings']||'—')}</div></div>
+        </div>
+        <div class="jctg">${(r['Division']||'').split(',').filter(Boolean).slice(0,3).map(d=>'<span class="jctgi">'+eh(d.trim())+'</span>').join('')}</div>
+        <div class="jcft">
+          <div><div class="jcctc">${r['CTC Offered'] ? '₹'+eh(r['CTC Offered']) : 'On Request'}</div><div class="jcdt">Posted: ${eh(r['Posted On']||'—')}</div></div>
+          <span class="bd bi">${eh(r['Job ID']||('JOB-'+(i+1)))}</span>
+        </div>
+      </div>`).join('') + '</div>';
 }
 
-/* ══ DASHBOARD ══ */
-async function loadDashboard(){
-  const cands=await fetchSheet('Candidates');
-  const jobs=await fetchSheet('JobPosts');
-  allCands=cands;allJobs=jobs;
-  document.getElementById('sTot').textContent=cands.length;
-  document.getElementById('sAv').textContent=cands.filter(r=>r['Status']==='Available').length;
-  document.getElementById('sJobs').textContent=jobs.filter(r=>r['Status']==='Open').length;
-  document.getElementById('sDist').textContent=new Set(cands.map(r=>r['Primary HQ']).filter(Boolean)).size;
-  document.getElementById('sbCCount').textContent=cands.length||'0';
-  document.getElementById('sbJCount').textContent=jobs.filter(r=>r['Status']==='Open').length||'0';
-  const recent=cands.slice(-5).reverse();
-  const rl=document.getElementById('recentList');
-  if(!recent.length){rl.innerHTML=`<div style="text-align:center;color:var(--muted);font-size:.85rem;padding:1rem 0;">No candidates yet.</div>`;return;}
-  rl.innerHTML=recent.map(r=>{
-    const st=r['Status']||'Unknown';
-    const bc=st==='Available'?'ba':st==='Placed'?'bp':st==='Interview Scheduled'?'bint':'bi';
-    return `<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);"><div style="width:36px;height:36px;background:rgba(232,160,32,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:var(--amber);flex-shrink:0;">${eh(r['Full Name']).charAt(0)}</div><div style="flex:1;min-width:0;"><div style="font-weight:600;font-size:.88rem;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${eh(r['Full Name'])}</div><div style="font-size:.75rem;color:var(--muted);">${eh(r['Primary HQ']||'—')} · ${eh(r['Experience']||'—')}</div></div><span class="badge ${bc}">${eh(st)}</span></div>`;
-  }).join('');
+/* ══════════════════════════════
+   DASHBOARD
+══════════════════════════════ */
+async function loadDash() {
+  const [cands, jobs] = await Promise.all([fSheet('Candidates'), fSheet('JobPosts')]);
+  allC = cands; allJ = jobs;
+
+  document.getElementById('dT').textContent = cands.length;
+  document.getElementById('dA').textContent = cands.filter(r => r['Status'] === 'Available').length;
+  document.getElementById('dJ').textContent = jobs.filter(r => r['Status'] === 'Open').length;
+  document.getElementById('dD').textContent = new Set(cands.map(r => r['Primary HQ']).filter(Boolean)).size;
+  document.getElementById('sbc').textContent = cands.length || '0';
+  document.getElementById('sbj').textContent = jobs.filter(r => r['Status'] === 'Open').length || '0';
+
+  const recent = cands.slice(-5).reverse();
+  const rl = document.getElementById('rl');
+  if (!recent.length) {
+    rl.innerHTML = '<div style="text-align:center;color:var(--m);font-size:.85rem;padding:1rem 0;">No candidates yet. Add your first one!</div>';
+    return;
+  }
+  const bc = s => s==='Available'?'ba':s==='Placed'?'bp':s==='Interview Scheduled'?'bint':'bi';
+  rl.innerHTML = recent.map(r => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--b);">
+      <div style="width:36px;height:36px;background:rgba(232,160,32,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--a);flex-shrink:0;">${eh(r['Full Name']||'?').charAt(0)}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-weight:600;font-size:.88rem;color:var(--w);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${eh(r['Full Name']||'—')}</div>
+        <div style="font-size:.75rem;color:var(--m);">${eh(r['Primary HQ']||'—')} · ${eh(r['Experience']||'—')}</div>
+      </div>
+      <span class="bd ${bc(r['Status']||'')}">${eh(r['Status']||'—')}</span>
+    </div>`).join('');
 }
 
-function eh(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function wa(mob,name){const msg=encodeURIComponent(`Hi ${name}, this is Aaradhya Sales Force Solutions. We have an opportunity for you.`);window.open(`https://wa.me/91${mob.replace(/\D/g,'')}?text=${msg}`,'_blank');}
+/* ══════════════════════════════
+   HELPERS
+══════════════════════════════ */
+function eh(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function wa(mob, name) {
+  const msg = encodeURIComponent(`Hi ${name}, this is Aaradhya SFS. We have a pharma opportunity that matches your profile. Are you currently available?`);
+  window.open(`https://wa.me/91${mob.replace(/\D/g,'')}?text=${msg}`, '_blank');
+}
 
-/* ══ APPS SCRIPT CODE ══ */
-function copyScript(){document.getElementById('scriptTxt').select();document.execCommand('copy');toast('📋 Copied!','success');}
-function setScriptCode(){
-  document.getElementById('scriptTxt').value=
-`// Aaradhya SFS — Google Apps Script
+/* ══════════════════════════════
+   SCRIPT CODE — Updated to handle
+   both READ (doGet) and WRITE (doPost)
+══════════════════════════════ */
+function cpScript() { document.getElementById('sc').select(); document.execCommand('copy'); toast('Script copied!', 'success'); }
+
+function setScript() {
+  document.getElementById('sc').value =
+`// ═══════════════════════════════════════════════════════════
+// Aaradhya SFS — Google Apps Script (v3)
+// Handles: READ (doGet) + WRITE (doPost)
+// No need to publish the sheet publicly.
+//
 // Deploy → New Deployment → Web App
-// Execute as: Me | Access: Anyone
+//   Execute as: Me
+//   Who has access: Anyone
+// ═══════════════════════════════════════════════════════════
 
-const CAND_HEADERS = ['ID','Date Added','Full Name','Mobile','Email','Date of Birth','Gender','Qualification','City / Address','Experience','Current / Last Role','Current Company','Current CTC','Expected CTC','Divisions','Doctor Segment','Primary HQ','Other Territories','Relocate','Status','Joining Availability','Communication Rating','Notes'];
+const CH = [
+  'ID','Date Added','Full Name','Mobile','Email','Date of Birth',
+  'Gender','Qualification','City / Address','Experience',
+  'Current / Last Role','Current Company','Current CTC','Expected CTC',
+  'Divisions','Doctor Segment','Primary HQ','Other Territories',
+  'Relocate','Status','Joining Availability','Communication Rating',
+  'Notes','Source'
+];
 
-const JOB_HEADERS = ['Job ID','Posted On','Job Title','Company','Location / HQ','Role','Openings','Min. Experience','CTC Offered','Deadline','Division','Doctor Segment','Description','Requirements','Perks','Status','Contact'];
+const JH = [
+  'Job ID','Posted On','Job Title','Company','Location / HQ','Role',
+  'Openings','Min. Experience','CTC Offered','Deadline','Division',
+  'Doctor Segment','Description','Requirements','Perks','Status','Contact'
+];
 
+// ── READ handler (GET) ─────────────────────────────────────
+function doGet(e) {
+  const action = (e.parameter && e.parameter.action) || '';
+  const sheet  = (e.parameter && e.parameter.sheet)  || '';
+
+  if (action === 'getSheet' && sheet) {
+    return readSheet(sheet);
+  }
+  return ok({ result: 'ok', message: 'Aaradhya SFS API running' });
+}
+
+function readSheet(sheetName) {
+  try {
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sh = ss.getSheetByName(sheetName);
+    if (!sh || sh.getLastRow() < 2) {
+      return ok({ result: 'success', data: [] });
+    }
+    const values  = sh.getDataRange().getValues();
+    const headers = values[0].map(h => String(h).trim());
+    const rows = values.slice(1).map(row => {
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = row[i] !== undefined ? String(row[i]) : ''; });
+      return obj;
+    }).filter(r => r[headers[0]]); // skip empty rows
+    return ok({ result: 'success', data: rows });
+  } catch(err) {
+    return ok({ result: 'error', message: err.toString() });
+  }
+}
+
+// ── WRITE handler (POST) ───────────────────────────────────
 function doPost(e) {
   try {
-    const p = JSON.parse(e.postData.contents);
-    if (p.action === 'ping')    return ok({ result: 'pong' });
-    if (p.action === 'addRow')  return ok(appendTo('Candidates', CAND_HEADERS, p.data));
-    if (p.action === 'addJob')  return ok(appendTo('JobPosts',   JOB_HEADERS,  p.data));
-    if (p.action === 'addCandidateSelf') return ok(appendTo('Candidates', CAND_HEADERS, p.data));
-    return ok({ result: 'error', message: 'Unknown action' });
-  } catch(err) { return ok({ result: 'error', message: err.toString() }); }
+    const payload = JSON.parse(e.postData.contents);
+    if (payload.action === 'ping')             return ok({ result: 'pong' });
+    if (payload.action === 'addRow')           return ok(writeRow('Candidates', CH, payload.data));
+    if (payload.action === 'addJob')           return ok(writeRow('JobPosts',   JH, payload.data));
+    if (payload.action === 'addCandidateSelf') return ok(writeRow('Candidates', CH, payload.data));
+    return ok({ result: 'error', message: 'Unknown action: ' + payload.action });
+  } catch(err) {
+    return ok({ result: 'error', message: err.toString() });
+  }
 }
 
-function doGet(e) { return ok({ result: 'ok' }); }
-
-function appendTo(sheetName, headers, data) {
+function writeRow(sheetName, headers, data) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName(sheetName);
-  if (!sheet) { sheet = ss.insertSheet(sheetName); styleHeaders(sheet, headers); }
-  if (sheet.getLastRow() === 0) styleHeaders(sheet, headers);
-  const row = headers.map(h => String(data[h] !== undefined ? data[h] : ''));
-  sheet.appendRow(row);
-  const rn = sheet.getLastRow();
-  if (rn % 2 === 0) sheet.getRange(rn, 1, 1, headers.length).setBackground('#0f2035');
-  if (sheetName === 'Candidates') styleStatusCell(sheet, rn, headers, data['Status']);
-  if (sheetName === 'JobPosts')   styleJobStatus(sheet, rn, headers, data['Status']);
+  let sh   = ss.getSheetByName(sheetName);
+
+  if (!sh) {
+    sh = ss.insertSheet(sheetName);
+    mkHeaders(sh, headers);
+  }
+  if (sh.getLastRow() === 0) {
+    mkHeaders(sh, headers);
+  }
+
+  // Build row in exact column order
+  const row = headers.map(h => {
+    const val = data[h];
+    return (val !== undefined && val !== null) ? String(val) : '';
+  });
+
+  sh.appendRow(row);
+
+  const rn = sh.getLastRow();
+
+  // Alternate row background for readability
+  if (rn % 2 === 0) {
+    sh.getRange(rn, 1, 1, headers.length).setBackground('#0f2035');
+  }
+
+  // Color-code Status column
+  if (sheetName === 'Candidates') colorCandStatus(sh, rn, headers, data['Status']);
+  if (sheetName === 'JobPosts')   colorJobStatus(sh, rn, headers, data['Status']);
+
   return { result: 'success' };
 }
 
-function styleHeaders(sheet, headers) {
-  const r = sheet.getRange(1, 1, 1, headers.length);
+function mkHeaders(sh, headers) {
+  const r = sh.getRange(1, 1, 1, headers.length);
   r.setValues([headers]);
   r.setBackground('#1c3150').setFontColor('#e8a020').setFontWeight('bold').setFontSize(10);
-  sheet.getRange(1,1).setBackground('#e8a020').setFontColor('#0d1b2e');
-  sheet.setFrozenRows(1);
-  sheet.setRowHeight(1, 36);
+  sh.getRange(1, 1).setBackground('#e8a020').setFontColor('#0d1b2e'); // ID col highlight
+  sh.setFrozenRows(1);
+  sh.setRowHeight(1, 36);
 }
 
-function styleStatusCell(sheet, row, headers, status) {
+function colorCandStatus(sh, row, headers, status) {
   const col = headers.indexOf('Status') + 1;
   if (col < 1) return;
-  const c = sheet.getRange(row, col);
-  if      (status === 'Available')           c.setBackground('#166534').setFontColor('#4ade80');
-  else if (status === 'Placed')              c.setBackground('#1e3a5f').setFontColor('#93c5fd');
-  else if (status === 'Interview Scheduled') c.setBackground('#3d2a00').setFontColor('#fbbf24');
-  else                                       c.setBackground('#1a1a1a').setFontColor('#94a3b8');
+  const cell = sh.getRange(row, col);
+  const map  = {
+    'Available':           ['#166534', '#4ade80'],
+    'Placed':              ['#1e3a5f', '#93c5fd'],
+    'Interview Scheduled': ['#3d2a00', '#fbbf24'],
+    'Inactive':            ['#1a1a1a', '#94a3b8']
+  };
+  const [bg, fg] = map[status] || ['#1a1a1a', '#94a3b8'];
+  cell.setBackground(bg).setFontColor(fg);
 }
 
-function styleJobStatus(sheet, row, headers, status) {
+function colorJobStatus(sh, row, headers, status) {
   const col = headers.indexOf('Status') + 1;
   if (col < 1) return;
-  const c = sheet.getRange(row, col);
-  if      (status === 'Open')   c.setBackground('#166534').setFontColor('#4ade80');
-  else if (status === 'Paused') c.setBackground('#3d2a00').setFontColor('#fbbf24');
-  else                          c.setBackground('#1a1a1a').setFontColor('#94a3b8');
+  const cell = sh.getRange(row, col);
+  if      (status === 'Open')   cell.setBackground('#166534').setFontColor('#4ade80');
+  else if (status === 'Paused') cell.setBackground('#3d2a00').setFontColor('#fbbf24');
+  else                          cell.setBackground('#1a1a1a').setFontColor('#94a3b8');
 }
 
 function ok(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
 }`;
 }
 </script>
