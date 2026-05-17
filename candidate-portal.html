@@ -12,7 +12,7 @@
   --b:rgba(255,255,255,.08);--c:rgba(255,255,255,.04);
   --g:#22c55e;--bl:#3b82f6;
   --fh:'Playfair Display',serif;--fb:'DM Sans',sans-serif;--fm:'DM Mono',monospace;
-  --r:10px;--rl:18px;--tr:.2s ease;
+  --r:10px;--rl:18px;--tr:.22s ease;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -22,24 +22,23 @@ a{color:inherit;text-decoration:none;}input,select,textarea,button{font-family:v
 
 /* ── AUTH SCREEN ── */
 #auth{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;background:var(--n);}
-.auth-wrap{width:100%;max-width:920px;background:var(--n2);border:1px solid var(--b);border-radius:24px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6);display:grid;grid-template-columns:1fr 1fr;}
-.auth-left{background:linear-gradient(145deg,var(--n3) 0%,#0f2a46 100%);padding:3.5rem 3rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
-.auth-left::before{content:'';position:absolute;inset:0;background:radial-gradient(circle 200px at 80% 20%,rgba(232,160,32,.12) 0%,transparent 70%);pointer-events:none;}
+.aw{width:100%;max-width:920px;background:var(--n2);border:1px solid var(--b);border-radius:24px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6);display:grid;grid-template-columns:1fr 1fr;}
+.al{background:linear-gradient(145deg,var(--n3) 0%,#0f2a46 100%);padding:3.5rem 3rem;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;}
+.al::before{content:'';position:absolute;inset:0;background:radial-gradient(circle 200px at 80% 20%,rgba(232,160,32,.12) 0%,transparent 70%);pointer-events:none;}
 .al-logo{font-family:var(--fh);font-size:1.4rem;font-weight:700;color:var(--w);position:relative;z-index:1;}.al-logo span{color:var(--a);}
 .al-tag{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a);display:block;margin-top:4px;}
-.al-hero{position:relative;z-index:1;}
+.al-h{position:relative;z-index:1;}
 .al-title{font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:800;color:var(--w);line-height:1.15;margin-bottom:1rem;}
 .al-title em{color:var(--a);font-style:italic;}
-.al-desc{font-size:.88rem;color:var(--m);line-height:1.7;max-width:300px;}
+.al-d{font-size:.88rem;color:var(--m);line-height:1.7;max-width:300px;}
 .al-pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem;}
 .al-pill{padding:5px 12px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);border-radius:100px;font-size:.75rem;color:var(--a);font-family:var(--fm);}
-.auth-right{padding:3rem;}
+.ar{padding:3rem;}
 /* TABS */
-.auth-tabs{display:flex;gap:4px;margin-bottom:2rem;background:rgba(255,255,255,.04);border-radius:10px;padding:4px;}
-.auth-tab{flex:1;padding:10px;text-align:center;font-size:.875rem;font-weight:600;color:var(--m);cursor:pointer;border-radius:7px;border:none;background:none;transition:all var(--tr);}
-.auth-tab.act{background:var(--a);color:var(--n);}
-/* FORMS */
-.auth-pane{display:none;}.auth-pane.act{display:block;}
+.atabs{display:flex;gap:4px;margin-bottom:2rem;background:rgba(255,255,255,.04);border-radius:10px;padding:4px;}
+.atab{flex:1;padding:10px;text-align:center;font-size:.875rem;font-weight:600;color:var(--m);cursor:pointer;border-radius:7px;border:none;background:none;transition:all var(--tr);}
+.atab.act{background:var(--a);color:var(--n);}
+.apane{display:none;}.apane.act{display:block;}
 .f-title{font-family:var(--fh);font-size:1.5rem;font-weight:700;color:var(--w);margin-bottom:.3rem;}
 .f-sub{font-size:.85rem;color:var(--m);margin-bottom:2rem;}
 .fg{display:flex;flex-direction:column;gap:5px;margin-bottom:1.1rem;}
@@ -49,90 +48,37 @@ a{color:inherit;text-decoration:none;}input,select,textarea,button{font-family:v
 select.fi{cursor:pointer;}select.fi option{background:var(--n2);}
 .fb{width:100%;padding:13px;background:var(--a);color:var(--n);font-size:.95rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all var(--tr);margin-top:.5rem;}
 .fb:hover{background:var(--a2);transform:translateY(-1px);}
+.fb:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 .ferr{display:none;padding:10px 14px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;font-size:.85rem;color:#fca5a5;margin-top:1rem;text-align:center;}
 .ferr.show{display:block;}
 .hint{font-size:.75rem;color:var(--m);text-align:center;margin-top:1.2rem;line-height:1.6;}
-.hint a{color:var(--a);cursor:pointer;}
+.hint a{color:var(--a);cursor:pointer;text-decoration:underline;}
 
 /* ── PORTAL ── */
 #portal{display:none;position:relative;z-index:1;}
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(13,27,46,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--b);}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;padding:0 5vw;display:flex;align-items:center;justify-content:space-between;background:rgba(13,27,46,.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--b);transition:box-shadow var(--tr);}
 .nav.sc{box-shadow:0 4px 32px rgba(0,0,0,.4);}
 .nav-logo{font-family:var(--fh);font-size:1.15rem;font-weight:700;color:var(--w);}.nav-logo span{color:var(--a);}
-.nav-tabs{display:flex;gap:4px;}
-.nav-tab{padding:8px 18px;font-size:.875rem;font-weight:500;color:var(--m);cursor:pointer;border-radius:8px;border:none;background:none;transition:all var(--tr);}
-.nav-tab:hover{color:var(--t);background:var(--c);}
-.nav-tab.act{color:var(--a);background:rgba(232,160,32,.08);}
-.nav-right{display:flex;align-items:center;gap:1rem;}
-.nav-user{display:flex;align-items:center;gap:8px;}
+.ntabs{display:flex;gap:4px;}
+.ntab{padding:8px 18px;font-size:.875rem;font-weight:500;color:var(--m);cursor:pointer;border-radius:8px;border:none;background:none;transition:all var(--tr);}
+.ntab:hover{color:var(--t);background:var(--c);}
+.ntab.act{color:var(--a);background:rgba(232,160,32,.08);}
+.nav-r{display:flex;align-items:center;gap:1rem;}
 .nav-av{width:32px;height:32px;background:linear-gradient(135deg,var(--a),var(--a2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--n);}
-.nav-name{font-size:.85rem;font-weight:500;color:var(--t);}
+.nav-nm{font-size:.85rem;font-weight:500;color:var(--t);}
 .nav-out{padding:6px 14px;background:transparent;border:1px solid var(--b);border-radius:6px;color:var(--m);font-size:.8rem;cursor:pointer;transition:all var(--tr);}
 .nav-out:hover{border-color:rgba(239,68,68,.4);color:#fca5a5;}
 .mob-btns{display:none;gap:.5rem;}
 .mob-btn{background:none;border:none;cursor:pointer;color:var(--t);font-size:1.2rem;}
 
-/* MAIN */
 .pmain{padding-top:64px;}
-.pcontent{max-width:1200px;margin:0 auto;padding:2.5rem 5vw 4rem;}
-
-/* PAGE HEADER */
-.pg-hd{margin-bottom:2.5rem;}
-.eyebrow{font-family:var(--fm);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--a);margin-bottom:.5rem;}
-.pg-title{font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--w);line-height:1.15;}
-.pg-title em{font-style:italic;color:var(--a);}
-.pg-desc{font-size:.9rem;color:var(--m);margin-top:.5rem;}
-
-/* VIEWS */
+.pc{max-width:1200px;margin:0 auto;padding:2.5rem 5vw 4rem;}
 .pview{display:none;}.pview.act{display:block;}
-
-/* ── PROFILE VIEW ── */
-.profile-card{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;margin-bottom:1.5rem;}
-.pc-head{background:linear-gradient(145deg,var(--n3) 0%,#102040 100%);padding:2rem 2.5rem;display:flex;align-items:center;gap:1.5rem;position:relative;}
-.pc-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(232,160,32,.08) 0%,transparent 60%);pointer-events:none;}
-.pc-av{width:72px;height:72px;border-radius:18px;background:rgba(232,160,32,.15);border:2px solid rgba(232,160,32,.3);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.8rem;font-weight:700;color:var(--a);flex-shrink:0;position:relative;z-index:1;}
-.pc-info{position:relative;z-index:1;}
-.pc-name{font-family:var(--fh);font-size:1.5rem;font-weight:800;color:var(--w);margin-bottom:4px;}
-.pc-role{font-size:.9rem;color:var(--m);}
-.pc-id{font-family:var(--fm);font-size:.65rem;color:rgba(232,160,32,.6);margin-top:5px;}
-.pc-body{padding:2rem 2.5rem;}
-.pc-section{margin-bottom:1.8rem;}
-.pc-section-title{font-family:var(--fm);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
-.pc-section-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(232,160,32,.3),transparent);}
-.pc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
-.pc-item-label{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:4px;}
-.pc-item-val{font-size:.9rem;color:var(--t);font-weight:500;}
-.pc-tags{display:flex;flex-wrap:wrap;gap:.5rem;}
-.pc-tag-a{padding:5px 12px;background:rgba(232,160,32,.09);border:1px solid rgba(232,160,32,.2);border-radius:100px;font-size:.78rem;color:var(--a);}
-.pc-tag-b{padding:5px 12px;background:rgba(59,130,246,.09);border:1px solid rgba(59,130,246,.2);border-radius:100px;font-size:.78rem;color:#93c5fd;}
-.pc-tag-g{padding:5px 12px;background:rgba(34,197,94,.09);border:1px solid rgba(34,197,94,.2);border-radius:100px;font-size:.78rem;color:#4ade80;}
-.no-profile{text-align:center;padding:4rem 2rem;background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);}
-.no-profile h3{font-family:var(--fh);font-size:1.5rem;color:var(--w);margin-bottom:.8rem;}
-.no-profile p{font-size:.9rem;color:var(--m);margin-bottom:1.5rem;}
-.btn-pri{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--a);color:var(--n);font-size:.9rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all var(--tr);}
-.btn-pri:hover{background:var(--a2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,160,32,.3);}
-
-/* ── CREATE PROFILE FORM ── */
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
-.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
-.fsec{font-family:var(--fm);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a);padding:.6rem 0;border-bottom:1px solid var(--b);margin:1.5rem 0 1rem;}
-.fsec:first-of-type{margin-top:0;}
-.fi2{padding:9px 13px;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:8px;font-size:.875rem;color:var(--t);outline:none;width:100%;transition:border-color var(--tr);}
-.fi2:focus{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.03);}
-.fi2::placeholder{color:rgba(148,163,184,.35);}
-select.fi2{cursor:pointer;}select.fi2 option{background:var(--n2);}textarea.fi2{resize:vertical;min-height:80px;}
-.tw{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:4px;}
-.to{padding:6px 12px;border:1px solid var(--b);border-radius:100px;font-size:.78rem;color:var(--m);cursor:pointer;user-select:none;transition:all var(--tr);}
-.to.sl{border-color:var(--a);background:rgba(232,160,32,.1);color:var(--a);}
-.fa{display:flex;gap:1rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--b);}
-.bs{flex:1;padding:12px;background:var(--a);color:var(--n);font-size:.9rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all var(--tr);}
-.bs:hover:not(:disabled){background:var(--a2);transform:translateY(-1px);}
-.bs:disabled{opacity:.55;cursor:not-allowed;}
-.panel{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;margin-bottom:1.5rem;}
-.ph{padding:1.2rem 1.5rem;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
-.pht{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--w);}
-.phs{font-size:.78rem;color:var(--m);margin-top:2px;}
-.pb{padding:1.5rem;}
+.eyebrow{font-family:var(--fm);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--a);margin-bottom:.5rem;}
+.pg-t{font-family:var(--fh);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:var(--w);line-height:1.15;}
+.pg-t em{font-style:italic;color:var(--a);}
+.pg-d{font-size:.9rem;color:var(--m);margin-top:.5rem;}
+.pg-hd{margin-bottom:2.5rem;}
 
 /* ── JOB BOARD ── */
 .filters{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:2rem;align-items:center;}
@@ -164,18 +110,68 @@ select.fi2{cursor:pointer;}select.fi2 option{background:var(--n2);}textarea.fi2{
 .badge{display:inline-block;padding:3px 9px;border-radius:100px;font-size:.7rem;font-weight:500;}
 .bop{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#4ade80;}
 .bpa{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);color:var(--a);}
+.bi{background:rgba(148,163,184,.1);border:1px solid rgba(148,163,184,.2);color:var(--m);}
+.ba{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.25);color:#4ade80;}
 .empty{text-align:center;padding:4rem 2rem;color:var(--m);}
 .empty h3{font-family:var(--fh);font-size:1.3rem;color:var(--t);margin-bottom:.5rem;}
+.loading{text-align:center;padding:3rem;color:var(--m);}
 .sp{width:32px;height:32px;border:2px solid var(--b);border-top-color:var(--a);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 1rem;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.loading{text-align:center;padding:3rem;color:var(--m);}
+
+/* ── PROFILE ── */
+.profile-card{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;margin-bottom:1.5rem;}
+.pc-head{background:linear-gradient(145deg,var(--n3) 0%,#102040 100%);padding:2rem 2.5rem;display:flex;align-items:center;gap:1.5rem;position:relative;}
+.pc-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 50%,rgba(232,160,32,.08) 0%,transparent 60%);pointer-events:none;}
+.pc-av{width:72px;height:72px;border-radius:18px;background:rgba(232,160,32,.15);border:2px solid rgba(232,160,32,.3);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.8rem;font-weight:700;color:var(--a);flex-shrink:0;position:relative;z-index:1;}
+.pc-info{position:relative;z-index:1;flex:1;}
+.pc-name{font-family:var(--fh);font-size:1.5rem;font-weight:800;color:var(--w);margin-bottom:4px;}
+.pc-role{font-size:.9rem;color:var(--m);}
+.pc-id{font-family:var(--fm);font-size:.65rem;color:rgba(232,160,32,.6);margin-top:5px;}
+.pc-body{padding:2rem 2.5rem;}
+.pc-sec{margin-bottom:1.8rem;}
+.pc-sec-t{font-family:var(--fm);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:1rem;display:flex;align-items:center;gap:10px;}
+.pc-sec-t::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(232,160,32,.3),transparent);}
+.pc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.pc-lbl{font-family:var(--fm);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:4px;}
+.pc-val{font-size:.9rem;color:var(--t);font-weight:500;}
+.pc-tags{display:flex;flex-wrap:wrap;gap:.5rem;}
+.tag-a{padding:5px 12px;background:rgba(232,160,32,.09);border:1px solid rgba(232,160,32,.2);border-radius:100px;font-size:.78rem;color:var(--a);}
+.tag-b{padding:5px 12px;background:rgba(59,130,246,.09);border:1px solid rgba(59,130,246,.2);border-radius:100px;font-size:.78rem;color:#93c5fd;}
+.tag-g{padding:5px 12px;background:rgba(34,197,94,.09);border:1px solid rgba(34,197,94,.2);border-radius:100px;font-size:.78rem;color:#4ade80;}
+.no-profile{text-align:center;padding:4rem 2rem;background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);}
+.no-profile h3{font-family:var(--fh);font-size:1.5rem;color:var(--w);margin-bottom:.8rem;}
+.no-profile p{font-size:.9rem;color:var(--m);margin-bottom:1.5rem;}
+.btn-pri{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--a);color:var(--n);font-size:.9rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all var(--tr);}
+.btn-pri:hover{background:var(--a2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,160,32,.3);}
+
+/* ── PROFILE FORM ── */
+.panel{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;margin-bottom:1.5rem;}
+.ph{padding:1.2rem 1.5rem;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+.pht{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--w);}
+.phs{font-size:.78rem;color:var(--m);margin-top:2px;}
+.pb{padding:1.5rem;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.fsec{font-family:var(--fm);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a);padding:.6rem 0;border-bottom:1px solid var(--b);margin:1.5rem 0 1rem;}
+.fsec:first-of-type{margin-top:0;}
+.fi2{padding:9px 13px;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:8px;font-size:.875rem;color:var(--t);outline:none;width:100%;transition:border-color var(--tr);}
+.fi2:focus{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.03);}
+.fi2::placeholder{color:rgba(148,163,184,.35);}
+select.fi2{cursor:pointer;}select.fi2 option{background:var(--n2);}textarea.fi2{resize:vertical;min-height:80px;}
+.tw{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:4px;}
+.to{padding:6px 12px;border:1px solid var(--b);border-radius:100px;font-size:.78rem;color:var(--m);cursor:pointer;user-select:none;transition:all var(--tr);}
+.to.sl{border-color:var(--a);background:rgba(232,160,32,.1);color:var(--a);}
+.fa{display:flex;gap:1rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--b);}
+.bs{flex:1;padding:12px;background:var(--a);color:var(--n);font-size:.9rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all var(--tr);}
+.bs:hover:not(:disabled){background:var(--a2);transform:translateY(-1px);}
+.bs:disabled{opacity:.55;cursor:not-allowed;}
 
 /* JOB MODAL */
 .modal-ov{display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;padding:1rem;overflow-y:auto;}
 .modal-ov.open{display:flex;}
 .jmodal{width:100%;max-width:720px;background:var(--n2);border:1px solid rgba(232,160,32,.2);border-radius:24px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.6);margin:auto;animation:mIn .3s cubic-bezier(.34,1.3,.64,1);}
 @keyframes mIn{from{opacity:0;transform:scale(.92) translateY(20px);}to{opacity:1;transform:scale(1) translateY(0);}}
-.jm-head{background:linear-gradient(145deg,var(--n3),#102040);padding:2rem;position:relative;}
+.jm-head{background:linear-gradient(145deg,var(--n3),#102040);padding:2rem;position:relative;overflow:hidden;}
 .jm-head::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 80% 30%,rgba(232,160,32,.08) 0%,transparent 60%);}
 .jm-close{position:absolute;top:1rem;right:1rem;width:34px;height:34px;background:rgba(255,255,255,.06);border:1px solid var(--b);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--m);font-size:.9rem;transition:all var(--tr);}
 .jm-close:hover{background:rgba(239,68,68,.15);color:#fca5a5;}
@@ -183,16 +179,16 @@ select.fi2{cursor:pointer;}select.fi2 option{background:var(--n2);}textarea.fi2{
 .jm-co{font-size:.9rem;color:var(--m);position:relative;z-index:1;}
 .jm-id{font-family:var(--fm);font-size:.65rem;color:rgba(232,160,32,.6);margin-top:6px;position:relative;z-index:1;}
 .jm-body{padding:2rem;}
-.jm-sec-title{font-family:var(--fm);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:.8rem;display:flex;align-items:center;gap:10px;}
-.jm-sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(232,160,32,.3),transparent);}
+.jm-st{font-family:var(--fm);font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;color:var(--a);margin-bottom:.8rem;display:flex;align-items:center;gap:10px;}
+.jm-st::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(232,160,32,.3),transparent);}
 .jm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem;}
-.jm-i-lbl{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:3px;}
-.jm-i-val{font-size:.88rem;color:var(--t);font-weight:500;}
+.jm-lbl{font-family:var(--fm);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:3px;}
+.jm-val{font-size:.88rem;color:var(--t);font-weight:500;}
 .jm-desc{font-size:.9rem;color:var(--m);line-height:1.8;white-space:pre-line;margin-bottom:1.2rem;}
 .jm-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;}
 .jm-foot{padding:1.5rem 2rem;border-top:1px solid var(--b);background:rgba(0,0,0,.15);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
 .jm-ctc{font-family:var(--fh);font-size:1.3rem;font-weight:700;color:var(--a);}
-.jm-ctc-lbl{font-size:.75rem;color:var(--m);margin-top:2px;}
+.jm-ctc-l{font-size:.75rem;color:var(--m);margin-top:2px;}
 .apply-big{padding:13px 32px;background:var(--a);color:var(--n);font-size:.95rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;transition:all var(--tr);}
 .apply-big:hover{background:var(--a2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(232,160,32,.35);}
 
@@ -203,7 +199,7 @@ select.fi2{cursor:pointer;}select.fi2 option{background:var(--n2);}textarea.fi2{
 .toast.error{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
 .toast.info{background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.25);color:var(--a);}
 
-@media(max-width:700px){.auth-wrap{grid-template-columns:1fr;}.auth-left{display:none;}.job-grid{grid-template-columns:1fr;}.pc-grid{grid-template-columns:1fr 1fr;}.jm-grid{grid-template-columns:1fr 1fr;}.nav-tabs{display:none;}.mob-btns{display:flex;}.r2,.r3{grid-template-columns:1fr;}.fa{flex-direction:column;}}
+@media(max-width:700px){.aw{grid-template-columns:1fr;}.al{display:none;}.job-grid{grid-template-columns:1fr;}.pc-grid{grid-template-columns:1fr 1fr;}.jm-grid{grid-template-columns:1fr 1fr;}.ntabs{display:none;}.mob-btns{display:flex;}.r2,.r3{grid-template-columns:1fr;}.fa{flex-direction:column;}}
 @media(max-width:480px){.pc-grid,.jm-grid{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -211,57 +207,84 @@ select.fi2{cursor:pointer;}select.fi2 option{background:var(--n2);}textarea.fi2{
 
 <!-- ══ AUTH ══ -->
 <div id="auth">
-  <div class="auth-wrap">
-    <div class="auth-left">
-      <div><div class="al-logo">Aaradhya <span>SFS</span></div><span class="al-tag">Candidate Portal</span></div>
-      <div class="al-hero">
+  <div class="aw">
+    <div class="al">
+      <div>
+        <div class="al-logo">Aaradhya <span>SFS</span></div>
+        <span class="al-tag">Candidate Portal</span>
+      </div>
+      <div class="al-h">
         <h2 class="al-title">Find Your Next<em>Pharma Role</em></h2>
-        <p class="al-desc">Create your MR profile once — get matched with openings across Odisha. Deployed within 48 hours.</p>
-        <div class="al-pills"><span class="al-pill">Free to Register</span><span class="al-pill">Odisha-wide Jobs</span><span class="al-pill">48-hr Deployment</span></div>
+        <p class="al-d">Create your MR profile once — get matched with openings across Odisha. Deployed within 48 hours.</p>
+        <div class="al-pills">
+          <span class="al-pill">Free to Register</span>
+          <span class="al-pill">Odisha-wide Jobs</span>
+          <span class="al-pill">48-hr Deployment</span>
+        </div>
       </div>
       <div style="font-size:.75rem;color:rgba(148,163,184,.5);">© 2025 Aaradhya Sales Force Solutions</div>
     </div>
-    <div class="auth-right">
-      <div class="auth-tabs">
-        <button class="auth-tab act" onclick="switchTab('login')">Sign In</button>
-        <button class="auth-tab" onclick="switchTab('register')">Create Profile</button>
+    <div class="ar">
+      <div class="atabs">
+        <button class="atab act" id="tab-login" onclick="switchTab('login')">Sign In</button>
+        <button class="atab" id="tab-reg" onclick="switchTab('register')">Create Profile</button>
       </div>
 
-      <!-- LOGIN -->
-      <div class="auth-pane act" id="pane-login">
+      <!-- LOGIN PANE -->
+      <div class="apane act" id="pane-login">
         <div class="f-title">Welcome Back</div>
-        <div class="f-sub">Sign in with your mobile number.</div>
-        <div class="fg"><label class="fl">Mobile Number <span class="rq">*</span></label><input class="fi" type="tel" id="l_mob" placeholder="Your registered mobile number"></div>
-        <div class="fg"><label class="fl">Password <span class="rq">*</span></label><input class="fi" type="password" id="l_pass" placeholder="Your password"></div>
-        <button class="fb" onclick="doSignIn()">Sign In →</button>
-        <div class="ferr" id="l_err">Mobile or password incorrect.</div>
+        <div class="f-sub">Sign in with your registered mobile number and password.</div>
+        <div class="fg">
+          <label class="fl">Mobile Number <span class="rq">*</span></label>
+          <input class="fi" type="tel" id="l_mob" placeholder="10-digit mobile number" maxlength="15">
+        </div>
+        <div class="fg">
+          <label class="fl">Password <span class="rq">*</span></label>
+          <input class="fi" type="password" id="l_pass" placeholder="Your password">
+        </div>
+        <button class="fb" id="loginBtn" onclick="doSignIn()">Sign In →</button>
+        <div class="ferr" id="l_err">Incorrect mobile or password. Please try again.</div>
         <div class="hint">New here? <a onclick="switchTab('register')">Create your profile →</a></div>
       </div>
 
-      <!-- REGISTER -->
-      <div class="auth-pane" id="pane-register">
+      <!-- REGISTER PANE -->
+      <div class="apane" id="pane-register">
         <div class="f-title">Create Profile</div>
-        <div class="f-sub">Register to access job posts and get matched with pharma companies.</div>
-        <div class="r2">
-          <div class="fg"><label class="fl">Full Name <span class="rq">*</span></label><input class="fi" type="text" id="r_name" placeholder="Your full name" required></div>
-          <div class="fg"><label class="fl">Mobile <span class="rq">*</span></label><input class="fi" type="tel" id="r_mob" placeholder="10-digit number" required></div>
+        <div class="f-sub">Register once to access all job posts and get matched with pharma companies.</div>
+        <div class="fg">
+          <label class="fl">Full Name <span class="rq">*</span></label>
+          <input class="fi" type="text" id="r_name" placeholder="Your full name">
         </div>
-        <div class="fg"><label class="fl">Create Password <span class="rq">*</span></label><input class="fi" type="password" id="r_pass" placeholder="Create a password (min 6 chars)" required></div>
+        <div class="fg">
+          <label class="fl">Mobile Number <span class="rq">*</span></label>
+          <input class="fi" type="tel" id="r_mob" placeholder="10-digit mobile number" maxlength="15">
+        </div>
+        <div class="fg">
+          <label class="fl">Create Password <span class="rq">*</span></label>
+          <input class="fi" type="password" id="r_pass" placeholder="Minimum 6 characters">
+        </div>
         <div class="r2">
-          <div class="fg"><label class="fl">Primary HQ <span class="rq">*</span></label>
-            <select class="fi" id="r_hq" required>
+          <div class="fg">
+            <label class="fl">Primary HQ <span class="rq">*</span></label>
+            <select class="fi" id="r_hq">
               <option value="">Select HQ</option>
               <optgroup label="Major HQs"><option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option><option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option></optgroup>
               <optgroup label="Tier-2/3"><option>Kalahandi</option><option>Nuapada</option><option>Bargarh</option><option>Koraput</option><option>Jharsuguda</option><option>Balangir</option><option>Sundargarh</option><option>Keonjhar</option><option>Mayurbhanj</option><option>Dhenkanal</option><option>Angul</option><option>Rayagada</option></optgroup>
               <option>Multiple / Pan-Odisha</option>
             </select>
           </div>
-          <div class="fg"><label class="fl">Experience <span class="rq">*</span></label>
-            <select class="fi" id="r_exp" required><option value="">Select</option><option>Fresher (0 yr)</option><option>Less than 1 year</option><option>1 – 2 years</option><option>2 – 3 years</option><option>3 – 5 years</option><option>5 – 8 years</option><option>8+ years</option></select>
+          <div class="fg">
+            <label class="fl">Experience <span class="rq">*</span></label>
+            <select class="fi" id="r_exp">
+              <option value="">Select</option>
+              <option>Fresher (0 yr)</option><option>Less than 1 year</option>
+              <option>1 – 2 years</option><option>2 – 3 years</option>
+              <option>3 – 5 years</option><option>5 – 8 years</option><option>8+ years</option>
+            </select>
           </div>
         </div>
-        <button class="fb" onclick="doRegister()">Create Profile & Sign In →</button>
-        <div class="ferr" id="r_err">Please fill all required fields.</div>
+        <button class="fb" id="regBtn" onclick="doRegister()">Create Profile & Sign In →</button>
+        <div class="ferr" id="r_err">Please check your details and try again.</div>
         <div class="hint">Already registered? <a onclick="switchTab('login')">Sign in →</a></div>
       </div>
     </div>
@@ -272,78 +295,127 @@ select.fi2{cursor:pointer;}select.fi2 option{background:var(--n2);}textarea.fi2{
 <div id="portal">
   <nav class="nav" id="nav">
     <div class="nav-logo">Aaradhya <span>SFS</span></div>
-    <div class="nav-tabs">
-      <button class="nav-tab act" onclick="showP('jobs',this)">💼 Job Board</button>
-      <button class="nav-tab" onclick="showP('profile',this)">👤 My Profile</button>
-      <button class="nav-tab" onclick="showP('createProfile',this)">✏️ Edit Profile</button>
+    <div class="ntabs">
+      <button class="ntab act" id="nt-jobs" onclick="showP('jobs',this)">💼 Job Board</button>
+      <button class="ntab" id="nt-profile" onclick="showP('profile',this)">👤 My Profile</button>
+      <button class="ntab" id="nt-edit" onclick="showP('editProfile',this)">✏️ Edit Profile</button>
     </div>
-    <div class="nav-right">
-      <div class="nav-user"><div class="nav-av" id="navAv">C</div><span class="nav-name" id="navName">Candidate</span></div>
+    <div class="nav-r">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="nav-av" id="navAv">C</div>
+        <span class="nav-nm" id="navNm">Candidate</span>
+      </div>
       <button class="nav-out" onclick="doSignOut()">Sign Out</button>
       <div class="mob-btns">
-        <button class="mob-btn" onclick="showP('jobs',null)" title="Jobs">💼</button>
-        <button class="mob-btn" onclick="showP('profile',null)" title="Profile">👤</button>
+        <button class="mob-btn" onclick="showP('jobs',null)">💼</button>
+        <button class="mob-btn" onclick="showP('profile',null)">👤</button>
+        <button class="mob-btn" onclick="showP('editProfile',null)">✏️</button>
       </div>
     </div>
   </nav>
 
   <main class="pmain">
-    <div class="pcontent">
+    <div class="pc">
 
       <!-- JOB BOARD -->
       <div class="pview act" id="pv-jobs">
         <div class="pg-hd">
           <div class="eyebrow">Open Positions — Aaradhya SFS</div>
-          <h1 class="pg-title">Available <em>MR Jobs</em></h1>
-          <p class="pg-desc">All openings are managed by Aaradhya Sales Force Solutions. Apply directly — we handle the deployment.</p>
+          <h1 class="pg-t">Available <em>MR Jobs</em></h1>
+          <p class="pg-d">All openings managed by Aaradhya Sales Force Solutions. Apply directly via WhatsApp.</p>
         </div>
         <div class="filters">
           <div class="sw"><input class="tsr" id="jsr" type="text" placeholder="Search title, company, HQ, division…" oninput="fJobs()"></div>
           <select class="tfl" id="jfh" onchange="fJobs()"><option value="">All HQs</option></select>
-          <select class="tfl" id="jfr" onchange="fJobs()"><option value="">All Roles</option><option>Medical Representative (MR)</option><option>Senior MR</option><option>ABM</option><option>ZBM</option><option>PSR / DSR</option></select>
-          <button onclick="loadJobs()" style="padding:10px 18px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);border-radius:10px;font-size:.82rem;color:var(--a);cursor:pointer;">🔄 Refresh</button>
+          <select class="tfl" id="jfr" onchange="fJobs()">
+            <option value="">All Roles</option>
+            <option>Medical Representative (MR)</option><option>Senior MR</option>
+            <option>Area Business Manager (ABM)</option><option>ZBM</option><option>PSR / DSR</option>
+          </select>
+          <button onclick="loadJobs()" style="padding:10px 18px;background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);border-radius:10px;font-size:.82rem;color:var(--a);cursor:pointer;border:1px solid rgba(232,160,32,.2);">🔄 Refresh</button>
           <div style="font-family:var(--fm);font-size:.78rem;color:var(--m);padding:10px 14px;background:var(--n2);border:1px solid var(--b);border-radius:10px;white-space:nowrap;">Showing <span style="color:var(--a);" id="jCount">—</span></div>
         </div>
         <div id="jobGrid"><div class="loading"><div class="sp"></div>Loading job posts…</div></div>
       </div>
 
-      <!-- MY PROFILE VIEW -->
+      <!-- MY PROFILE -->
       <div class="pview" id="pv-profile">
         <div class="pg-hd">
           <div class="eyebrow">Your Profile</div>
-          <h1 class="pg-title">My <em>MR Profile</em></h1>
-          <p class="pg-desc">This is how your profile appears to Aaradhya SFS. Keep it updated for better matching.</p>
+          <h1 class="pg-t">My <em>MR Profile</em></h1>
+          <p class="pg-d">This is how your profile appears to Aaradhya SFS. Keep it updated for better matching.</p>
         </div>
         <div id="profileDisplay"></div>
       </div>
 
-      <!-- CREATE / EDIT PROFILE -->
-      <div class="pview" id="pv-createProfile">
+      <!-- EDIT PROFILE -->
+      <div class="pview" id="pv-editProfile">
         <div class="pg-hd">
           <div class="eyebrow">Complete Your Profile</div>
-          <h1 class="pg-title">Build Your <em>MR Profile</em></h1>
-          <p class="pg-desc">Fill in your details to get matched with pharma companies across Odisha.</p>
+          <h1 class="pg-t">Build Your <em>MR Profile</em></h1>
+          <p class="pg-d">Fill in your details to get matched with pharma companies across Odisha.</p>
         </div>
         <div class="panel">
-          <div class="ph"><div><div class="pht" id="cpFormTitle">Complete Your Profile</div><div class="phs">Saves to Aaradhya SFS database instantly</div></div></div>
+          <div class="ph"><div><div class="pht" id="cpTitle">Complete Profile</div><div class="phs">Saves directly to Aaradhya SFS database</div></div></div>
           <div class="pb">
             <form id="cpForm" onsubmit="return false;">
               <div class="fsec">Personal Information</div>
-              <div class="r2"><div class="fg"><label class="fl">Full Name <span class="rq">*</span></label><input class="fi2" id="cp_n" type="text" placeholder="Full name" required></div><div class="fg"><label class="fl">Mobile <span class="rq">*</span></label><input class="fi2" id="cp_m" type="tel" placeholder="10-digit number" required></div></div>
-              <div class="r2"><div class="fg"><label class="fl">Email</label><input class="fi2" id="cp_e" type="email" placeholder="email@example.com"></div><div class="fg"><label class="fl">Date of Birth</label><input class="fi2" id="cp_dob" type="date"></div></div>
-              <div class="r2"><div class="fg"><label class="fl">Gender</label><select class="fi2" id="cp_g"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div><div class="fg"><label class="fl">Qualification</label><select class="fi2" id="cp_q"><option value="">Select</option><option>B.Sc (Biology / Biotech)</option><option>B.Pharm</option><option>D.Pharm</option><option>B.A / B.Com</option><option>MBA</option><option>Other Graduate</option><option>12th Pass (Science)</option></select></div></div>
+              <div class="r2">
+                <div class="fg"><label class="fl">Full Name <span class="rq">*</span></label><input class="fi2" id="cp_n" type="text" placeholder="Full name" required></div>
+                <div class="fg"><label class="fl">Mobile <span class="rq">*</span></label><input class="fi2" id="cp_m" type="tel" placeholder="10-digit number" required></div>
+              </div>
+              <div class="r2">
+                <div class="fg"><label class="fl">Email</label><input class="fi2" id="cp_e" type="email" placeholder="email@example.com"></div>
+                <div class="fg"><label class="fl">Date of Birth</label><input class="fi2" id="cp_dob" type="date"></div>
+              </div>
+              <div class="r2">
+                <div class="fg"><label class="fl">Gender</label><select class="fi2" id="cp_g"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+                <div class="fg"><label class="fl">Qualification</label><select class="fi2" id="cp_q"><option value="">Select</option><option>B.Sc (Biology / Biotech)</option><option>B.Pharm</option><option>D.Pharm</option><option>B.A / B.Com</option><option>MBA</option><option>Other Graduate</option><option>12th Pass (Science)</option></select></div>
+              </div>
               <div class="fg"><label class="fl">Home City / Town</label><input class="fi2" id="cp_c" type="text" placeholder="e.g. Sambalpur"></div>
               <div class="fsec">Field Experience</div>
-              <div class="r3"><div class="fg"><label class="fl">Total Experience <span class="rq">*</span></label><select class="fi2" id="cp_x" required><option value="">Select</option><option>Fresher (0 yr)</option><option>Less than 1 year</option><option>1 – 2 years</option><option>2 – 3 years</option><option>3 – 5 years</option><option>5 – 8 years</option><option>8+ years</option></select></div><div class="fg"><label class="fl">Current / Last Role</label><select class="fi2" id="cp_r"><option value="">Select</option><option>Medical Representative (MR)</option><option>Senior MR</option><option>ABM</option><option>ZBM</option><option>PSR / DSR</option><option>Fresher</option></select></div><div class="fg"><label class="fl">Current CTC (₹/mo)</label><input class="fi2" id="cp_ctc" type="number" placeholder="e.g. 18000"></div></div>
-              <div class="r2"><div class="fg"><label class="fl">Current / Last Company</label><input class="fi2" id="cp_co" type="text" placeholder="Company name"></div><div class="fg"><label class="fl">Expected CTC (₹/mo)</label><input class="fi2" id="cp_ectc" type="number" placeholder="e.g. 22000"></div></div>
-              <div class="fg"><label class="fl">Product Divisions Worked In</label><div class="tw" id="cpDiv"><span class="to" onclick="tog(this)">Allopathy / Ethical</span><span class="to" onclick="tog(this)">Generic</span><span class="to" onclick="tog(this)">Ayurvedic / Herbal</span><span class="to" onclick="tog(this)">OTC / Consumer</span><span class="to" onclick="tog(this)">Oncology</span><span class="to" onclick="tog(this)">Cardiology</span><span class="to" onclick="tog(this)">Diabetology</span><span class="to" onclick="tog(this)">Dermatology</span><span class="to" onclick="tog(this)">Gynaecology</span><span class="to" onclick="tog(this)">Paediatrics</span><span class="to" onclick="tog(this)">Neurology</span><span class="to" onclick="tog(this)">PCD / Franchise</span></div></div>
-              <div class="fg"><label class="fl">Doctor Segment</label><div class="tw" id="cpDoc"><span class="to" onclick="tog(this)">GPs / General Physicians</span><span class="to" onclick="tog(this)">Specialists</span><span class="to" onclick="tog(this)">Hospital / Institutional</span><span class="to" onclick="tog(this)">Chemist-focused</span></div></div>
+              <div class="r3">
+                <div class="fg"><label class="fl">Total Experience <span class="rq">*</span></label><select class="fi2" id="cp_x" required><option value="">Select</option><option>Fresher (0 yr)</option><option>Less than 1 year</option><option>1 – 2 years</option><option>2 – 3 years</option><option>3 – 5 years</option><option>5 – 8 years</option><option>8+ years</option></select></div>
+                <div class="fg"><label class="fl">Current / Last Role</label><select class="fi2" id="cp_r"><option value="">Select</option><option>Medical Representative (MR)</option><option>Senior MR</option><option>ABM</option><option>ZBM</option><option>PSR / DSR</option><option>Fresher</option></select></div>
+                <div class="fg"><label class="fl">Current CTC (₹/mo)</label><input class="fi2" id="cp_ctc" type="number" placeholder="e.g. 18000"></div>
+              </div>
+              <div class="r2">
+                <div class="fg"><label class="fl">Current / Last Company</label><input class="fi2" id="cp_co" type="text" placeholder="Company name"></div>
+                <div class="fg"><label class="fl">Expected CTC (₹/mo)</label><input class="fi2" id="cp_ectc" type="number" placeholder="e.g. 22000"></div>
+              </div>
+              <div class="fg">
+                <label class="fl">Product Divisions Worked In</label>
+                <div class="tw" id="cpDiv">
+                  <span class="to" onclick="tog(this)">Allopathy / Ethical</span><span class="to" onclick="tog(this)">Generic</span><span class="to" onclick="tog(this)">Ayurvedic / Herbal</span><span class="to" onclick="tog(this)">OTC / Consumer</span><span class="to" onclick="tog(this)">Oncology</span><span class="to" onclick="tog(this)">Cardiology</span><span class="to" onclick="tog(this)">Diabetology</span><span class="to" onclick="tog(this)">Dermatology</span><span class="to" onclick="tog(this)">Gynaecology</span><span class="to" onclick="tog(this)">Paediatrics</span><span class="to" onclick="tog(this)">Neurology</span><span class="to" onclick="tog(this)">PCD / Franchise</span>
+                </div>
+              </div>
+              <div class="fg">
+                <label class="fl">Doctor Segment</label>
+                <div class="tw" id="cpDoc">
+                  <span class="to" onclick="tog(this)">GPs / General Physicians</span><span class="to" onclick="tog(this)">Specialists</span><span class="to" onclick="tog(this)">Hospital / Institutional</span><span class="to" onclick="tog(this)">Chemist-focused</span>
+                </div>
+              </div>
               <div class="fsec">Territory</div>
-              <div class="r2"><div class="fg"><label class="fl">Primary HQ <span class="rq">*</span></label><select class="fi2" id="cp_h" required><option value="">Select HQ</option><optgroup label="Major HQs"><option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option><option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option></optgroup><optgroup label="Tier-2/3"><option>Kalahandi</option><option>Nuapada</option><option>Bargarh</option><option>Koraput</option><option>Jharsuguda</option><option>Balangir</option><option>Sundargarh</option><option>Keonjhar</option><option>Mayurbhanj</option><option>Dhenkanal</option><option>Angul</option><option>Rayagada</option></optgroup><option>Multiple / Pan-Odisha</option></select></div><div class="fg"><label class="fl">Willing to Relocate</label><select class="fi2" id="cp_rl"><option value="">Select</option><option>Yes — anywhere in Odisha</option><option>Yes — nearby districts only</option><option>No — current HQ only</option></select></div></div>
+              <div class="r2">
+                <div class="fg"><label class="fl">Primary HQ <span class="rq">*</span></label>
+                  <select class="fi2" id="cp_h" required>
+                    <option value="">Select HQ</option>
+                    <optgroup label="Major HQs"><option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option><option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option></optgroup>
+                    <optgroup label="Tier-2/3"><option>Kalahandi</option><option>Nuapada</option><option>Bargarh</option><option>Koraput</option><option>Jharsuguda</option><option>Balangir</option><option>Sundargarh</option><option>Keonjhar</option><option>Mayurbhanj</option><option>Dhenkanal</option><option>Angul</option><option>Rayagada</option></optgroup>
+                    <option>Multiple / Pan-Odisha</option>
+                  </select>
+                </div>
+                <div class="fg"><label class="fl">Willing to Relocate</label><select class="fi2" id="cp_rl"><option value="">Select</option><option>Yes — anywhere in Odisha</option><option>Yes — nearby districts only</option><option>No — current HQ only</option></select></div>
+              </div>
               <div class="fg"><label class="fl">Other Territories Known</label><input class="fi2" id="cp_ot" type="text" placeholder="e.g. Bargarh, Jharsuguda"></div>
               <div class="fsec">Availability</div>
-              <div class="r2"><div class="fg"><label class="fl">Joining Availability</label><select class="fi2" id="cp_j"><option value="">Select</option><option>Immediate (within 1 week)</option><option>Within 15 days</option><option>Within 1 month</option><option>Flexible</option></select></div><div class="fg"><label class="fl">Current Status</label><select class="fi2" id="cp_s"><option value="Available">✅ Available — Actively Looking</option><option value="Interview Scheduled">📋 Open to Opportunities</option><option value="Inactive">⚫ Not Looking Right Now</option></select></div></div>
-              <div class="fa"><button class="bs" id="cpBtn" onclick="saveProfile()">💾 Save Profile</button></div>
+              <div class="r2">
+                <div class="fg"><label class="fl">Joining Availability</label><select class="fi2" id="cp_j"><option value="">Select</option><option>Immediate (within 1 week)</option><option>Within 15 days</option><option>Within 1 month</option><option>Flexible</option></select></div>
+                <div class="fg"><label class="fl">Current Status</label><select class="fi2" id="cp_s"><option value="Available">✅ Available — Actively Looking</option><option value="Interview Scheduled">📋 Open to Opportunities</option><option value="Inactive">⚫ Not Looking Right Now</option></select></div>
+              </div>
+              <div class="fa">
+                <button class="bs" id="cpBtn" onclick="saveProfile()">💾 Save Profile</button>
+              </div>
             </form>
           </div>
         </div>
@@ -355,183 +427,379 @@ select.fi2{cursor:pointer;}select.fi2 option{background:var(--n2);}textarea.fi2{
 
 <!-- JOB MODAL -->
 <div class="modal-ov" id="jModal" onclick="closeModal(event)">
-  <div class="jmodal" id="jModalContent"></div>
+  <div class="jmodal" id="jMC"></div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const SID='10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg';
-const gSU=()=>localStorage.getItem('asfs_url')||'';
+/* ════════════════════════════════════════
+   CONFIG
+════════════════════════════════════════ */
+const SID = '10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg';
+// Apps Script URL — same one set in admin panel
+const gSU = () => localStorage.getItem('asfs_url') || '';
 
-/* ══ STATE ══ */
-let currentUser=null; // { name, mobile, pass, id, profile: {...} }
-let allJobs=[];
+let CU  = null; // current user object: { mobile, name, pass, id, profile }
+let AJ  = [];   // all jobs cached
 
-/* ══ AUTH TABS ══ */
-function switchTab(t){
-  document.querySelectorAll('.auth-tab').forEach((b,i)=>b.classList.toggle('act',i===(t==='login'?0:1)));
-  document.getElementById('pane-login').classList.toggle('act',t==='login');
-  document.getElementById('pane-register').classList.toggle('act',t==='register');
+/* ════════════════════════════════════════
+   MOBILE NORMALIZER — KEY FIX #2
+   Always strips non-digits and takes
+   last 10 digits so "98765 43210" and
+   "9876543210" resolve to the same key.
+════════════════════════════════════════ */
+function normMob(s) {
+  const digits = String(s || '').replace(/\D/g, '');
+  return digits.slice(-10); // always last 10 digits
 }
 
-/* ══ SIGN IN ══ */
-function doSignIn(){
-  const mob=document.getElementById('l_mob').value.trim();
-  const pass=document.getElementById('l_pass').value;
-  if(!mob||!pass)return showErr('l_err','Please fill in both fields.');
-  const users=getUsers();
-  const u=users[mob];
-  if(!u||u.pass!==pass){return showErr('l_err','Mobile or password incorrect.');}
-  currentUser={...u,mobile:mob};
+/* ════════════════════════════════════════
+   LOCAL STORAGE — user accounts
+   Key = normalized 10-digit mobile
+   Value = { name, pass, id, profile }
+════════════════════════════════════════ */
+function getDB()    { try { return JSON.parse(localStorage.getItem('asfs_cands') || '{}'); } catch(e) { return {}; } }
+function saveDB(db) { localStorage.setItem('asfs_cands', JSON.stringify(db)); }
+
+/* ════════════════════════════════════════
+   AUTH TABS
+════════════════════════════════════════ */
+function switchTab(t) {
+  const isLogin = t === 'login';
+  document.getElementById('tab-login').classList.toggle('act',  isLogin);
+  document.getElementById('tab-reg').classList.toggle('act',   !isLogin);
+  document.getElementById('pane-login').classList.toggle('act',  isLogin);
+  document.getElementById('pane-register').classList.toggle('act', !isLogin);
+  document.getElementById('l_err').classList.remove('show');
+  document.getElementById('r_err').classList.remove('show');
+}
+
+/* ════════════════════════════════════════
+   SIGN IN — FIX: normalized mobile key
+════════════════════════════════════════ */
+function doSignIn() {
+  const rawMob = document.getElementById('l_mob').value.trim();
+  const pass   = document.getElementById('l_pass').value;
+  const mob    = normMob(rawMob);
+
+  if (!mob || !pass)   return showErr('l_err', 'Please fill in both fields.');
+  if (mob.length !== 10) return showErr('l_err', 'Enter a valid 10-digit mobile number.');
+
+  const db = getDB();
+  const u  = db[mob];
+
+  if (!u)             return showErr('l_err', 'Mobile number not registered. Please create a profile first.');
+  if (u.pass !== pass) return showErr('l_err', 'Incorrect password. Please try again.');
+
+  // Login success
+  CU = { mobile: mob, name: u.name, pass: u.pass, id: u.id, profile: u.profile || {} };
   launchPortal();
 }
-document.addEventListener('keydown',e=>{
-  if(e.key==='Enter'&&document.getElementById('auth').style.display!=='none'){
-    if(document.getElementById('pane-login').classList.contains('act'))doSignIn();
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('auth').style.display !== 'none') {
+    if (document.getElementById('pane-login').classList.contains('act')) doSignIn();
     else doRegister();
   }
 });
 
-/* ══ REGISTER ══ */
-function doRegister(){
-  const name=document.getElementById('r_name').value.trim();
-  const mob=document.getElementById('r_mob').value.trim();
-  const pass=document.getElementById('r_pass').value;
-  const hq=document.getElementById('r_hq').value;
-  const exp=document.getElementById('r_exp').value;
-  if(!name||!mob||!pass||!hq||!exp)return showErr('r_err','Please fill in all required fields.');
-  if(pass.length<6)return showErr('r_err','Password must be at least 6 characters.');
-  if(!/^\d{10}$/.test(mob.replace(/\s/g,'')))return showErr('r_err','Please enter a valid 10-digit mobile number.');
-  const users=getUsers();
-  if(users[mob])return showErr('r_err','This mobile is already registered. Please sign in.');
-  const now=new Date();
-  const id='ASFS-'+now.getFullYear().toString().slice(2)+String(now.getMonth()+1).padStart(2,'0')+'-'+Math.floor(1000+Math.random()*9000);
-  const newUser={name,pass,id,profile:{
-    'ID':id,'Date Added':now.toLocaleString('en-IN'),'Full Name':name,'Mobile':mob,
-    'Primary HQ':hq,'Experience':exp,'Status':'Available','Source':'Self'
-  }};
-  users[mob]=newUser;
-  saveUsers(users);
-  currentUser={...newUser,mobile:mob};
-  // Send basic profile to sheet
-  sendToSheet('addCandidateSelf',newUser.profile);
+/* ════════════════════════════════════════
+   REGISTER — FIX: normalized mobile key
+════════════════════════════════════════ */
+function doRegister() {
+  const name   = document.getElementById('r_name').value.trim();
+  const rawMob = document.getElementById('r_mob').value.trim();
+  const pass   = document.getElementById('r_pass').value;
+  const hq     = document.getElementById('r_hq').value;
+  const exp    = document.getElementById('r_exp').value;
+  const mob    = normMob(rawMob);
+
+  if (!name)           return showErr('r_err', 'Please enter your full name.');
+  if (mob.length !== 10) return showErr('r_err', 'Please enter a valid 10-digit mobile number.');
+  if (pass.length < 6) return showErr('r_err', 'Password must be at least 6 characters.');
+  if (!hq)             return showErr('r_err', 'Please select your primary HQ.');
+  if (!exp)            return showErr('r_err', 'Please select your experience.');
+
+  const db = getDB();
+  if (db[mob])         return showErr('r_err', 'This mobile is already registered. Please sign in.');
+
+  const now = new Date();
+  const id  = 'ASFS-' + now.getFullYear().toString().slice(2) + String(now.getMonth()+1).padStart(2,'0') + '-' + Math.floor(1000 + Math.random() * 9000);
+
+  const minProfile = {
+    'ID': id,
+    'Date Added': now.toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    'Full Name': name,
+    'Mobile': mob,
+    'Primary HQ': hq,
+    'Experience': exp,
+    'Status': 'Available',
+    'Source': 'Self'
+  };
+
+  // Save to local DB
+  db[mob] = { name, pass, id, profile: minProfile };
+  saveDB(db);
+
+  // Set current user
+  CU = { mobile: mob, name, pass, id, profile: minProfile };
+
+  // Send basic profile to Google Sheets
+  sendToSheet('addCandidateSelf', minProfile);
+
+  // Disable button briefly to prevent double-click
+  const btn = document.getElementById('regBtn');
+  btn.disabled = true;
+
   launchPortal();
-  setTimeout(()=>showP('createProfile',null),400);
+  // After launch, go straight to edit profile
+  setTimeout(() => {
+    showP('editProfile', document.getElementById('nt-edit'));
+    prefillForm();
+    btn.disabled = false;
+  }, 400);
 }
 
-/* ══ USER STORAGE ══ */
-function getUsers(){try{return JSON.parse(localStorage.getItem('asfs_candidates')||'{}');}catch(e){return{};}}
-function saveUsers(u){localStorage.setItem('asfs_candidates',JSON.stringify(u));}
-
-/* ══ LAUNCH PORTAL ══ */
-function launchPortal(){
-  document.getElementById('auth').style.display='none';
-  document.getElementById('portal').style.display='block';
-  document.getElementById('navAv').textContent=(currentUser.name||'C')[0].toUpperCase();
-  document.getElementById('navName').textContent=currentUser.name||'Candidate';
+/* ════════════════════════════════════════
+   LAUNCH / SIGN OUT
+════════════════════════════════════════ */
+function launchPortal() {
+  document.getElementById('auth').style.display   = 'none';
+  document.getElementById('portal').style.display = 'block';
+  document.getElementById('navAv').textContent     = (CU.name || 'C')[0].toUpperCase();
+  document.getElementById('navNm').textContent     = CU.name || 'Candidate';
   document.getElementById('l_err').classList.remove('show');
   document.getElementById('r_err').classList.remove('show');
   loadJobs();
   renderProfile();
-  prefillProfileForm();
-}
-function doSignOut(){
-  currentUser=null;
-  document.getElementById('auth').style.display='flex';
-  document.getElementById('portal').style.display='none';
-  document.getElementById('l_mob').value='';
-  document.getElementById('l_pass').value='';
 }
 
-/* ══ NAV ══ */
-window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',window.scrollY>20));
-function showP(id,el){
-  document.querySelectorAll('.pview').forEach(v=>v.classList.remove('act'));
-  document.getElementById('pv-'+id).classList.add('act');
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('act'));
-  if(el)el.classList.add('act');
-  if(id==='profile')renderProfile();
+function doSignOut() {
+  CU = null;
+  document.getElementById('auth').style.display   = 'flex';
+  document.getElementById('portal').style.display = 'none';
+  document.getElementById('l_mob').value = '';
+  document.getElementById('l_pass').value = '';
+  // Reset to login tab
+  switchTab('login');
 }
 
-/* ══ HELPERS ══ */
-function eh(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function tog(el){el.classList.toggle('sl');}
-function gTags(id){return Array.from(document.querySelectorAll('#'+id+' .to.sl')).map(e=>e.textContent).join(', ');}
-function clrTags(id){document.querySelectorAll('#'+id+' .to').forEach(e=>e.classList.remove('sl'));}
-function showErr(id,msg){const e=document.getElementById(id);e.textContent=msg;e.classList.add('show');}
-let _t;
-function toast(msg,type='info'){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type;void t.offsetWidth;t.classList.add('show');clearTimeout(_t);_t=setTimeout(()=>t.classList.remove('show'),4200);}
+/* ════════════════════════════════════════
+   NAV
+════════════════════════════════════════ */
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('sc', window.scrollY > 20));
 
-/* ══ SEND TO SHEET ══ */
-async function sendToSheet(action,data){
-  const url=gSU();if(!url)return;
-  try{await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action,data})});}
-  catch(e){}
+function showP(id, el) {
+  document.querySelectorAll('.pview').forEach(v => v.classList.remove('act'));
+  document.getElementById('pv-' + id).classList.add('act');
+  document.querySelectorAll('.ntab').forEach(t => t.classList.remove('act'));
+  if (el) el.classList.add('act');
+  if (id === 'profile')     renderProfile();
+  if (id === 'editProfile') prefillForm();
 }
 
-/* ══ LOAD JOBS ══ */
-async function loadJobs(){
-  document.getElementById('jobGrid').innerHTML='<div class="loading"><div class="sp"></div>Loading job posts…</div>';
-  const url=`https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:csv&sheet=JobPosts&_=${Date.now()}`;
-  try{
-    const res=await fetch(url);const txt=await res.text();
-    const data=pCSV(txt).filter(r=>r['Status']==='Open'||r['Status']==='Paused');
-    allJobs=data;buildHQFilter(data);fJobs();
-  }catch(e){document.getElementById('jobGrid').innerHTML='<div class="empty"><h3>Could not load jobs</h3><p>Check your connection and try again.</p></div>';}
+/* ════════════════════════════════════════
+   HELPERS
+════════════════════════════════════════ */
+function eh(s)    { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function tog(el)  { el.classList.toggle('sl'); }
+function gTags(id){ return Array.from(document.querySelectorAll('#'+id+' .to.sl')).map(e=>e.textContent).join(', '); }
+function clrTags(id){ document.querySelectorAll('#'+id+' .to').forEach(e=>e.classList.remove('sl')); }
+function showErr(id, msg) { const e = document.getElementById(id); e.textContent = msg; e.classList.add('show'); }
+
+let _tt;
+function toast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = 'toast ' + type;
+  void t.offsetWidth; t.classList.add('show');
+  clearTimeout(_tt); _tt = setTimeout(() => t.classList.remove('show'), 4200);
 }
-function pCSV(txt){
-  const l=txt.trim().split('\n');if(l.length<2)return[];
-  const h=cR(l[0]).map(x=>x.replace(/"/g,'').trim());
-  return l.slice(1).map(line=>{const v=cR(line);const o={};h.forEach((k,i)=>o[k]=(v[i]||'').replace(/^"|"$/g,'').trim());return o;}).filter(r=>r[h[0]]);
+
+/* ════════════════════════════════════════
+   SEND TO SHEET — KEY FIX #1
+   Uses the same Apps Script URL as admin.
+   This writes candidate self-registrations
+   directly to the Candidates sheet.
+════════════════════════════════════════ */
+async function sendToSheet(action, data) {
+  const url = gSU();
+  if (!url) return; // silently skip if not configured yet
+  try {
+    await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action, data })
+    });
+  } catch(e) { /* CORS blocks response, write still succeeds */ }
 }
-function cR(r){const o=[];let q=false,c='';for(let i=0;i<r.length;i++){const x=r[i];if(x==='"'){q=!q;continue;}if(x===','&&!q){o.push(c);c='';continue;}c+=x;}o.push(c);return o;}
-function buildHQFilter(data){
-  const hqs=[...new Set(data.map(r=>r['Location / HQ']).filter(Boolean))].sort();
-  const s=document.getElementById('jfh');s.innerHTML='<option value="">All HQs</option>';hqs.forEach(h=>s.innerHTML+=`<option>${h}</option>`);
+
+/* ════════════════════════════════════════
+   LOAD JOBS — KEY FIX #1
+   Reads through Apps Script GET (same as
+   admin panel) — works with private sheets.
+   Falls back to public CSV if no script URL.
+════════════════════════════════════════ */
+async function loadJobs() {
+  document.getElementById('jobGrid').innerHTML = '<div class="loading"><div class="sp"></div>Loading job posts…</div>';
+
+  let data = [];
+
+  // PRIMARY: Apps Script GET (works with private sheets)
+  const scriptUrl = gSU();
+  if (scriptUrl) {
+    try {
+      const url = scriptUrl + '?action=getSheet&sheet=JobPosts&_=' + Date.now();
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const json = JSON.parse(await res.text());
+      if (json.result === 'success' && Array.isArray(json.data)) {
+        data = json.data;
+      }
+    } catch(e) {
+      console.warn('Apps Script read failed, trying CSV fallback:', e.message);
+    }
+  }
+
+  // FALLBACK: public CSV (only works if sheet is shared publicly)
+  if (!data.length) {
+    try {
+      const url = `https://docs.google.com/spreadsheets/d/${SID}/gviz/tq?tqx=out:csv&sheet=JobPosts&_=${Date.now()}`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const txt = await res.text();
+        if (txt && !txt.includes('Unauthorized')) {
+          data = pCSV(txt);
+        }
+      }
+    } catch(e) {
+      console.warn('CSV fallback failed:', e.message);
+    }
+  }
+
+  // Only show Open and Paused jobs to candidates
+  AJ = data.filter(r => r['Status'] === 'Open' || r['Status'] === 'Paused');
+
+  if (!AJ.length && !scriptUrl) {
+    document.getElementById('jobGrid').innerHTML = `
+      <div class="empty">
+        <h3>Jobs loading requires setup</h3>
+        <p style="font-size:.85rem;margin-top:.5rem;">The admin needs to configure the Apps Script URL. Jobs will appear once setup is complete.</p>
+      </div>`;
+    document.getElementById('jCount').textContent = '0 jobs';
+    return;
+  }
+
+  buildHQFilter(AJ);
+  fJobs();
 }
-function fJobs(){
-  const q=document.getElementById('jsr').value.toLowerCase();
-  const h=document.getElementById('jfh').value;
-  const r=document.getElementById('jfr').value;
-  const f=allJobs.filter(j=>(!q||(j['Job Title']||'').toLowerCase().includes(q)||(j['Company']||'').toLowerCase().includes(q)||(j['Location / HQ']||'').toLowerCase().includes(q)||(j['Division']||'').toLowerCase().includes(q))&&(!h||j['Location / HQ']===h)&&(!r||j['Role']===r));
-  document.getElementById('jCount').textContent=f.length+' job'+(f.length!==1?'s':'');
+
+function pCSV(txt) {
+  const l = txt.trim().split('\n'); if (l.length < 2) return [];
+  const h = cRow(l[0]).map(x => x.replace(/"/g,'').trim());
+  return l.slice(1).map(line => {
+    const v = cRow(line), o = {};
+    h.forEach((k, i) => o[k] = (v[i]||'').replace(/^"|"$/g,'').trim());
+    return o;
+  }).filter(r => r[h[0]]);
+}
+function cRow(r) {
+  const o = []; let q = false, c = '';
+  for (let i = 0; i < r.length; i++) {
+    const x = r[i];
+    if (x === '"') { q = !q; continue; }
+    if (x === ',' && !q) { o.push(c); c = ''; continue; }
+    c += x;
+  }
+  o.push(c); return o;
+}
+
+function buildHQFilter(data) {
+  const hqs = [...new Set(data.map(r => r['Location / HQ']).filter(Boolean))].sort();
+  const sel = document.getElementById('jfh');
+  sel.innerHTML = '<option value="">All HQs</option>';
+  hqs.forEach(h => sel.innerHTML += `<option>${h}</option>`);
+}
+
+function fJobs() {
+  const q = document.getElementById('jsr').value.toLowerCase();
+  const h = document.getElementById('jfh').value;
+  const r = document.getElementById('jfr').value;
+  const f = AJ.filter(j =>
+    (!q || (j['Job Title']||'').toLowerCase().includes(q) ||
+           (j['Company']||'').toLowerCase().includes(q) ||
+           (j['Location / HQ']||'').toLowerCase().includes(q) ||
+           (j['Division']||'').toLowerCase().includes(q)) &&
+    (!h || j['Location / HQ'] === h) &&
+    (!r || j['Role'] === r)
+  );
+  document.getElementById('jCount').textContent = f.length + ' job' + (f.length !== 1 ? 's' : '');
   renderJobs(f);
 }
-function renderJobs(data){
-  if(!data.length){document.getElementById('jobGrid').innerHTML='<div class="empty"><h3>No jobs found</h3><p>Try adjusting your filters or check back soon.</p></div>';return;}
-  const bc=s=>s==='Open'?'bop':'bpa';
-  document.getElementById('jobGrid').innerHTML='<div class="job-grid">'+data.map((r,i)=>`
-    <div class="jc">
-      <div class="jc-top">
-        <div class="jc-ico">💊</div>
-        <div style="flex:1;min-width:0;">
-          <div class="jc-title">${eh(r['Job Title']||'—')}</div>
-          <div class="jc-co">${eh(r['Company']||'—')}</div>
+
+function renderJobs(data) {
+  if (!data.length) {
+    document.getElementById('jobGrid').innerHTML = '<div class="empty"><h3>No jobs found</h3><p>Try adjusting your filters or check back soon.</p></div>';
+    return;
+  }
+  const bc = s => s === 'Open' ? 'bop' : 'bpa';
+  document.getElementById('jobGrid').innerHTML = '<div class="job-grid">' +
+    data.map((r, i) => `
+      <div class="jc">
+        <div class="jc-top">
+          <div class="jc-ico">💊</div>
+          <div style="flex:1;min-width:0;">
+            <div class="jc-title">${eh(r['Job Title']||'—')}</div>
+            <div class="jc-co">${eh(r['Company']||'—')}</div>
+          </div>
+          <span class="badge ${bc(r['Status']||'')}">${eh(r['Status']||'—')}</span>
         </div>
-        <span class="badge ${bc(r['Status']||'')}">${eh(r['Status']||'—')}</span>
-      </div>
-      <div class="jc-meta">
-        <div><div class="jc-ml">Location</div><div class="jc-mv">📍 ${eh(r['Location / HQ']||'—')}</div></div>
-        <div><div class="jc-ml">Role</div><div class="jc-mv">${eh(r['Role']||'—')}</div></div>
-        <div><div class="jc-ml">Experience</div><div class="jc-mv">${eh(r['Min. Experience']||'Any')}</div></div>
-        <div><div class="jc-ml">Openings</div><div class="jc-mv">${eh(r['Openings']||'—')}</div></div>
-      </div>
-      <div class="jc-divs">${(r['Division']||'').split(',').filter(Boolean).slice(0,3).map(d=>'<span class="jc-div">'+eh(d.trim())+'</span>').join('')}</div>
-      <div class="jc-foot">
-        <div><div class="jc-ctc">${r['CTC Offered']?'₹'+eh(r['CTC Offered']):'On Request'}</div><div class="jc-dl">${r['Deadline']?'Apply by: '+eh(r['Deadline']):eh(r['Posted On']||'')}</div></div>
-        <button class="apply-btn" onclick="openJob(${i})">View & Apply</button>
-      </div>
-    </div>`).join('')+'</div>';
+        <div class="jc-meta">
+          <div><div class="jc-ml">Location</div><div class="jc-mv">📍 ${eh(r['Location / HQ']||'—')}</div></div>
+          <div><div class="jc-ml">Role</div><div class="jc-mv">${eh(r['Role']||'—')}</div></div>
+          <div><div class="jc-ml">Experience</div><div class="jc-mv">${eh(r['Min. Experience']||'Any')}</div></div>
+          <div><div class="jc-ml">Openings</div><div class="jc-mv">${eh(r['Openings']||'—')}</div></div>
+        </div>
+        <div class="jc-divs">${(r['Division']||'').split(',').filter(Boolean).slice(0,3).map(d => '<span class="jc-div">'+eh(d.trim())+'</span>').join('')}</div>
+        <div class="jc-foot">
+          <div>
+            <div class="jc-ctc">${r['CTC Offered'] ? '₹'+eh(r['CTC Offered']) : 'On Request'}</div>
+            <div class="jc-dl">${r['Deadline'] ? 'Apply by: '+eh(r['Deadline']) : (r['Posted On'] ? 'Posted: '+eh(r['Posted On']) : '')}</div>
+          </div>
+          <button class="apply-btn" onclick="openJob(${i}, ${JSON.stringify(data.length)})">View & Apply</button>
+        </div>
+      </div>`).join('') + '</div>';
 }
 
-/* ══ JOB MODAL ══ */
-function openJob(i){
-  const filt=getFilt();const r=filt[i]||allJobs[i];if(!r)return;
-  const waNum=(r['Contact']||'').replace(/\D/g,'');
-  const cName=currentUser?currentUser.name:'Candidate';
-  const waMsg=encodeURIComponent(`Hi, I'm ${cName} — interested in the "${r['Job Title']}" role at ${r['Company']} (${r['Job ID']||''}). I found this on the Aaradhya SFS Candidate Portal.`);
-  document.getElementById('jModalContent').innerHTML=`
+/* ════════════════════════════════════════
+   JOB MODAL
+════════════════════════════════════════ */
+// Store current filtered jobs for modal reference
+let currentFiltered = [];
+
+function getFiltered() {
+  const q = document.getElementById('jsr').value.toLowerCase();
+  const h = document.getElementById('jfh').value;
+  const r = document.getElementById('jfr').value;
+  return AJ.filter(j =>
+    (!q || (j['Job Title']||'').toLowerCase().includes(q) ||
+           (j['Company']||'').toLowerCase().includes(q) ||
+           (j['Location / HQ']||'').toLowerCase().includes(q)) &&
+    (!h || j['Location / HQ'] === h) &&
+    (!r || j['Role'] === r)
+  );
+}
+
+function openJob(i) {
+  const f = getFiltered();
+  const r = f[i];
+  if (!r) return;
+
+  const waNum = (r['Contact'] || '').replace(/\D/g, '');
+  const cName = CU ? CU.name : 'Candidate';
+  const waMsg = encodeURIComponent(`Hi, I'm ${cName} — I'd like to apply for the "${r['Job Title']}" role at ${r['Company']} (${r['Job ID']||''}). I found it on the Aaradhya SFS Candidate Portal.`);
+
+  document.getElementById('jMC').innerHTML = `
     <div class="jm-head">
       <button class="jm-close" onclick="closeModalBtn()">✕</button>
       <div class="jm-title">${eh(r['Job Title']||'—')}</div>
@@ -539,152 +807,221 @@ function openJob(i){
       <div class="jm-id">${eh(r['Job ID']||'')} · Posted: ${eh(r['Posted On']||'—')}</div>
     </div>
     <div class="jm-body">
-      <div class="jm-sec-title">Job Details</div>
+      <div class="jm-st">Job Details</div>
       <div class="jm-grid">
-        <div><div class="jm-i-lbl">Location / HQ</div><div class="jm-i-val">📍 ${eh(r['Location / HQ']||'—')}</div></div>
-        <div><div class="jm-i-lbl">Role</div><div class="jm-i-val">${eh(r['Role']||'—')}</div></div>
-        <div><div class="jm-i-lbl">Openings</div><div class="jm-i-val">${eh(r['Openings']||'—')}</div></div>
-        <div><div class="jm-i-lbl">Experience Required</div><div class="jm-i-val">${eh(r['Min. Experience']||'Any')}</div></div>
-        <div><div class="jm-i-lbl">Deadline</div><div class="jm-i-val">${eh(r['Deadline']||'Open')}</div></div>
-        <div><div class="jm-i-lbl">Status</div><div class="jm-i-val"><span class="badge ${r['Status']==='Open'?'bop':'bpa'}">${eh(r['Status']||'—')}</span></div></div>
+        <div><div class="jm-lbl">Location / HQ</div><div class="jm-val">📍 ${eh(r['Location / HQ']||'—')}</div></div>
+        <div><div class="jm-lbl">Role</div><div class="jm-val">${eh(r['Role']||'—')}</div></div>
+        <div><div class="jm-lbl">Openings</div><div class="jm-val">${eh(r['Openings']||'—')}</div></div>
+        <div><div class="jm-lbl">Experience Required</div><div class="jm-val">${eh(r['Min. Experience']||'Any')}</div></div>
+        <div><div class="jm-lbl">Deadline</div><div class="jm-val">${eh(r['Deadline']||'Open')}</div></div>
+        <div><div class="jm-lbl">Status</div><div class="jm-val"><span class="badge ${r['Status']==='Open'?'bop':'bpa'}">${eh(r['Status']||'—')}</span></div></div>
       </div>
-      ${r['Division']?`<div class="jm-sec-title">Product Division</div><div class="jm-tags">${r['Division'].split(',').filter(Boolean).map(d=>'<span class="jc-div">'+eh(d.trim())+'</span>').join('')}</div>`:''}
-      ${r['Description']?`<div class="jm-sec-title">About the Role</div><div class="jm-desc">${eh(r['Description'])}</div>`:''}
-      ${r['Requirements']?`<div class="jm-sec-title">Requirements</div><div class="jm-desc">${eh(r['Requirements'])}</div>`:''}
-      ${r['Perks']?`<div class="jm-sec-title">Perks & Benefits</div><div class="jm-desc">${eh(r['Perks'])}</div>`:''}
+      ${r['Division'] ? `<div class="jm-st">Product Division</div><div class="jm-tags">${r['Division'].split(',').filter(Boolean).map(d=>'<span class="jc-div">'+eh(d.trim())+'</span>').join('')}</div>` : ''}
+      ${r['Description']  ? `<div class="jm-st">About the Role</div><div class="jm-desc">${eh(r['Description'])}</div>`  : ''}
+      ${r['Requirements'] ? `<div class="jm-st">Requirements</div><div class="jm-desc">${eh(r['Requirements'])}</div>`   : ''}
+      ${r['Perks']        ? `<div class="jm-st">Perks & Benefits</div><div class="jm-desc">${eh(r['Perks'])}</div>`       : ''}
     </div>
     <div class="jm-foot">
-      <div><div class="jm-ctc">${r['CTC Offered']?'₹'+eh(r['CTC Offered']):'CTC On Request'}</div><div class="jm-ctc-lbl">CTC Offered (₹/month)</div></div>
-      <div style="display:flex;gap:.8rem;">
-        ${waNum?`<button class="apply-big" style="background:#25D366;" onclick="window.open('https://wa.me/91${waNum}?text=${waMsg}','_blank')">💬 Apply via WhatsApp</button>`:''}
-        ${!waNum&&r['Contact']?`<button class="apply-big" onclick="toast('Contact: ${eh(r['Contact'])}','info')">📞 Get Contact</button>`:''}
-        ${!waNum&&!r['Contact']?`<button class="apply-big" onclick="window.open('https://wa.me/?text=${encodeURIComponent('Hi Aaradhya SFS, I am interested in the '+r['Job Title']+' role.')}','_blank')">💬 Express Interest</button>`:''}
+      <div>
+        <div class="jm-ctc">${r['CTC Offered'] ? '₹'+eh(r['CTC Offered']) : 'CTC On Request'}</div>
+        <div class="jm-ctc-l">CTC Offered (₹/month)</div>
+      </div>
+      <div style="display:flex;gap:.8rem;flex-wrap:wrap;">
+        ${waNum ? `<button class="apply-big" style="background:#25D366;" onclick="window.open('https://wa.me/91${waNum}?text=${waMsg}','_blank')">💬 Apply via WhatsApp</button>` : ''}
+        ${!waNum ? `<button class="apply-big" onclick="window.open('https://wa.me/?text=${encodeURIComponent('Hi Aaradhya SFS, I am interested in the '+r['Job Title']+' role.')}','_blank')">💬 Express Interest</button>` : ''}
       </div>
     </div>`;
-  document.getElementById('jModal').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function getFilt(){
-  const q=document.getElementById('jsr').value.toLowerCase();
-  const h=document.getElementById('jfh').value;
-  const r=document.getElementById('jfr').value;
-  return allJobs.filter(j=>(!q||(j['Job Title']||'').toLowerCase().includes(q)||(j['Company']||'').toLowerCase().includes(q)||(j['Location / HQ']||'').toLowerCase().includes(q))&&(!h||j['Location / HQ']===h)&&(!r||j['Role']===r));
-}
-function closeModal(e){if(e.target===document.getElementById('jModal'))closeModalBtn();}
-function closeModalBtn(){document.getElementById('jModal').classList.remove('open');document.body.style.overflow='';}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalBtn();});
 
-/* ══ PROFILE ══ */
-function renderProfile(){
-  const u=currentUser;if(!u){document.getElementById('profileDisplay').innerHTML='';return;}
-  const p=u.profile||{};
-  if(!p['Full Name']&&!p['Experience']){
-    document.getElementById('profileDisplay').innerHTML=`
+  document.getElementById('jModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) { if (e.target === document.getElementById('jModal')) closeModalBtn(); }
+function closeModalBtn() { document.getElementById('jModal').classList.remove('open'); document.body.style.overflow = ''; }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalBtn(); });
+
+/* ════════════════════════════════════════
+   RENDER PROFILE
+════════════════════════════════════════ */
+function renderProfile() {
+  if (!CU) return;
+  const p = CU.profile || {};
+
+  // If no meaningful profile data yet, show prompt
+  if (!p['Experience'] && !p['Current / Last Role']) {
+    document.getElementById('profileDisplay').innerHTML = `
       <div class="no-profile">
         <h3>Your Profile is Incomplete</h3>
-        <p>Add your details to get matched with pharma companies across Odisha.</p>
-        <button class="btn-pri" onclick="showP('createProfile',null)">✏️ Complete My Profile →</button>
+        <p>Add your experience and details to get matched with pharma companies across Odisha.</p>
+        <button class="btn-pri" onclick="showP('editProfile', document.getElementById('nt-edit'))">✏️ Complete My Profile →</button>
       </div>`;
     return;
   }
-  const divs=(p['Divisions']||'').split(',').map(d=>d.trim()).filter(Boolean);
-  const docs=(p['Doctor Segment']||'').split(',').map(d=>d.trim()).filter(Boolean);
-  const terr=[p['Primary HQ'],...(p['Other Territories']||'').split(',').map(t=>t.trim())].filter(Boolean);
-  const stcls=p['Status']==='Available'?'pc-tag-g':p['Status']==='Placed'?'pc-tag-b':'pc-tag-a';
-  document.getElementById('profileDisplay').innerHTML=`
+
+  const divs = (p['Divisions']||'').split(',').map(d=>d.trim()).filter(Boolean);
+  const docs = (p['Doctor Segment']||'').split(',').map(d=>d.trim()).filter(Boolean);
+  const terr = [p['Primary HQ'], ...(p['Other Territories']||'').split(',').map(t=>t.trim())].filter(Boolean);
+
+  document.getElementById('profileDisplay').innerHTML = `
     <div class="profile-card">
       <div class="pc-head">
-        <div class="pc-av">${(p['Full Name']||u.name||'?')[0].toUpperCase()}</div>
+        <div class="pc-av">${(CU.name||'?')[0].toUpperCase()}</div>
         <div class="pc-info">
-          <div class="pc-name">${eh(p['Full Name']||u.name||'—')}</div>
-          <div class="pc-role">${eh(p['Current / Last Role']||'Medical Representative')} ${p['Current Company']?'· '+eh(p['Current Company']):''}</div>
-          <div class="pc-id">ID: ${eh(p['ID']||u.id||'—')} · <span class="pc-tag-a" style="padding:2px 8px;border-radius:100px;font-size:.65rem;">${eh(p['Status']||'Available')}</span></div>
+          <div class="pc-name">${eh(p['Full Name']||CU.name||'—')}</div>
+          <div class="pc-role">${eh(p['Current / Last Role']||'Medical Representative')}${p['Current Company']?' · '+eh(p['Current Company']):''}</div>
+          <div class="pc-id">ID: ${eh(p['ID']||CU.id||'—')} ·
+            <span class="badge ${p['Status']==='Available'?'ba':'bpa'}" style="font-size:.65rem;padding:2px 8px;">${eh(p['Status']||'Available')}</span>
+          </div>
         </div>
-        <button class="btn-pri" style="margin-left:auto;padding:9px 18px;font-size:.82rem;" onclick="showP('createProfile',null)">✏️ Edit</button>
+        <button class="btn-pri" style="margin-left:auto;padding:9px 18px;font-size:.82rem;" onclick="showP('editProfile',document.getElementById('nt-edit'))">✏️ Edit</button>
       </div>
       <div class="pc-body">
-        <div class="pc-section">
-          <div class="pc-section-title">Personal Details</div>
+        <div class="pc-sec">
+          <div class="pc-sec-t">Personal Details</div>
           <div class="pc-grid">
-            <div><div class="pc-item-label">Mobile</div><div class="pc-item-val">${eh(p['Mobile']||u.mobile||'—')}</div></div>
-            <div><div class="pc-item-label">Email</div><div class="pc-item-val">${eh(p['Email']||'—')}</div></div>
-            <div><div class="pc-item-label">City</div><div class="pc-item-val">${eh(p['City / Address']||'—')}</div></div>
-            <div><div class="pc-item-label">Gender</div><div class="pc-item-val">${eh(p['Gender']||'—')}</div></div>
-            <div><div class="pc-item-label">Qualification</div><div class="pc-item-val">${eh(p['Qualification']||'—')}</div></div>
-            <div><div class="pc-item-label">Joining</div><div class="pc-item-val" style="color:var(--a);">${eh(p['Joining Availability']||'—')}</div></div>
+            <div><div class="pc-lbl">Mobile</div><div class="pc-val">${eh(CU.mobile||'—')}</div></div>
+            <div><div class="pc-lbl">Email</div><div class="pc-val">${eh(p['Email']||'—')}</div></div>
+            <div><div class="pc-lbl">City</div><div class="pc-val">${eh(p['City / Address']||'—')}</div></div>
+            <div><div class="pc-lbl">Gender</div><div class="pc-val">${eh(p['Gender']||'—')}</div></div>
+            <div><div class="pc-lbl">Qualification</div><div class="pc-val">${eh(p['Qualification']||'—')}</div></div>
+            <div><div class="pc-lbl">Joining</div><div class="pc-val" style="color:var(--a);">${eh(p['Joining Availability']||'—')}</div></div>
           </div>
         </div>
-        <div class="pc-section">
-          <div class="pc-section-title">Experience</div>
+        <div class="pc-sec">
+          <div class="pc-sec-t">Experience</div>
           <div class="pc-grid">
-            <div><div class="pc-item-label">Total Experience</div><div class="pc-item-val">${eh(p['Experience']||'—')}</div></div>
-            <div><div class="pc-item-label">Current / Last Role</div><div class="pc-item-val">${eh(p['Current / Last Role']||'—')}</div></div>
-            <div><div class="pc-item-label">Company</div><div class="pc-item-val">${eh(p['Current Company']||'—')}</div></div>
-            <div><div class="pc-item-label">Current CTC</div><div class="pc-item-val">${p['Current CTC']?'₹'+Number(p['Current CTC']).toLocaleString('en-IN')+'/ mo':'—'}</div></div>
-            <div><div class="pc-item-label">Expected CTC</div><div class="pc-item-val" style="color:var(--a);font-weight:700;">${p['Expected CTC']?'₹'+Number(p['Expected CTC']).toLocaleString('en-IN')+'/mo':'—'}</div></div>
+            <div><div class="pc-lbl">Total Experience</div><div class="pc-val">${eh(p['Experience']||'—')}</div></div>
+            <div><div class="pc-lbl">Current / Last Role</div><div class="pc-val">${eh(p['Current / Last Role']||'—')}</div></div>
+            <div><div class="pc-lbl">Company</div><div class="pc-val">${eh(p['Current Company']||'—')}</div></div>
+            <div><div class="pc-lbl">Current CTC</div><div class="pc-val">${p['Current CTC']?'₹'+Number(p['Current CTC']).toLocaleString('en-IN')+'/mo':'—'}</div></div>
+            <div><div class="pc-lbl">Expected CTC</div><div class="pc-val" style="color:var(--a);font-weight:700;">${p['Expected CTC']?'₹'+Number(p['Expected CTC']).toLocaleString('en-IN')+'/mo':'—'}</div></div>
           </div>
         </div>
-        ${divs.length?`<div class="pc-section"><div class="pc-section-title">Product Divisions</div><div class="pc-tags">${divs.map(d=>'<span class="pc-tag-a">'+eh(d)+'</span>').join('')}</div></div>`:''}
-        ${docs.length?`<div class="pc-section"><div class="pc-section-title">Doctor Segment</div><div class="pc-tags">${docs.map(d=>'<span class="pc-tag-b">'+eh(d)+'</span>').join('')}</div></div>`:''}
-        ${terr.length?`<div class="pc-section"><div class="pc-section-title">Territory Coverage</div><div class="pc-tags">${terr.map(t=>'<span class="pc-tag-g">'+eh(t)+'</span>').join('')}</div></div>`:''}
+        ${divs.length ? `<div class="pc-sec"><div class="pc-sec-t">Product Divisions</div><div class="pc-tags">${divs.map(d=>'<span class="tag-a">'+eh(d)+'</span>').join('')}</div></div>` : ''}
+        ${docs.length ? `<div class="pc-sec"><div class="pc-sec-t">Doctor Segment</div><div class="pc-tags">${docs.map(d=>'<span class="tag-b">'+eh(d)+'</span>').join('')}</div></div>` : ''}
+        ${terr.length ? `<div class="pc-sec"><div class="pc-sec-t">Territory Coverage</div><div class="pc-tags">${terr.map(t=>'<span class="tag-g">'+eh(t)+'</span>').join('')}</div></div>` : ''}
       </div>
     </div>`;
 }
 
-/* ══ CREATE / SAVE PROFILE ══ */
-function prefillProfileForm(){
-  if(!currentUser)return;
-  const p=currentUser.profile||{};
-  const set=(id,val)=>{const el=document.getElementById(id);if(el&&val)el.value=val;};
-  set('cp_n',p['Full Name']||currentUser.name);
-  set('cp_m',p['Mobile']||currentUser.mobile);
-  set('cp_e',p['Email']);set('cp_dob',p['Date of Birth']);set('cp_g',p['Gender']);
-  set('cp_q',p['Qualification']);set('cp_c',p['City / Address']);set('cp_x',p['Experience']);
-  set('cp_r',p['Current / Last Role']);set('cp_ctc',p['Current CTC']);set('cp_co',p['Current Company']);
-  set('cp_ectc',p['Expected CTC']);set('cp_h',p['Primary HQ']);set('cp_rl',p['Relocate']);
-  set('cp_ot',p['Other Territories']);set('cp_j',p['Joining Availability']);set('cp_s',p['Status']);
-  // Set tags
-  if(p['Divisions']){const divs=p['Divisions'].split(',').map(d=>d.trim());document.querySelectorAll('#cpDiv .to').forEach(t=>{if(divs.includes(t.textContent.trim()))t.classList.add('sl');});}
-  if(p['Doctor Segment']){const docs=p['Doctor Segment'].split(',').map(d=>d.trim());document.querySelectorAll('#cpDoc .to').forEach(t=>{if(docs.includes(t.textContent.trim()))t.classList.add('sl');});}
+/* ════════════════════════════════════════
+   PREFILL FORM
+════════════════════════════════════════ */
+function prefillForm() {
+  if (!CU) return;
+  const p = CU.profile || {};
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+
+  set('cp_n',   p['Full Name']    || CU.name);
+  set('cp_m',   CU.mobile); // always use normalized mobile from CU, not editable
+  set('cp_e',   p['Email']);
+  set('cp_dob', p['Date of Birth']);
+  set('cp_g',   p['Gender']);
+  set('cp_q',   p['Qualification']);
+  set('cp_c',   p['City / Address']);
+  set('cp_x',   p['Experience']);
+  set('cp_r',   p['Current / Last Role']);
+  set('cp_ctc', p['Current CTC']);
+  set('cp_co',  p['Current Company']);
+  set('cp_ectc',p['Expected CTC']);
+  set('cp_h',   p['Primary HQ']);
+  set('cp_rl',  p['Relocate']);
+  set('cp_ot',  p['Other Territories']);
+  set('cp_j',   p['Joining Availability']);
+  set('cp_s',   p['Status'] || 'Available');
+
+  // Set division tags
+  clrTags('cpDiv'); clrTags('cpDoc');
+  if (p['Divisions']) {
+    const divs = p['Divisions'].split(',').map(d => d.trim());
+    document.querySelectorAll('#cpDiv .to').forEach(t => { if (divs.includes(t.textContent.trim())) t.classList.add('sl'); });
+  }
+  if (p['Doctor Segment']) {
+    const docs = p['Doctor Segment'].split(',').map(d => d.trim());
+    document.querySelectorAll('#cpDoc .to').forEach(t => { if (docs.includes(t.textContent.trim())) t.classList.add('sl'); });
+  }
+
+  document.getElementById('cpTitle').textContent = 'Update Your Profile';
 }
-async function saveProfile(){
-  const name=document.getElementById('cp_n').value.trim();
-  const mob=document.getElementById('cp_m').value.trim();
-  const hq=document.getElementById('cp_h').value;
-  const exp=document.getElementById('cp_x').value;
-  if(!name||!mob||!hq||!exp)return toast('Fill in: Name, Mobile, HQ, Experience.','error');
-  const now=new Date();
-  const id=currentUser.id||('ASFS-'+now.getFullYear().toString().slice(2)+String(now.getMonth()+1).padStart(2,'0')+'-'+Math.floor(1000+Math.random()*9000));
-  const profile={
-    'ID':id,'Date Added':currentUser.profile?.['Date Added']||now.toLocaleString('en-IN'),
-    'Full Name':name,'Mobile':mob,'Email':document.getElementById('cp_e').value.trim(),
-    'Date of Birth':document.getElementById('cp_dob').value,'Gender':document.getElementById('cp_g').value,
-    'Qualification':document.getElementById('cp_q').value,'City / Address':document.getElementById('cp_c').value.trim(),
-    'Experience':exp,'Current / Last Role':document.getElementById('cp_r').value,
-    'Current Company':document.getElementById('cp_co').value.trim(),
-    'Current CTC':document.getElementById('cp_ctc').value,'Expected CTC':document.getElementById('cp_ectc').value,
-    'Divisions':gTags('cpDiv'),'Doctor Segment':gTags('cpDoc'),
-    'Primary HQ':hq,'Other Territories':document.getElementById('cp_ot').value.trim(),
-    'Relocate':document.getElementById('cp_rl').value,
-    'Status':document.getElementById('cp_s').value,
-    'Joining Availability':document.getElementById('cp_j').value,
-    'Communication Rating':'','Notes':'','Source':'Self'
+
+/* ════════════════════════════════════════
+   SAVE PROFILE — FIX: password preserved
+   Mobile is always the registered one
+   (not changeable via profile form)
+════════════════════════════════════════ */
+async function saveProfile() {
+  const name = document.getElementById('cp_n').value.trim();
+  const hq   = document.getElementById('cp_h').value;
+  const exp  = document.getElementById('cp_x').value;
+
+  if (!name || !hq || !exp) return toast('Please fill in: Name, Primary HQ, Experience.', 'error');
+
+  // Mobile is ALWAYS the registered one — never change it via profile form
+  const mob = CU.mobile;
+
+  const now = new Date();
+  const id  = CU.id || ('ASFS-' + now.getFullYear().toString().slice(2) + String(now.getMonth()+1).padStart(2,'0') + '-' + Math.floor(1000 + Math.random()*9000));
+
+  const profile = {
+    'ID':                    id,
+    'Date Added':            CU.profile?.['Date Added'] || now.toLocaleString('en-IN', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    'Full Name':             name,
+    'Mobile':                mob,
+    'Email':                 document.getElementById('cp_e').value.trim(),
+    'Date of Birth':         document.getElementById('cp_dob').value,
+    'Gender':                document.getElementById('cp_g').value,
+    'Qualification':         document.getElementById('cp_q').value,
+    'City / Address':        document.getElementById('cp_c').value.trim(),
+    'Experience':            exp,
+    'Current / Last Role':   document.getElementById('cp_r').value,
+    'Current Company':       document.getElementById('cp_co').value.trim(),
+    'Current CTC':           document.getElementById('cp_ctc').value,
+    'Expected CTC':          document.getElementById('cp_ectc').value,
+    'Divisions':             gTags('cpDiv'),
+    'Doctor Segment':        gTags('cpDoc'),
+    'Primary HQ':            hq,
+    'Other Territories':     document.getElementById('cp_ot').value.trim(),
+    'Relocate':              document.getElementById('cp_rl').value,
+    'Status':                document.getElementById('cp_s').value,
+    'Joining Availability':  document.getElementById('cp_j').value,
+    'Communication Rating':  '',
+    'Notes':                 '',
+    'Source':                'Self'
   };
-  const btn=document.getElementById('cpBtn');btn.disabled=true;btn.innerHTML='Saving…';toast('Saving your profile…','info');
-  // Update local storage
-  const users=getUsers();
-  const oldMob=currentUser.mobile;
-  currentUser.name=name;currentUser.profile=profile;currentUser.id=id;
-  if(mob!==oldMob){delete users[oldMob];currentUser.mobile=mob;}
-  users[currentUser.mobile]={name:currentUser.name,pass:currentUser.pass,id,profile};
-  saveUsers(users);
+
+  const btn = document.getElementById('cpBtn');
+  btn.disabled = true; btn.innerHTML = '⏳ Saving…';
+  toast('Saving your profile…', 'info');
+
+  // ── Update local DB — ALWAYS preserve the password ──
+  const db = getDB();
+  const existing = db[mob] || {};
+  db[mob] = {
+    name:    name,
+    pass:    existing.pass || CU.pass, // NEVER lose the password
+    id:      id,
+    profile: profile
+  };
+  saveDB(db);
+
+  // Update current user in memory
+  CU.name    = name;
+  CU.id      = id;
+  CU.profile = profile;
+  // CU.pass is NOT changed
+
+  // Update nav
+  document.getElementById('navNm').textContent = name;
+  document.getElementById('navAv').textContent = name[0].toUpperCase();
+
   // Send to Google Sheets
-  await sendToSheet('addCandidateSelf',profile);
-  btn.disabled=false;btn.innerHTML='💾 Save Profile';
-  toast('Profile saved! Aaradhya SFS will be in touch.','success');
-  document.getElementById('navName').textContent=name;
-  document.getElementById('navAv').textContent=name[0].toUpperCase();
-  setTimeout(()=>showP('profile',null),800);
+  await sendToSheet('addCandidateSelf', profile);
+
+  btn.disabled = false; btn.innerHTML = '💾 Save Profile';
+  toast('✅ Profile saved! Aaradhya SFS will be in touch.', 'success');
+
+  // Navigate to profile view
+  setTimeout(() => showP('profile', document.getElementById('nt-profile')), 800);
 }
 </script>
 </body>
