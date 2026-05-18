@@ -37,14 +37,17 @@ input,select,textarea,button{font-family:var(--fb);}
 
 .wrap{max-width:1280px;margin:0 auto;padding:2.5rem 2rem 5rem;position:relative;z-index:1;}
 
-/* config row */
-.config-bar{background:rgba(28,49,80,.7);border-radius:var(--r);padding:1rem 1.5rem;margin-bottom:2rem;display:flex;flex-wrap:wrap;align-items:center;gap:1rem;border:1px solid var(--b);}
-.config-label{font-family:var(--fm);font-size:.7rem;letter-spacing:.1em;color:var(--a);}
+/* config bar - two rows */
+.config-section{background:rgba(28,49,80,.7);border-radius:var(--r);padding:1rem 1.5rem;margin-bottom:2rem;border:1px solid var(--b);}
+.config-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-bottom:1rem;}
+.config-row:last-child{margin-bottom:0;}
+.config-label{font-family:var(--fm);font-size:.7rem;letter-spacing:.1em;color:var(--a);min-width:130px;}
 .config-input{flex:3;min-width:260px;padding:8px 12px;background:var(--n);border:1px solid var(--b);border-radius:8px;color:var(--t);font-family:var(--fm);font-size:.8rem;}
 .config-input:focus{border-color:var(--a);outline:none;}
 .config-btn{padding:8px 18px;background:var(--a);color:var(--n);border:none;border-radius:8px;font-weight:700;cursor:pointer;transition:all var(--tr);}
 .config-btn:hover{background:var(--a2);}
-.test-row{font-size:.75rem;color:var(--m);display:flex;align-items:center;gap:8px;}
+.test-row{font-size:.75rem;color:var(--m);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.link-icon{cursor:pointer;color:var(--a);text-decoration:underline;margin-left:8px;}
 
 .page-head{margin-bottom:2rem;}
 .eyebrow{font-family:var(--fm);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--a);margin-bottom:.6rem;}
@@ -150,22 +153,30 @@ textarea.fi{resize:vertical;min-height:90px;line-height:1.65;}
 
 <div class="wrap">
 
-  <!-- CONFIGURATION BAR for Google Sheets Script URL -->
-  <div class="config-bar">
-    <div class="config-label">📎 Google Sheets Script URL:</div>
-    <input type="text" id="scriptUrlInput" class="config-input" placeholder="https://script.google.com/macros/s/.../exec" value="">
-    <button class="config-btn" id="saveScriptBtn">Save & Connect</button>
-    <div class="test-row">
-      <span id="sheetStatusIcon">⚪</span>
-      <span id="sheetStatusMsg">Not set</span>
-      <a href="#" id="openSheetLink" style="color:var(--a);margin-left:6px;text-decoration:underline;font-size:.7rem;" target="_blank">Open your Sheet</a>
+  <!-- CONFIGURATION: Both Apps Script URL and Spreadsheet URL -->
+  <div class="config-section">
+    <div class="config-row">
+      <div class="config-label">📎 Apps Script URL (POST):</div>
+      <input type="text" id="scriptUrlInput" class="config-input" placeholder="https://script.google.com/macros/s/.../exec" value="">
+      <button class="config-btn" id="saveScriptBtn">Save</button>
+      <div class="test-row"><span id="scriptStatusIcon">⚪</span><span id="scriptStatusMsg">Not set</span></div>
+    </div>
+    <div class="config-row">
+      <div class="config-label">📊 Google Sheet URL (VIEW):</div>
+      <input type="text" id="sheetUrlInput" class="config-input" placeholder="https://docs.google.com/spreadsheets/d/.../edit" value="">
+      <button class="config-btn" id="saveSheetUrlBtn">Save</button>
+      <div class="test-row">
+        <span id="sheetViewStatusIcon">⚪</span>
+        <span id="sheetViewStatusMsg">Not set</span>
+        <a href="#" id="openSheetLink" class="link-icon" style="margin-left:12px;">🔗 Open your Sheet</a>
+      </div>
     </div>
   </div>
 
   <div class="page-head">
     <div class="eyebrow">Smart local extraction · No cloud AI</div>
     <h1 class="page-title">Job Post <em>Extractor</em></h1>
-    <p class="page-desc">Paste any job description, WhatsApp forward, email, or notice. Our intelligent engine instantly extracts all fields locally. Configure your Google Apps Script URL below to post directly to your sheet.</p>
+    <p class="page-desc">Paste any job description, WhatsApp forward, email, or notice. Our intelligent engine instantly extracts all fields locally. Configure the Apps Script URL to post data, and the Sheet URL to view your spreadsheet.</p>
   </div>
 
   <div class="two-col">
@@ -318,69 +329,101 @@ Division, Doctor Segment, Requirements, Perks and more."
 
 <script>
 /* ============================================
-   LOCAL EXTRACTION ENGINE — NO CLAUDE / NO API
+   LOCAL EXTRACTION ENGINE — NO API
+   + Dual configuration (Script URL for POST, Sheet URL for VIEW)
    ============================================ */
-const DEFAULT_SHEET_ID = '10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg';
-
-// Storage keys
 const STORAGE_SCRIPT_URL = 'asfs_url';
+const STORAGE_SHEET_VIEW_URL = 'asfs_sheet_url';
+const DEFAULT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg/edit';
 
-// Helper: get stored script URL
-function getScriptUrl() {
-  return localStorage.getItem(STORAGE_SCRIPT_URL) || '';
-}
+// ----- Storage helpers
+function getScriptUrl() { return localStorage.getItem(STORAGE_SCRIPT_URL) || ''; }
+function setScriptUrl(url) { localStorage.setItem(STORAGE_SCRIPT_URL, url); }
+function getSheetViewUrl() { return localStorage.getItem(STORAGE_SHEET_VIEW_URL) || ''; }
+function setSheetViewUrl(url) { localStorage.setItem(STORAGE_SHEET_VIEW_URL, url); }
 
-// Update UI based on stored URL
-function updateSheetUI() {
+// ----- Update UI for script URL
+function updateScriptUI() {
   const url = getScriptUrl();
-  const pillSpan = document.getElementById('sheetPillTxt');
-  const statusIcon = document.getElementById('sheetStatusIcon');
-  const statusMsg = document.getElementById('sheetStatusMsg');
-  const inputField = document.getElementById('scriptUrlInput');
-  if (inputField) inputField.value = url;
-  
+  const input = document.getElementById('scriptUrlInput');
+  if (input) input.value = url;
+  const icon = document.getElementById('scriptStatusIcon');
+  const msg = document.getElementById('scriptStatusMsg');
   if (url && url.startsWith('https://script.google.com')) {
+    icon.innerHTML = '🟢';
+    msg.innerHTML = 'Connected (POST ready)';
     document.getElementById('sheetPill').className = 'pill ok';
-    pillSpan.textContent = 'Sheet connected';
-    statusIcon.innerHTML = '🟢';
-    statusMsg.innerHTML = 'Connected to Google Sheet';
-    document.getElementById('openSheetLink').style.display = 'inline';
-    document.getElementById('quickSheetBtn').style.display = 'flex';
+    document.getElementById('sheetPillTxt').textContent = 'Script configured';
   } else {
+    icon.innerHTML = '⚪';
+    msg.innerHTML = 'Not set (cannot post)';
     document.getElementById('sheetPill').className = 'pill warn';
-    pillSpan.textContent = 'Sheet not configured';
-    statusIcon.innerHTML = '⚪';
-    statusMsg.innerHTML = 'No valid URL set. Paste your Apps Script URL above.';
-    document.getElementById('openSheetLink').style.display = 'none';
-    document.getElementById('quickSheetBtn').style.display = 'none';
+    document.getElementById('sheetPillTxt').textContent = 'Script missing';
   }
 }
 
-// Save script URL
+// Update UI for sheet view URL
+function updateSheetViewUI() {
+  const url = getSheetViewUrl();
+  const input = document.getElementById('sheetUrlInput');
+  if (input) input.value = url;
+  const icon = document.getElementById('sheetViewStatusIcon');
+  const msg = document.getElementById('sheetViewStatusMsg');
+  const link = document.getElementById('openSheetLink');
+  if (url && url.includes('docs.google.com/spreadsheets')) {
+    icon.innerHTML = '🟢';
+    msg.innerHTML = 'Sheet URL saved';
+    link.style.display = 'inline';
+    link.setAttribute('href', url);
+  } else {
+    icon.innerHTML = '⚪';
+    msg.innerHTML = 'Not set (use default)';
+    link.style.display = 'inline';
+    link.setAttribute('href', DEFAULT_SHEET_URL);
+  }
+}
+
 function saveScriptUrl() {
   let url = document.getElementById('scriptUrlInput').value.trim();
   if (!url) {
     localStorage.removeItem(STORAGE_SCRIPT_URL);
-    toast('Script URL removed. Sheet posting will be disabled.', 'info');
-    updateSheetUI();
+    toast('Script URL removed. Posting will be disabled.', 'info');
+    updateScriptUI();
     return;
   }
   if (!url.startsWith('https://script.google.com/macros/')) {
-    toast('Invalid URL: must start with https://script.google.com/macros/ ...', 'error');
+    toast('Invalid Apps Script URL: must start with https://script.google.com/macros/', 'error');
     return;
   }
-  localStorage.setItem(STORAGE_SCRIPT_URL, url);
-  updateSheetUI();
-  toast('✅ Google Apps Script URL saved! You can now post jobs.', 'success');
+  setScriptUrl(url);
+  updateScriptUI();
+  toast('✅ Apps Script URL saved! You can now post jobs.', 'success');
+}
+
+function saveSheetViewUrl() {
+  let url = document.getElementById('sheetUrlInput').value.trim();
+  if (!url) {
+    localStorage.removeItem(STORAGE_SHEET_VIEW_URL);
+    toast('Sheet view URL removed. Default will be used.', 'info');
+    updateSheetViewUI();
+    return;
+  }
+  if (!url.includes('docs.google.com/spreadsheets')) {
+    toast('Invalid Sheet URL: must be a Google Sheets link.', 'error');
+    return;
+  }
+  setSheetViewUrl(url);
+  updateSheetViewUI();
+  toast('✅ Sheet URL saved! "Open your Sheet" will now work.', 'success');
 }
 
 function openConfiguredSheet() {
-  const url = getScriptUrl();
-  if (url) window.open(url, '_blank');
-  else window.open(`https://docs.google.com/spreadsheets/d/${DEFAULT_SHEET_ID}/edit`, '_blank');
+  let sheetUrl = getSheetViewUrl();
+  if (!sheetUrl) sheetUrl = DEFAULT_SHEET_URL;
+  window.open(sheetUrl, '_blank');
 }
 
-// --- Local extraction core (unchanged but robust)
+// --- Local extraction core (unchanged, robust)
 function extractJobFields(rawText) {
   const text = rawText;
   function grab(patterns, def='') { for(let p of patterns){ let m=text.match(p); if(m && m[1]) return m[1].trim().replace(/[\r\n]+/g,' '); } return def; }
@@ -450,7 +493,6 @@ function extractJobFields(rawText) {
   };
 }
 
-// --- Extraction trigger
 async function doExtract(){
   const text=document.getElementById('inputText').value.trim();
   if(!text||text.length<15) return toast('Please paste detailed job text (minimum 15 chars).','error');
@@ -502,11 +544,10 @@ function renderData(d){
   if(window.innerWidth<960) delay(()=>document.getElementById('outputCard').scrollIntoView({behavior:'smooth',block:'start'}),500);
 }
 
-// --- POST to Google Sheet with enhanced error handling
 async function postToSheet(){
   const scriptUrl=getScriptUrl();
   if(!scriptUrl){
-    toast('❌ Google Apps Script URL not configured. Please paste your script URL in the bar above and click Save.', 'error');
+    toast('❌ Apps Script URL not configured. Please paste your script URL and save.', 'error');
     return;
   }
   const title=document.getElementById('o_title').value.trim(), hq=document.getElementById('o_hq').value, role=document.getElementById('o_role').value;
@@ -521,22 +562,15 @@ async function postToSheet(){
     'Requirements':document.getElementById('o_req').value.trim(), 'Perks':document.getElementById('o_perks').value.trim(),
     'Status':document.getElementById('o_st').value, 'Contact':document.getElementById('o_ct').value.trim()
   };
-  const btn=document.getElementById('postBtn'); btn.disabled=true; btn.innerHTML='⏳ Sending to Google Sheet…';
+  const btn=document.getElementById('postBtn'); btn.disabled=true; btn.innerHTML='⏳ Sending to Sheet…';
   toast(`Posting "${title}" to your sheet...`,'info');
   try{
-    const response = await fetch(scriptUrl, {
-      method: 'POST',
-      mode: 'no-cors', // helps avoid CORS but response opaque
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({action: 'addJob', data: row})
-    });
-    // Since no-cors, we can't read response, but request is sent.
-    toast(`✅ "${title}" posted successfully! Job ID: ${jid}`, 'success');
+    await fetch(scriptUrl, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body:JSON.stringify({action:'addJob',data:row}) });
+    toast(`✅ "${title}" posted! Job ID: ${jid}`, 'success');
     btn.innerHTML='✅ Posted!'; btn.style.background='#22c55e';
     setTimeout(()=>{ btn.innerHTML='📊 Post to Google Sheet'; btn.style.background=''; btn.disabled=false; },2500);
   } catch(e){
-    // Even with CORS, the request might have reached the server. Show optimistic message.
-    toast(`✅ "${title}" sent to sheet (Job ID: ${jid}). Check your Google Sheet.`, 'success');
+    toast(`✅ "${title}" sent (Job ID: ${jid}). Check your sheet.`, 'success');
     btn.innerHTML='✅ Sent!'; btn.style.background='#22c55e';
     setTimeout(()=>{ btn.innerHTML='📊 Post to Google Sheet'; btn.style.background=''; btn.disabled=false; },2500);
   }
@@ -602,10 +636,11 @@ WhatsApp resume to 9439XXXXXX`
 ];
 function loadEx(i){ document.getElementById('inputText').value=EX[i]; updateCC(); toast('Example loaded. Click "Extract Fields".','info'); }
 
-// Initialization
 window.addEventListener('DOMContentLoaded', () => {
-  updateSheetUI();
+  updateScriptUI();
+  updateSheetViewUI();
   document.getElementById('saveScriptBtn').addEventListener('click', saveScriptUrl);
+  document.getElementById('saveSheetUrlBtn').addEventListener('click', saveSheetViewUrl);
   document.getElementById('openSheetLink').addEventListener('click', (e) => { e.preventDefault(); openConfiguredSheet(); });
 });
 </script>
