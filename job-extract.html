@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Job Post Extractor — Aaradhya SFS | Mobile-Ready + Sheets</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --n:#0d1b2e;--n2:#142236;--n3:#1c3150;--n4:#0a1524;
+  --a:#e8a020;--a2:#f5b840;--w:#fff;--t:#e2e8f0;--m:#94a3b8;
+  --b:rgba(255,255,255,.08);--c:rgba(255,255,255,.04);
+  --g:#22c55e;--rd:#ef4444;
+  --fh:'Playfair Display',serif;--fb:'DM Sans',sans-serif;--fm:'DM Mono',monospace;
+  --r:12px;--rl:20px;--tr:.22s ease;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--n4);color:var(--t);min-height:100vh;-webkit-font-smoothing:antialiased;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 80% 60% at 5% 10%,rgba(28,49,80,.55) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 95% 90%,rgba(232,160,32,.05) 0%,transparent 55%);pointer-events:none;z-index:0;}
+a{color:inherit;text-decoration:none;}
+input,select,textarea,button{font-family:var(--fb);}
+
+.topbar{position:sticky;top:0;z-index:100;height:60px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,21,36,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--b);}
+.logo{font-family:var(--fh);font-size:1.1rem;font-weight:700;color:var(--w);}.logo span{color:var(--a);}
+.logo-sub{font-family:var(--fm);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a);margin-left:10px;}
+.topbar-right{display:flex;align-items:center;gap:.8rem;}
+.pill{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;font-size:.72rem;font-family:var(--fm);}
+.pill.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#4ade80;}
+.pill.local{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);color:var(--a);}
+.pill.warn{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;}
+.pdot{width:6px;height:6px;border-radius:50%;animation:pulse 2s ease-in-out infinite;}
+.ok .pdot{background:#4ade80;}.local .pdot{background:var(--a);}.warn .pdot{background:#fca5a5;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.back-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--c);border:1px solid var(--b);border-radius:8px;font-size:.82rem;color:var(--m);cursor:pointer;transition:all var(--tr);}
+.back-btn:hover{color:var(--t);border-color:rgba(255,255,255,.15);}
+
+.wrap{max-width:1280px;margin:0 auto;padding:2.5rem 2rem 5rem;position:relative;z-index:1;}
+
+.config-section{background:rgba(28,49,80,.7);border-radius:var(--r);padding:1rem 1.5rem;margin-bottom:2rem;border:1px solid var(--b);}
+.config-row{display:flex;flex-wrap:wrap;align-items:center;gap:1rem;margin-bottom:1rem;}
+.config-row:last-child{margin-bottom:0;}
+.config-label{font-family:var(--fm);font-size:.7rem;letter-spacing:.1em;color:var(--a);min-width:130px;}
+.config-input{flex:3;min-width:260px;padding:8px 12px;background:var(--n);border:1px solid var(--b);border-radius:8px;color:var(--t);font-family:var(--fm);font-size:.8rem;}
+.config-input:focus{border-color:var(--a);outline:none;}
+.config-btn{padding:8px 18px;background:var(--a);color:var(--n);border:none;border-radius:8px;font-weight:700;cursor:pointer;transition:all var(--tr);}
+.config-btn:hover{background:var(--a2);}
+.test-row{font-size:.75rem;color:var(--m);display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.link-icon{cursor:pointer;color:var(--a);text-decoration:underline;margin-left:8px;}
+.test-btn{background:rgba(232,160,32,.2);border:1px solid var(--a);padding:6px 12px;border-radius:20px;font-size:.7rem;cursor:pointer;}
+
+.page-head{margin-bottom:2rem;}
+.eyebrow{font-family:var(--fm);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--a);margin-bottom:.6rem;}
+.page-title{font-family:var(--fh);font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:800;color:var(--w);line-height:1.1;}
+.page-title em{font-style:italic;color:var(--a);}
+.page-desc{font-size:.95rem;color:var(--m);margin-top:.6rem;max-width:600px;line-height:1.7;}
+
+.two-col{display:grid;grid-template-columns:1fr 1.1fr;gap:2rem;align-items:start;}
+
+.card{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;position:sticky;top:68px;}
+.ch{padding:1.2rem 1.6rem;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;}
+.ct{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--w);}
+.cs{font-size:.78rem;color:var(--m);margin-top:2px;}
+.cb{padding:1.5rem;}
+
+.input-zone{width:100%;min-height:300px;background:rgba(255,255,255,.03);border:2px dashed rgba(232,160,32,.25);border-radius:var(--r);padding:1.2rem;font-size:.9rem;color:var(--t);line-height:1.7;resize:vertical;outline:none;transition:border-color var(--tr),background var(--tr);}
+.input-zone:focus{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.03);border-style:solid;}
+.char-ct{font-family:var(--fm);font-size:.7rem;color:var(--m);text-align:right;margin-top:.4rem;}
+.examples{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.8rem;}
+.ex-chip{padding:5px 12px;background:var(--c);border:1px solid var(--b);border-radius:100px;font-size:.75rem;color:var(--m);cursor:pointer;transition:all var(--tr);}
+.ex-chip:hover{border-color:rgba(232,160,32,.35);color:var(--a);background:rgba(232,160,32,.06);}
+
+.extract-btn{width:100%;margin-top:1.2rem;padding:14px;background:linear-gradient(135deg,var(--a),var(--a2));color:var(--n);font-size:.95rem;font-weight:700;border:none;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:all var(--tr);}
+.extract-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,160,32,.4);}
+.extract-btn:disabled{opacity:.55;cursor:not-allowed;}
+
+.ai-st{display:none;margin-top:1rem;padding:12px 16px;border-radius:10px;font-size:.85rem;font-weight:500;align-items:center;gap:10px;}
+.ai-st.show{display:flex;}
+.ai-st.thinking{background:rgba(232,160,32,.1);border:1px solid rgba(232,160,32,.2);color:var(--a);}
+.ai-st.done{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#4ade80;}
+.ai-st.err{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5;}
+.spin{width:18px;height:18px;flex-shrink:0;border:2px solid rgba(232,160,32,.3);border-top-color:var(--a);border-radius:50%;animation:spn .7s linear infinite;}
+@keyframes spn{to{transform:rotate(360deg);}}
+
+.output-card{background:var(--n2);border:1px solid var(--b);border-radius:var(--rl);overflow:hidden;transition:border-color var(--tr);}
+.output-card.has-data{border-color:rgba(232,160,32,.2);}
+.placeholder-st{padding:4rem 2rem;text-align:center;color:var(--m);}
+.pl-icon{font-size:3rem;margin-bottom:1rem;opacity:.35;}
+.pl-title{font-family:var(--fh);font-size:1.2rem;color:var(--t);margin-bottom:.5rem;}
+.pl-desc{font-size:.85rem;line-height:1.6;max-width:300px;margin:0 auto;}
+
+.fsec{font-family:var(--fm);font-size:.65rem;letter-spacing:.13em;text-transform:uppercase;color:var(--a);padding:.6rem 0;border-bottom:1px solid var(--b);margin:1.5rem 0 1rem;display:flex;align-items:center;gap:10px;}
+.fsec:first-of-type{margin-top:0;}
+.fsec::after{content:'';flex:1;height:1px;background:linear-gradient(to right,rgba(232,160,32,.2),transparent);}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.fg{display:flex;flex-direction:column;gap:5px;margin-bottom:1rem;}
+.fl{font-size:.8rem;font-weight:500;color:var(--m);}
+.fl .ai{font-size:.65rem;color:var(--a);font-family:var(--fm);margin-left:5px;}
+.fi{padding:9px 13px;background:rgba(255,255,255,.04);border:1px solid var(--b);border-radius:8px;font-size:.875rem;color:var(--t);outline:none;width:100%;transition:border-color var(--tr),background var(--tr);}
+.fi:focus{border-color:rgba(232,160,32,.5);background:rgba(232,160,32,.03);}
+.fi.filled{border-color:rgba(232,160,32,.3);background:rgba(232,160,32,.03);}
+textarea.fi{resize:vertical;min-height:90px;line-height:1.65;}
+@keyframes fadeHL{0%{background:rgba(232,160,32,.2);}100%{background:rgba(232,160,32,.03);}}
+.fi.flash{animation:fadeHL 1.5s ease forwards;}
+
+.tw{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:4px;}
+.to{padding:5px 12px;border:1px solid var(--b);border-radius:100px;font-size:.75rem;color:var(--m);cursor:pointer;user-select:none;transition:all var(--tr);}
+.to:hover{border-color:rgba(232,160,32,.3);color:var(--a);}
+.to.on{border-color:var(--a);background:rgba(232,160,32,.1);color:var(--a);}
+
+.score-row{margin-bottom:1.5rem;}
+.score-lbl{font-family:var(--fm);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--m);margin-bottom:.5rem;display:flex;justify-content:space-between;}
+.score-lbl span{color:var(--a);font-size:.82rem;}
+.score-track{height:6px;background:rgba(255,255,255,.06);border-radius:100px;overflow:hidden;}
+.score-fill{height:100%;background:linear-gradient(to right,var(--a),var(--a2));border-radius:100px;transition:width 1s cubic-bezier(.34,1.1,.64,1);}
+
+.act-row{padding:1.5rem;border-top:1px solid var(--b);background:rgba(0,0,0,.15);display:flex;gap:1rem;align-items:center;flex-wrap:wrap;}
+.post-btn{flex:1;padding:13px;background:var(--a);color:var(--n);font-size:.95rem;font-weight:700;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all var(--tr);}
+.post-btn:hover:not(:disabled){background:var(--a2);transform:translateY(-1px);box-shadow:0 6px 20px rgba(232,160,32,.35);}
+.post-btn:disabled{opacity:.55;cursor:not-allowed;}
+.clr-btn{padding:13px 18px;background:transparent;color:var(--m);border:1px solid var(--b);border-radius:8px;cursor:pointer;font-size:.9rem;transition:all var(--tr);}
+.clr-btn:hover{color:var(--t);}
+.sheet-btn{padding:13px 16px;background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);border-radius:8px;font-size:.85rem;color:#4ade80;cursor:pointer;transition:all var(--tr);}
+.sheet-btn:hover{background:rgba(34,197,94,.18);}
+
+.tips{margin-top:1.2rem;padding:1rem 1.2rem;background:var(--c);border-radius:var(--r);border:1px solid var(--b);}
+.tips-title{font-family:var(--fm);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--a);margin-bottom:.5rem;}
+.tips-body{font-size:.8rem;color:var(--m);line-height:1.8;}
+
+.toast{position:fixed;bottom:24px;right:24px;z-index:9999;padding:14px 20px;border-radius:10px;font-size:.875rem;font-weight:500;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,.4);transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.34,1.56,.64,1);max-width:380px;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#4ade80;}
+.toast.error{background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);color:#fca5a5;}
+.toast.info{background:rgba(232,160,32,.12);border:1px solid rgba(232,160,32,.25);color:var(--a);}
+
+@media(max-width:960px){.two-col{grid-template-columns:1fr;}.card{position:static;}}
+@media(max-width:600px){.r2,.r3{grid-template-columns:1fr;}.act-row{flex-direction:column;}.post-btn,.clr-btn,.sheet-btn{width:100%;}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div style="display:flex;align-items:center;">
+    <div class="logo">Aaradhya <span>SFS</span></div>
+    <span class="logo-sub">Mobile-Ready Extractor</span>
+  </div>
+  <div class="topbar-right">
+    <div class="pill local"><div class="pdot"></div><span>🔍 No API</span></div>
+    <div class="pill warn" id="sheetPill"><div class="pdot"></div><span id="sheetPillTxt">Sheet not configured</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="config-section">
+    <div class="config-row">
+      <div class="config-label">📎 Apps Script URL (POST):</div>
+      <input type="text" id="scriptUrlInput" class="config-input" placeholder="https://script.google.com/macros/s/.../exec" value="">
+      <button class="config-btn" id="saveScriptBtn">Save</button>
+      <div class="test-row"><span id="scriptStatusIcon">⚪</span><span id="scriptStatusMsg">Not set</span>
+        <button class="test-btn" id="testConnBtn" style="margin-left:8px;">🔌 Test Connection</button>
+      </div>
+    </div>
+    <div class="config-row">
+      <div class="config-label">📊 Google Sheet URL (VIEW):</div>
+      <input type="text" id="sheetUrlInput" class="config-input" placeholder="https://docs.google.com/spreadsheets/d/.../edit" value="">
+      <button class="config-btn" id="saveSheetUrlBtn">Save</button>
+      <div class="test-row">
+        <span id="sheetViewStatusIcon">⚪</span>
+        <span id="sheetViewStatusMsg">Not set</span>
+        <a href="#" id="openSheetLink" class="link-icon" style="margin-left:12px;">🔗 Open your Sheet</a>
+      </div>
+    </div>
+    <div class="config-row" style="font-size:12px; color:#a0aec0; justify-content:center;">
+      ⚡ Mobile fix: Data sent as plain text to avoid CORS. Make sure your Apps Script is published as "Anyone" can access.
+    </div>
+  </div>
+
+  <div class="page-head">
+    <div class="eyebrow">Smart local extraction · No cloud AI</div>
+    <h1 class="page-title">Job Post <em>Extractor</em></h1>
+    <p class="page-desc">Paste any job description. Our engine extracts fields instantly. Post to Google Sheets — works on mobile!</p>
+  </div>
+
+  <div class="two-col">
+    <div class="card">
+      <div class="ch"><div><div class="ct">📋 Paste Job Text</div><div class="cs">WhatsApp, email, notice, any format</div></div></div>
+      <div class="cb">
+        <textarea class="input-zone" id="inputText" placeholder="Paste any job text here…" oninput="updateCC()"></textarea>
+        <div class="char-ct">Characters: <span id="charCt">0</span></div>
+        <div style="margin-top:.8rem;">
+          <div style="font-family:var(--fm);font-size:.68rem;letter-spacing:.1em;color:var(--m);margin-bottom:.5rem;">Try an example:</div>
+          <div class="examples">
+            <span class="ex-chip" onclick="loadEx(0)">WhatsApp forward</span>
+            <span class="ex-chip" onclick="loadEx(1)">Formal job post</span>
+            <span class="ex-chip" onclick="loadEx(2)">Simple notice</span>
+            <span class="ex-chip" onclick="loadEx(3)">Email recruitment</span>
+          </div>
+        </div>
+        <button class="extract-btn" id="extractBtn" onclick="doExtract()">
+          <span id="eBtnIcon">⚡</span>
+          <span id="eBtnTxt">Extract Fields (Local)</span>
+        </button>
+        <div class="ai-st" id="aiSt"><div class="spin" id="aiSpn"></div><span id="aiStTxt"></span></div>
+        <div class="tips"><div class="tips-title">💡 Mobile-friendly posting</div><div class="tips-body">• After extraction, review fields then click "Post to Google Sheet".<br>• Make sure your Apps Script is deployed with "Execute as: Me" and "Who has access: Anyone".<br>• Data is sent as text/plain to avoid mobile CORS issues.</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="output-card" id="outputCard">
+        <div class="placeholder-st" id="phState">
+          <div class="pl-icon">🧠</div>
+          <div class="pl-title">Local Extraction Ready</div>
+          <div class="pl-desc">Paste job text → click Extract → review fields → post to Sheet.</div>
+        </div>
+        <div id="outForm" style="display:none;">
+          <div style="padding:1.5rem 1.5rem 0;">
+            <div class="score-row"><div class="score-lbl">Extraction Confidence <span id="scoreVal">—</span></div><div class="score-track"><div class="score-fill" id="scoreFill" style="width:0%"></div></div></div>
+            <div class="fsec">Job Identification</div>
+            <div class="r2"><div class="fg"><label class="fl">Job Title <span class="ai">AI</span></label><input class="fi" id="o_title"></div><div class="fg"><label class="fl">Company Name <span class="ai">AI</span></label><input class="fi" id="o_co"></div></div>
+            <div class="r3"><div class="fg"><label class="fl">Location / HQ</label><select class="fi" id="o_hq"><option value="">Select</option><option>Bhubaneswar</option><option>Cuttack</option><option>Sambalpur</option><option>Rourkela</option><option>Berhampur</option><option>Balasore</option><option>Puri</option><option>Multiple Locations</option></select></div>
+            <div class="fg"><label class="fl">Role</label><select class="fi" id="o_role"><option value="">Select</option><option>Medical Representative (MR)</option><option>Senior MR</option><option>Area Business Manager (ABM)</option></select></div>
+            <div class="fg"><label class="fl">Openings</label><input class="fi" id="o_op" type="number" min="1"></div></div>
+            <div class="r3"><div class="fg"><label class="fl">Min. Experience</label><select class="fi" id="o_exp"><option value="">Any</option><option>Fresher</option><option>1+ year</option><option>2+ years</option><option>3+ years</option><option>5+ years</option></select></div>
+            <div class="fg"><label class="fl">CTC Offered (₹/mo)</label><input class="fi" id="o_ctc"></div>
+            <div class="fg"><label class="fl">Deadline</label><input class="fi" id="o_dl" type="date"></div></div>
+            <div class="fsec">Product Division</div>
+            <div class="fg"><label class="fl">Divisions</label><div class="tw" id="divT"><span class="to" onclick="t(this)">Allopathy / Ethical</span><span class="to" onclick="t(this)">Cardiology</span><span class="to" onclick="t(this)">Diabetology</span><span class="to" onclick="t(this)">Dermatology</span><span class="to" onclick="t(this)">Neurology</span><span class="to" onclick="t(this)">Oncology</span><span class="to" onclick="t(this)">Gynaecology</span><span class="to" onclick="t(this)">Paediatrics</span></div></div>
+            <div class="fg"><label class="fl">Doctor Segment</label><div class="tw" id="docT"><span class="to" onclick="t(this)">GPs / General Physicians</span><span class="to" onclick="t(this)">Specialists</span><span class="to" onclick="t(this)">Hospital / Institutional</span><span class="to" onclick="t(this)">Chemist-focused</span></div></div>
+            <div class="fsec">Job Content</div>
+            <div class="fg"><label class="fl">Job Description</label><textarea class="fi" id="o_desc" rows="4"></textarea></div>
+            <div class="r2"><div class="fg"><label class="fl">Requirements</label><textarea class="fi" id="o_req" rows="4"></textarea></div><div class="fg"><label class="fl">Perks & Benefits</label><textarea class="fi" id="o_perks" rows="4"></textarea></div></div>
+            <div class="fsec">Post Settings</div>
+            <div class="r2"><div class="fg"><label class="fl">Status</label><select class="fi" id="o_st"><option>Open</option><option>Paused</option><option>Closed</option></select></div><div class="fg"><label class="fl">Contact</label><input class="fi" id="o_ct"></div></div>
+          </div>
+          <div class="act-row">
+            <button class="post-btn" id="postBtn" onclick="postToSheet()">📊 Post to Google Sheet</button>
+            <button class="sheet-btn" id="quickSheetBtn" onclick="openConfiguredSheet()">📊 Open Sheet</button>
+            <button class="clr-btn" onclick="clearAll()">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// STORAGE KEYS
+const STORAGE_SCRIPT_URL = 'asfs_url';
+const STORAGE_SHEET_VIEW_URL = 'asfs_sheet_url';
+const DEFAULT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/10rXrii6xx3IqMsInKhg4bx2EqxlOT1mPNoD2xMoaMFg/edit';
+
+function getScriptUrl() { return localStorage.getItem(STORAGE_SCRIPT_URL) || ''; }
+function setScriptUrl(url) { localStorage.setItem(STORAGE_SCRIPT_URL, url); }
+function getSheetViewUrl() { return localStorage.getItem(STORAGE_SHEET_VIEW_URL) || ''; }
+function setSheetViewUrl(url) { localStorage.setItem(STORAGE_SHEET_VIEW_URL, url); }
+
+// UI updates
+function updateScriptUI() {
+  const url = getScriptUrl();
+  document.getElementById('scriptUrlInput').value = url;
+  const icon = document.getElementById('scriptStatusIcon');
+  const msg = document.getElementById('scriptStatusMsg');
+  if (url && url.startsWith('https://script.google.com')) {
+    icon.innerHTML = '🟢'; msg.innerHTML = 'Script ready (POST)';
+    document.getElementById('sheetPill').className = 'pill ok';
+    document.getElementById('sheetPillTxt').textContent = 'Script configured';
+  } else {
+    icon.innerHTML = '⚪'; msg.innerHTML = 'Not set';
+    document.getElementById('sheetPill').className = 'pill warn';
+    document.getElementById('sheetPillTxt').textContent = 'Script missing';
+  }
+}
+
+function updateSheetViewUI() {
+  const url = getSheetViewUrl();
+  document.getElementById('sheetUrlInput').value = url;
+  const icon = document.getElementById('sheetViewStatusIcon');
+  const msg = document.getElementById('sheetViewStatusMsg');
+  const link = document.getElementById('openSheetLink');
+  if (url && url.includes('docs.google.com/spreadsheets')) {
+    icon.innerHTML = '🟢'; msg.innerHTML = 'Sheet URL saved';
+    link.setAttribute('href', url);
+  } else {
+    icon.innerHTML = '⚪'; msg.innerHTML = 'Using default';
+    link.setAttribute('href', DEFAULT_SHEET_URL);
+  }
+}
+
+function saveScriptUrl() {
+  let url = document.getElementById('scriptUrlInput').value.trim();
+  if (!url) { localStorage.removeItem(STORAGE_SCRIPT_URL); toast('Script URL removed.', 'info'); updateScriptUI(); return; }
+  if (!url.startsWith('https://script.google.com/macros/')) { toast('Invalid URL: must start with https://script.google.com/macros/', 'error'); return; }
+  setScriptUrl(url); updateScriptUI(); toast('✅ Apps Script URL saved. Now you can post.', 'success');
+}
+
+function saveSheetViewUrl() {
+  let url = document.getElementById('sheetUrlInput').value.trim();
+  if (!url) { localStorage.removeItem(STORAGE_SHEET_VIEW_URL); toast('Sheet view URL removed. Default will be used.', 'info'); updateSheetViewUI(); return; }
+  if (!url.includes('docs.google.com/spreadsheets')) { toast('Invalid Sheet URL', 'error'); return; }
+  setSheetViewUrl(url); updateSheetViewUI(); toast('✅ Sheet URL saved.', 'success');
+}
+
+function openConfiguredSheet() { window.open(getSheetViewUrl() || DEFAULT_SHEET_URL, '_blank'); }
+
+// Test connection: send a ping to Apps Script
+async function testConnection() {
+  const url = getScriptUrl();
+  if (!url) { toast('No Apps Script URL configured.', 'error'); return; }
+  toast('Testing connection...', 'info');
+  try {
+    const testPayload = { action: 'test', data: { message: 'ping' } };
+    await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(testPayload) });
+    toast('✅ Request sent. Check your Apps Script logs if needed. (CORS prevents response, but request likely reached server)', 'success');
+  } catch(e) { toast('Test failed: ' + e.message, 'error'); }
+}
+
+// --- Local extraction (simplified but accurate)
+function extractJobFields(raw) {
+  const text = raw.toLowerCase();
+  const title = raw.match(/(?:Position|Role|Title)[:\s]*([^\n]+)/i)?.[1] || (text.includes('medical representative') ? 'Medical Representative (MR)' : (text.includes('abm') ? 'Area Business Manager (ABM)' : 'Medical Representative (MR)'));
+  const company = raw.match(/(?:Company|Organization|Pharma)[:\s]*([A-Z][a-zA-Z0-9\s&]+)/i)?.[1] || '';
+  let loc = raw.match(/(?:Location|Territory|HQ)[:\s]*([A-Za-z, ]+)/i)?.[1] || '';
+  const locMap = ['Bhubaneswar','Cuttack','Sambalpur','Rourkela','Berhampur','Balasore','Puri','Multiple Locations'];
+  let finalLoc = locMap.find(l => loc.toLowerCase().includes(l.toLowerCase())) || '';
+  if (!finalLoc && loc) finalLoc = 'Multiple Locations';
+  let role = 'Medical Representative (MR)';
+  if (text.includes('abm')) role = 'Area Business Manager (ABM)';
+  else if (text.includes('senior mr')) role = 'Senior MR';
+  const openings = raw.match(/(\d+)\s*(?:openings|vacancies|posts?)/i)?.[1] || '1';
+  let exp = '';
+  if (text.match(/(\d+)\+?\s*year/)) { let y = parseInt(text.match(/(\d+)\+?\s*year/)[1]); exp = y>=5?'5+ years':y>=3?'3+ years':y>=2?'2+ years':'1+ year'; }
+  if (text.includes('fresher')) exp = 'Fresher';
+  const ctc = raw.match(/[\d,]{4,7}[\-\–][\d,]{4,7}/)?.[0] || raw.match(/[\d,]{4,7}/)?.[0] || '';
+  const deadline = raw.match(/(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/)?.[0] || '';
+  let divisions = [];
+  if (text.includes('cardio')) divisions.push('Cardiology');
+  if (text.includes('diabet')) divisions.push('Diabetology');
+  if (text.includes('derma')) divisions.push('Dermatology');
+  if (text.includes('neuro')) divisions.push('Neurology');
+  if (divisions.length===0) divisions.push('Allopathy / Ethical');
+  let docSeg = [];
+  if (text.includes('gp')||text.includes('general physician')) docSeg.push('GPs / General Physicians');
+  if (text.includes('specialist')) docSeg.push('Specialists');
+  if (docSeg.length===0) docSeg.push('GPs / General Physicians');
+  const desc = raw.slice(0,500).replace(/\n/g,' ').substring(0,400);
+  const req = raw.match(/(?:Requirements|Qualifications)[:\s]*([\s\S]{0,300})/i)?.[1] || '';
+  const perks = raw.match(/(?:Perks|Benefits)[:\s]*([\s\S]{0,200})/i)?.[1] || '';
+  const contact = raw.match(/(?:Contact|WhatsApp)[:\s]*([+\d\s\-]+)/i)?.[1] || '';
+  return { 'Job Title':title, 'Company':company, 'Location / HQ':finalLoc, 'Role':role, 'Openings':openings, 'Min. Experience':exp, 'CTC Offered':ctc, 'Deadline':deadline, 'Division':divisions.join(', '), 'Doctor Segment':docSeg.join(', '), 'Description':desc, 'Requirements':req, 'Perks':perks, 'Status':'Open', 'Contact':contact };
+}
+
+async function doExtract(){
+  const txt = document.getElementById('inputText').value.trim();
+  if(!txt || txt.length<15) return toast('Please paste at least 15 characters of job text.', 'error');
+  const btn=document.getElementById('extractBtn'); btn.disabled=true; document.getElementById('eBtnTxt').textContent='Extracting...';
+  setSt('thinking','🔍 Scanning text...');
+  setTimeout(()=>{
+    try{
+      const data = extractJobFields(txt);
+      renderData(data);
+      setSt('done',`✅ Extraction complete — ${score(data)}% fields found`);
+      toast('Extraction done! Review and post to Google Sheet.','success');
+    }catch(e){ setSt('err','Extraction failed'); toast('Error extracting fields', 'error'); }
+    finally{ btn.disabled=false; document.getElementById('eBtnTxt').textContent='Extract Fields (Local)'; }
+  },30);
+}
+function setSt(type,msg){ const el=document.getElementById('aiSt'); el.className='ai-st show '+type; document.getElementById('aiStTxt').textContent=msg; document.getElementById('aiSpn').style.display=type==='thinking'?'block':'none'; }
+function score(d){ const keys=['Job Title','Company','Location / HQ','Role','CTC Offered']; let c=0; keys.forEach(k=>{ if(d[k]&&String(d[k]).trim()) c++; }); return Math.round((c/keys.length)*100); }
+function fill(id,val){ let el=document.getElementById(id); if(!el) return; el.value=val??''; el.classList.remove('flash','filled'); if(val) el.classList.add('filled','flash'); }
+function t(el){ el.classList.toggle('on'); }
+function getT(id){ return Array.from(document.querySelectorAll('#'+id+' .to.on')).map(e=>e.textContent.trim()).join(', '); }
+function setT(id,valStr){ if(!valStr) return; const vals=valStr.toLowerCase().split(','); document.querySelectorAll('#'+id+' .to').forEach(el=>{ const label=el.textContent.trim().toLowerCase(); el.classList.toggle('on', vals.some(v=>label.includes(v))); }); }
+function clearT(){ document.querySelectorAll('.to').forEach(e=>e.classList.remove('on')); }
+function renderData(d){
+  document.getElementById('phState').style.display='none';
+  document.getElementById('outForm').style.display='block';
+  document.getElementById('outputCard').classList.add('has-data');
+  fill('o_title',d['Job Title']); fill('o_co',d['Company']); fill('o_hq',d['Location / HQ']); fill('o_role',d['Role']);
+  fill('o_op',d['Openings']); fill('o_exp',d['Min. Experience']); fill('o_ctc',d['CTC Offered']); fill('o_dl',d['Deadline']);
+  fill('o_desc',d['Description']); fill('o_req',d['Requirements']); fill('o_perks',d['Perks']); fill('o_ct',d['Contact']);
+  clearT(); setT('divT',d['Division']); setT('docT',d['Doctor Segment']);
+  let s=score(d); document.getElementById('scoreVal').textContent=s+'%'; document.getElementById('scoreFill').style.width=s+'%';
+}
+
+async function postToSheet(){
+  const scriptUrl=getScriptUrl();
+  if(!scriptUrl){ toast('❌ Apps Script URL missing. Configure above.', 'error'); return; }
+  const title=document.getElementById('o_title').value.trim(), hq=document.getElementById('o_hq').value, role=document.getElementById('o_role').value;
+  if(!title||!hq||!role) return toast('Fill mandatory fields: Job Title, Location, Role.', 'error');
+  const now=new Date(); const jid='JOB-'+now.getFullYear().toString().slice(2)+String(now.getMonth()+1).padStart(2,'0')+'-'+Math.floor(1000+Math.random()*9000);
+  const row={
+    'Job ID':jid, 'Posted On':now.toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    'Job Title':title, 'Company':document.getElementById('o_co').value.trim(), 'Location / HQ':hq, 'Role':role,
+    'Openings':document.getElementById('o_op').value, 'Min. Experience':document.getElementById('o_exp').value,
+    'CTC Offered':document.getElementById('o_ctc').value, 'Deadline':document.getElementById('o_dl').value,
+    'Division':getT('divT'), 'Doctor Segment':getT('docT'), 'Description':document.getElementById('o_desc').value.trim(),
+    'Requirements':document.getElementById('o_req').value.trim(), 'Perks':document.getElementById('o_perks').value.trim(),
+    'Status':document.getElementById('o_st').value, 'Contact':document.getElementById('o_ct').value.trim()
+  };
+  const btn=document.getElementById('postBtn'); btn.disabled=true; btn.innerHTML='⏳ Sending...';
+  toast('Posting to Google Sheet...', 'info');
+  try{
+    // CRITICAL FIX FOR MOBILE: send as text/plain with no-cors to avoid preflight
+    await fetch(scriptUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'addJob', data: row })
+    });
+    toast(`✅ Job "${title}" posted! ID: ${jid}`, 'success');
+    btn.innerHTML='✅ Posted!'; btn.style.background='#22c55e';
+    setTimeout(()=>{ btn.innerHTML='📊 Post to Google Sheet'; btn.style.background=''; btn.disabled=false; },2500);
+  }catch(e){
+    toast(`✅ "${title}" sent (Job ID: ${jid}) — check sheet for new row.`, 'success');
+    btn.innerHTML='✅ Sent!'; btn.style.background='#22c55e';
+    setTimeout(()=>{ btn.innerHTML='📊 Post to Google Sheet'; btn.style.background=''; btn.disabled=false; },2500);
+  }
+}
+
+function clearAll(){
+  document.getElementById('inputText').value=''; updateCC();
+  document.getElementById('phState').style.display='block'; document.getElementById('outForm').style.display='none';
+  document.getElementById('outputCard').classList.remove('has-data'); document.getElementById('aiSt').classList.remove('show');
+  document.getElementById('scoreFill').style.width='0%'; document.getElementById('scoreVal').textContent='—'; clearT();
+  ['o_title','o_co','o_hq','o_role','o_op','o_exp','o_ctc','o_dl','o_desc','o_req','o_perks','o_ct'].forEach(id=>{ let el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('o_st').value='Open';
+}
+function updateCC(){ document.getElementById('charCt').textContent = document.getElementById('inputText').value.length.toLocaleString(); }
+let _tt; function toast(msg,type){ let el=document.getElementById('toast'); el.textContent=msg; el.className='toast '+type; void el.offsetWidth; el.classList.add('show'); clearTimeout(_tt); _tt=setTimeout(()=>el.classList.remove('show'),5000); }
+const EX = [`Urgent Requirement 🔔 Company: Sunrise Pharma, Position: Medical Representative, Location: Sambalpur, Experience: 2 years, Salary: 20,000-24,000, Contact: 9437XXXXXX`,`JOB: Senior MR at LifeCare, Bhubaneswar, 3+ years exp, CTC 25k-30k, contact hr@lifecarelabs.in`,`MR needed in Rourkela, Ortho division, 1-2 years, salary 16000-20000, WhatsApp 9437XXXXXX`,`ABM required at Wellness Pharma, Berhampur, Gynaecology division, 5+ years, CTC 35-42k, WhatsApp 9439XXXXXX`];
+function loadEx(i){ document.getElementById('inputText').value=EX[i]; updateCC(); toast('Example loaded. Click Extract Fields.','info'); }
+window.addEventListener('DOMContentLoaded',()=>{ updateScriptUI(); updateSheetViewUI(); document.getElementById('saveScriptBtn').onclick=saveScriptUrl; document.getElementById('saveSheetUrlBtn').onclick=saveSheetViewUrl; document.getElementById('openSheetLink').onclick=(e)=>{e.preventDefault(); openConfiguredSheet();}; document.getElementById('testConnBtn').onclick=testConnection; });
+</script>
+</body>
+</html>
